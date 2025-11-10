@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Επικοινωνία — IL Insurance</title>
+  <link rel="stylesheet" href="/assets/styles.css"><script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo"><img src="/assets/logo.svg" alt="Logo"><strong>IL Insurance</strong></div>
+      <div class="lang"><a href="#" onclick="Site.setLang('el')">Ελληνικά</a> | <a href="#" onclick="Site.setLang('en')">English</a></div>
+    </nav>
+  </header>
+  <main class="container">
+    <h1 class="h1">Επικοινώνησε μαζί μας</h1>
+    <p class="lead">Στείλε μήνυμα ή ζήτησε να σε καλέσουμε.</p>
+    <section class="card">
+      <form method="POST" action="https://formspree.io/f/FORM_ID">
+        <label>Θέμα
+          <select name="topic" required>
+            <option value="life-health">Ζωή & Υγεία</option>
+            <option value="property">Περιουσία</option>
+            <option value="liability">Αστική Ευθύνη</option>
+            <option value="motor">Αυτοκίνητο</option>
+            <option value="savings">Αποταμιευτικά</option>
+            <option value="other">Άλλο</option>
+          </select>
+        </label>
+        <label>Ονοματεπώνυμο<input name="name" required></label>
+        <label>Τηλέφωνο<input name="phone" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Μήνυμα<textarea name="message" required></textarea></label>
+        <!-- <div class="cf-turnstile" data-sitekey="SITE_KEY"></div> -->
+        <button class="btn" type="submit">Αποστολή</button>
+        <p class="notice">Τα δεδομένα χρησιμοποιούνται αποκλειστικά για απάντηση/προσφορά.</p>
+      </form>
+    </section>
+  </main>
+  <footer class="container"><div>© <span id="y4"></span> IL Insurance</div><script>document.getElementById('y4').textContent=new Date().getFullYear()</script></footer>
+</body>
+</html>

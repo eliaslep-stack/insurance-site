@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance | Language Select</title>
+  <meta http-equiv="refresh" content="3; url=/el/"/>
+  <link rel="preload" href="/assets/styles.css" as="style">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script>
+    (function(){
+      try {
+        const saved = localStorage.getItem('site_lang');
+        if (saved) { location.replace('/' + saved + '/'); return; }
+        const lang = (navigator.language || 'en').toLowerCase();
+        if (lang.startsWith('el')) location.replace('/el/');
+        else location.replace('/en/');
+      } catch(e){}
+    })();
+  </script>
+  <style>body{display:flex;align-items:center;justify-content:center;height:100vh}</style>
+</head>
+<body>
+  <div class="center">
+    <p>Redirecting… Μεταφορά στη σωστή γλώσσα…</p>
+    <p><a href="/el/">Ελληνικά</a> | <a href="/en/">English</a></p>
+  </div>
+</body>
+</html>

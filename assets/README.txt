@@ -1,0 +1,1 @@
+Place your homepage hero video as 'hero.mp4' in this folder.

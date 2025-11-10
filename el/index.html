@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Ασφαλιστικές λύσεις</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo"><img src="/assets/logo.svg" alt="Logo"><strong>IL Insurance</strong></div>
+      <div class="lang"><a href="#" onclick="Site.setLang('el')">Ελληνικά</a> | <a href="#" onclick="Site.setLang('en')">English</a></div>
+    </nav>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1 class="h1">Ασφάλιση χωρίς θόρυβο.</h1>
+        <p class="lead">Υγεία, Ζωή, Περιουσία, Αστική Ευθύνη, Αυτοκίνητο, Αποταμιευτικά. Διαφάνεια στους όρους, καθαρά βήματα.</p>
+        <p>
+          <a class="btn" href="./contact.html">Ζήτησε προσφορά</a>
+          <a class="btn alt" href="./life-health.html">Ζωή & Υγεία</a>
+        </p>
+      </div>
+      <video src="/assets/hero.mp4" autoplay muted loop playsinline aria-label="Insurance overview video placeholder"></video>
+    </section>
+    <section style="margin-top:28px" class="grid">
+      <a class="card" href="./life-health.html"><h3 class="h2">Ζωή & Υγεία</h3><p>Νοσοκομειακά, capitation, εξωνοσοκομειακά, life & unit‑linked.</p></a>
+      <a class="card" href="./property.html"><h3 class="h2">Περιουσία</h3><p>Κατοικία, επαγγελματικοί χώροι, σεισμός, κλοπή.</p></a>
+      <a class="card" href="./liability.html"><h3 class="h2">Αστική Ευθύνη</h3><p>Επαγγελματική, εργοδότη, γενική, οικογενειακή.</p></a>
+      <a class="card" href="./motor.html"><h3 class="h2">Αυτοκίνητο</h3><p>Βασική, μικτή, οδική, θραύση, κάλυψη οδηγού.</p></a>
+      <a class="card" href="./savings.html"><h3 class="h2">Αποταμιευτικά</h3><p>Συνταξιοδοτικά, unit‑linked, παιδικά.</p></a>
+      <a class="card" href="./contact.html"><h3 class="h2">Επικοινωνία</h3><p>Μήνυμα ή ραντεβού. Απαντάμε γρήγορα.</p></a>
+    </section>
+  </main>
+  <footer class="container">
+    <div>© <span id="y2"></span> IL Insurance — Άδεια ασφαλιστικού διαμεσολαβητή: [αριθμός]. Τηλ: 6937311411 · Email: eliaslep@gmail.com</div>
+    <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
+    <script>document.getElementById('y2').textContent=new Date().getFullYear()</script>
+  </footer>
+  <div class="cookie"><div class="container">
+    Χρησιμοποιούμε cookies για βασικές λειτουργίες. <a href="./cookies.html">Μάθε περισσότερα</a>.
+    <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Αποδοχή</a>
+  </div></div>
+</body>
+</html>
