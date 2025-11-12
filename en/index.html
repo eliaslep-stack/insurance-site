@@ -1,28 +1,100 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Insurance — Clear advice, fast quotes</title>
-  <link rel="stylesheet" href="/assets/styles.css"><script defer src="/assets/theme.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Insurance Solutions</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
 </head>
 <body>
   <header class="container">
     <nav class="nav">
-      <div class="logo"><img src="/assets/logo.svg" alt="Logo"><strong>IL Insurance</strong></div>
-      <div class="lang"><a href="#" onclick="Site.setLang('el')">Ελληνικά</a> | <a href="#" onclick="Site.setLang('en')">English</a></div>
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
     </nav>
   </header>
+
   <main class="container">
-    <section class="hero">
-      <div>
-        <h1 class="h1">Insurance without noise. Straight facts, quick quotes.</h1>
-        <p class="lead">Health, Life, Property, Liability, Motor and Savings — transparent terms and simple steps.</p>
-        <p><a class="btn" href="./contact.html">Request a quote</a></p>
+
+    <!-- Hero Section with Background Video -->
+    <section class="hero" style="position:relative; overflow:hidden; height:85vh;">
+      <!-- Video background -->
+      <video autoplay muted loop playsinline preload="auto"
+        style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(65%); z-index:0;">
+        <source src="/assets/hero.mp4" type="video/mp4">
+      </video>
+
+      <!-- Foreground content -->
+      <div style="position:relative; z-index:1; text-align:center; color:white; padding-top:18vh;">
+        <h1 class="h1" style="font-size:2.8rem; font-weight:700; margin-bottom:10px;">
+          Insurance without noise.
+        </h1>
+        <p class="lead" style="font-size:1.3rem; margin-bottom:20px;">
+          Health, Life, Property, Liability, Car, Savings.<br>
+          Transparency in terms, clear steps.
+        </p>
+        <p>
+          <a class="btn" href="./contact.html" style="padding:10px 25px; background:#00b5ff; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Request a Quote</a>
+          <a class="btn alt" href="./life-health.html" style="padding:10px 25px; border:1px solid white; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Life & Health</a>
+        </p>
       </div>
-      <video src="/assets/hero.mp4" autoplay muted loop playsinline aria-label="Insurance overview video placeholder"></video>
     </section>
+    <!-- End Hero Section -->
+
+    <!-- Services Section -->
+    <section style="margin-top:28px" class="grid">
+      <a class="card" href="./life-health.html">
+        <h3 class="h2">Life & Health</h3>
+        <p>Hospitalization, capitation, outpatient, life & unit-linked.</p>
+      </a>
+
+      <a class="card" href="./property.html">
+        <h3 class="h2">Property</h3>
+        <p>Home, business premises, earthquake, theft.</p>
+      </a>
+
+      <a class="card" href="./liability.html">
+        <h3 class="h2">Liability</h3>
+        <p>Professional, employer, general, family.</p>
+      </a>
+
+      <a class="card" href="./motor.html">
+        <h3 class="h2">Car</h3>
+        <p>Basic, full, roadside, glass breakage, driver coverage.</p>
+      </a>
+
+      <a class="card" href="./savings.html">
+        <h3 class="h2">Savings</h3>
+        <p>Pension, unit-linked, children.</p>
+      </a>
+
+      <a class="card" href="./contact.html">
+        <h3 class="h2">Contact</h3>
+        <p>Message or appointment. We respond quickly.</p>
+      </a>
+    </section>
+
   </main>
-  <footer class="container"><div>© <span id="y6"></span> IL Insurance</div><script>document.getElementById('y6').textContent=new Date().getFullYear()</script></footer>
-  <div class="cookie"><div class="container">We use essential cookies only. <a href="./cookies.html">Learn more</a><a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a></div></div>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="y2"></span> IL Insurance — Licensed insurance intermediary [357092]. Tel: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('y2').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for basic functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
 </body>
 </html>
