@@ -1,35 +1,74 @@
 <!doctype html>
 <html lang="el">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ζωή & Υγεία — IL Insurance</title>
-  <link rel="stylesheet" href="/assets/styles.css"><script defer src="/assets/theme.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Ζωή & Υγεία</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
 </head>
 <body>
+
   <header class="container">
     <nav class="nav">
-      <div class="logo"><img src="/assets/logo.svg" alt="Logo"><strong>IL Insurance</strong></div>
-      <div class="lang"><a href="#" onclick="Site.setLang('el')">Ελληνικά</a> | <a href="#" onclick="Site.setLang('en')">English</a></div>
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
     </nav>
   </header>
+
   <main class="container">
-    <h1 class="h1">Ζωή & Υγεία</h1>
-    <p class="lead">Νοσοκομειακά με συμμετοχή, capitation επιλογές, εξωνοσοκομειακές παροχές και ασφάλιση ζωής.</p>
+    <section class="page-hero">
+      <h1 class="h1">Ασφάλεια Ζωής & Υγείας</h1>
+      <p class="lead">
+        Κάλυψη για νοσηλεία, εξωνοσοκομειακές εξετάσεις και προστασία εισοδήματος — με καθαρούς όρους και σαφή καθοδήγηση.
+      </p>
+    </section>
+
     <section class="card">
-      <h2 class="h2">Ζήτησε προσφορά</h2>
-      <form method="POST" action="https://formspree.io/f/FORM_ID">
-        <input type="hidden" name="product" value="life-health">
-        <label>Ονοματεπώνυμο<input name="name" required></label>
-        <label>Τηλέφωνο<input name="phone" required></label>
-        <label>Email<input type="email" name="email" required></label>
-        <label>Ημερομηνία γέννησης<input type="date" name="dob" required></label>
-        <label>Σχόλιο<textarea name="message" placeholder="Σύντομη περιγραφή αναγκών"></textarea></label>
-        <!-- <div class="cf-turnstile" data-sitekey="SITE_KEY"></div> -->
-        <button class="btn" type="submit">Αποστολή</button>
-        <p class="notice">Με την υποβολή αποδέχεσαι την επεξεργασία δεδομένων για σκοπό προσφοράς ασφάλισης.</p>
-      </form>
+      <h2 class="h2">Νοσοκομειακά Προγράμματα</h2>
+      <p>
+        Κάλυψη σε ιδιωτικά νοσοκομεία στην Ελλάδα και το εξωτερικό, με ξεκάθαρη απαλλαγή και διαφανή όρια.
+        Επιλέγουμε μαζί ανάμεσα σε open ή closed network, ανάλογα με τις ανάγκες και το διαθέσιμο budget.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Capitation & Εξωνοσοκομειακά</h2>
+      <p>
+        Τα προγράμματα capitation προσφέρουν πρόσβαση σε συγκεκριμένο νοσοκομειακό όμιλο με προβλέψιμο κόστος.
+        Παράλληλα, τα εξωνοσοκομειακά προγράμματα καλύπτουν εξετάσεις, επισκέψεις και διαγνωστικούς ελέγχους.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Ασφάλεια Ζωής & Εισοδήματος</h2>
+      <p>
+        Κάλυψη ζωής για προστασία της οικογένειας και συνδυαστικά προγράμματα με αποταμίευση ή unit-linked,
+        ανάλογα με το τι επιδιώκετε: προστασία, αποταμίευση ή και τα δύο.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Διαδικασία</h2>
+      <p>
+        Αναλύουμε τις πραγματικές ανάγκες σας, συγκρίνουμε εταιρείες και εξηγούμε με απλά λόγια όλες τις εξαιρέσεις.
+        Λαμβάνετε γραπτές προτάσεις με σενάρια και διαλέγετε χωρίς κανέναν πιεσμό.
+      </p>
+      <p><a class="btn" href="./contact.html">Ζήτησε προσφορά</a></p>
     </section>
   </main>
-  <footer class="container"><div>© <span id="y3"></span> IL Insurance</div><script>document.getElementById('y3').textContent=new Date().getFullYear()</script></footer>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092] · Τηλ: 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
 </body>
 </html>

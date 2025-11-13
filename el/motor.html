@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Αυτοκίνητο</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Ασφάλιση Αυτοκινήτου</h1>
+      <p class="lead">
+        Από την υποχρεωτική κάλυψη μέχρι πλήρη μικτή, οδική βοήθεια και κάλυψη οδηγού.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Βασική & Επεκτάσεις</h2>
+      <p>
+        Ξεκινάμε από την υποχρεωτική κάλυψη και προσθέτουμε πυρκαγιά, κλοπή, φυσικά φαινόμενα και λοιπές επεκτάσεις όπου έχουν αξία.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Μικτή & Κάλυψη Οδηγού</h2>
+      <p>
+        Η μικτή προστατεύει το ίδιο το όχημα, ενώ η κάλυψη οδηγού αφορά εσάς προσωπικά.
+        Στην Ελλάδα είναι απαραίτητη λόγω χαμηλής υποχρεωτικής κάλυψης στα ατυχήματα.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Οδική & Θραύση Κρυστάλλων</h2>
+      <p>
+        Χαμηλό κόστος με μεγάλη πρακτική αξία. Ελέγχουμε αν περιλαμβάνονται στο βασικό πρόγραμμα ή χρειάζονται έξτρα.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Υποστήριξη Ζημιών</h2>
+      <p>
+        Σε ατύχημα μπορείτε να επικοινωνήσετε μαζί μου ή απευθείας με τη φροντίδα ατυχήματος.
+        Αναλαμβάνω τη διαδικασία έως την ολοκλήρωση της ζημιάς.
+      </p>
+      <p><a class="btn" href="./contact.html">Ζήτησε προσφορά</a></p>
+    </section>
+
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092] · Τηλ: 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+</body>
+</html>
