@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Contact</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+
+<header class="container">
+  <nav class="nav">
+    <div class="logo">
+      <img src="/assets/logo.svg" alt="Logo">
+      <strong>IL Insurance</strong>
+    </div>
+    <div class="lang">
+      <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+      <a href="#" onclick="Site.setLang('en')">English</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="page-hero">
+    <h1 class="h1">Contact</h1>
+    <p class="lead">
+      Send a message for a quote, a question or an appointment. I will reply as soon as possible.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">Contact details</h2>
+    <p>
+      Phone: +30 6937311411<br>
+      Email: info@ildigitalassistant.com
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">Message form</h2>
+    <form class="form" method="post" action="#">
+      <!-- You can connect this to a service like Formspree later -->
+      <p>
+        <label>Name<br>
+          <input type="text" name="name" required>
+        </label>
+      </p>
+      <p>
+        <label>Email<br>
+          <input type="email" name="email" required>
+        </label>
+      </p>
+      <p>
+        <label>Phone<br>
+          <input type="tel" name="phone">
+        </label>
+      </p>
+      <p>
+        <label>Message<br>
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+      </p>
+      <p>
+        <button class="btn" type="submit">Send</button>
+      </p>
+    </form>
+  </section>
+</main>
+
+<footer class="container" style="margin-top:40px;">
+  <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License [357092] · Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+  <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</footer>
+
+</body>
+</html>
