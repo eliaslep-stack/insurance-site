@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Liability</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Liability Insurance</h1>
+      <p class="lead">
+        Protection when a third party claims bodily injury or material damage against you or your business.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Professional Liability</h2>
+      <p>
+        For freelancers and professionals who offer advice or services and may face claims for mistakes, omissions or negligence.
+        We clarify retroactive dates, jurisdiction and key exclusions before any contract is signed.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Employer’s Liability</h2>
+      <p>
+        Covers claims from employees for accidents at work, beyond the statutory coverage of social security funds.
+        It is essential for companies that operate with manual labour or higher risk activities.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">General and Family Liability</h2>
+      <p>
+        Everyday risks such as a water leak from your apartment or an accident caused by a member of your family can create unexpected claims.
+        Family liability and general liability plans protect your personal finances from such events.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Why Work with an Advisor</h2>
+      <p>
+        Liability wording is often complex and full of legal terms.
+        My role is to translate these clauses into plain language and match the cover to your real exposure, not just to a generic template.
+      </p>
+      <p>
+        <a class="btn" href="./contact.html">Discuss your liability risks</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for essential functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
+</body>
+</html>

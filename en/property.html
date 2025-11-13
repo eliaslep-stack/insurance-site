@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Property</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Property Insurance</h1>
+      <p class="lead">
+        Cover for your home or business premises against fire, earthquake, theft and everyday risks.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Home Insurance</h2>
+      <p>
+        We insure apartments and houses for owners and tenants.
+        The cover can include building, contents or both and can be adapted to mortgage requirements or independent personal needs.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Business Premises</h2>
+      <p>
+        Offices, shops, warehouses and professional spaces need different limits and clauses than a simple home plan.
+        We look at lease contracts, landlord obligations and any bank requirements before we suggest a solution.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Earthquake and Natural Hazards</h2>
+      <p>
+        Earthquake remains one of the most important risks in Greece.
+        We review insured values, construction year and structure type so that the capital insured reflects the real reconstruction cost and not just the market value.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">The Process</h2>
+      <p>
+        You send us basic information about the property, we run comparisons with several insurers and send you clear written options.
+        You see in detail what is included, what is optional and how each extra cover affects the premium.
+      </p>
+      <p>
+        <a class="btn" href="./contact.html">Send property details</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for essential functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
+</body>
+</html>

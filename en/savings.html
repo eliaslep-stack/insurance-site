@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Savings & Pension</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Savings & Pension Plans</h1>
+      <p class="lead">
+        Long term plans for retirement, children’s education and targeted savings, with realistic expectations and transparent costs.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Pension Planning</h2>
+      <p>
+        We estimate your expected state pension and the income you really want after retirement.
+        Then we design a plan that covers part of this gap, with contributions that you can actually maintain over time.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Unit Linked Solutions</h2>
+      <p>
+        When appropriate, we can use unit linked contracts with investment funds.
+        The focus is on understanding risk levels, charges and redemption rules, not on promising unrealistic returns.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Children and Education Plans</h2>
+      <p>
+        Parents often want to secure a capital for studies or the first professional steps of their children.
+        We set clear goals, duration and contribution level so that the plan remains manageable for the whole period.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Clarity Before Commitment</h2>
+      <p>
+        Before you sign anything you receive written projections, explanations of guarantees and risks and a summary in plain language.
+        You know exactly how the plan works, what is guaranteed and what depends on markets and performance.
+      </p>
+      <p>
+        <a class="btn" href="./contact.html">Discuss a savings plan</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for essential functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Motor</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Motor Insurance</h1>
+      <p class="lead">
+        From mandatory third party cover to full comprehensive plans with roadside assistance and glass cover.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Third Party and Extended Covers</h2>
+      <p>
+        We start from the legal minimum and add fire, theft, natural perils and other extensions only where they make sense for the value and use of the vehicle.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Comprehensive and Driver Cover</h2>
+      <p>
+        Comprehensive cover protects your own car after an at fault accident.
+        Driver personal accident covers you as a person, not only the vehicle, and is particularly important in Greece where many drivers are under-insured.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Roadside Assistance and Glass Cover</h2>
+      <p>
+        Roadside assistance and towing, as well as glass cover, are often low cost compared to the benefit they offer.
+        We check whether they are included in the base plan or need to be added separately.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Claims Support</h2>
+      <p>
+        In case of an accident you contact me directly or the assistance line of the insurer.
+        I help you collect documents, communicate with the repair shop and follow up the claim until payment or completion of repairs.
+      </p>
+      <p>
+        <a class="btn" href="./contact.html">Get a motor quote</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for essential functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
+</body>
+</html>

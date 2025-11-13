@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Life & Health</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Life & Health Insurance</h1>
+      <p class="lead">
+        Protection for medical expenses, hospitalisation and income security, with clear terms and guidance at every step.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Hospital Cover</h2>
+      <p>
+        Plans that cover private hospitals in Greece and abroad, with clear deductibles and transparent limits.
+        Together we choose between open network and closed network solutions, depending on your budget and the hospitals you prefer.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Capitation & Outpatient Care</h2>
+      <p>
+        Capitation programs give you access to a specific hospital group with a fixed annual cost and predictable participation.
+        Outpatient covers diagnostics, visits and exams so that you do not postpone preventive checks for financial reasons.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Life Insurance & Income Protection</h2>
+      <p>
+        Life insurance protects your family from the financial impact of a sudden loss.
+        We can combine pure term cover with savings or unit linked, depending on whether your priority is protection, savings or both.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">How We Work Together</h2>
+      <p>
+        We start from your real needs and your budget, compare programs from different companies and explain the exclusions one by one.
+        You receive written proposals with scenarios and you decide without pressure, knowing exactly what is covered and what is not.
+      </p>
+      <p>
+        <a class="btn" href="./contact.html">Request a personalised proposal</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <div class="cookie">
+    <div class="container">
+      We use cookies for essential functions.
+      <a href="./cookies.html">Learn more</a>.
+      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+    </div>
+  </div>
+</body>
+</html>
