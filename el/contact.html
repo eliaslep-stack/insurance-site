@@ -6,6 +6,18 @@
   <title>IL Insurance — Επικοινωνία</title>
   <link rel="stylesheet" href="/assets/styles.css">
   <script defer src="/assets/theme.js"></script>
+
+  <style>
+    .success-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #0f3;
+      color: #000;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -39,37 +51,39 @@
   <section class="card">
     <h2 class="h2">Φόρμα μηνύματος</h2>
 
-    <form class="form"
-      action="mailto:info@ildigitalassistant.com"
-      method="POST"
-      enctype="text/plain">
+    <form id="mailForm" class="form">
 
       <p>
         <label>Ονοματεπώνυμο<br>
-          <input type="text" name="Name" required>
+          <input type="text" id="name" required>
         </label>
       </p>
 
       <p>
         <label>Email<br>
-          <input type="email" name="Email" required>
+          <input type="email" id="email" required>
         </label>
       </p>
 
       <p>
         <label>Τηλέφωνο<br>
-          <input type="tel" name="Phone">
+          <input type="tel" id="phone">
         </label>
       </p>
 
       <p>
         <label>Μήνυμα<br>
-          <textarea name="Message" rows="5" required></textarea>
+          <textarea id="message" rows="5" required></textarea>
         </label>
       </p>
 
       <p><button class="btn" type="submit">Αποστολή</button></p>
     </form>
+
+    <div id="success" class="success-box">
+      ✔ Το μήνυμα δημιουργήθηκε. Ελέγξτε το email σας και πατήστε “Αποστολή”.
+    </div>
+
   </section>
 </main>
 
@@ -78,6 +92,23 @@
   <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
+
+<script>
+document.getElementById("mailForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // Μην κάνει submit
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const message = document.getElementById("message").value;
+
+  const mailto = `mailto:info@ildigitalassistant.com?subject=Μήνυμα από ${name}&body= Όνομα: ${name}%0AEmail: ${email}%0AΤηλέφωνο: ${phone}%0A%0AΜήνυμα:%0A${message}`;
+
+  window.open(mailto, "_blank");
+
+  document.getElementById("success").style.display = "block";
+});
+</script>
 
 </body>
 </html>
