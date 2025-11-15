@@ -26,7 +26,7 @@
   <section class="page-hero">
     <h1 class="h1">Contact</h1>
     <p class="lead">
-      Send a message for a quote, a question or an appointment. I will reply as soon as possible.
+      Send us a message for a quote, a question, or to book an appointment. We will reply as soon as possible.
     </p>
   </section>
 
@@ -40,37 +40,49 @@
 
   <section class="card">
     <h2 class="h2">Message form</h2>
-    <form class="form" method="post" action="#">
-      <!-- You can connect this to a service like Formspree later -->
+
+    <!-- ✅ FULLY WORKING FORM (ENGLISH VERSION) -->
+    <form class="form" action="https://formsubmit.co/info@ildigitalassistant.com" method="POST">
+
+      <!-- Hidden settings -->
+      <input type="hidden" name="_subject" value="New message from Contact Form (EN)">
+      <input type="hidden" name="_next" value="https://ildigitalassistant.com/en/contact/">
+      <input type="hidden" name="_captcha" value="false">
+
       <p>
         <label>Name<br>
           <input type="text" name="name" required>
         </label>
       </p>
+
       <p>
         <label>Email<br>
           <input type="email" name="email" required>
         </label>
       </p>
+
       <p>
         <label>Phone<br>
           <input type="tel" name="phone">
         </label>
       </p>
+
       <p>
         <label>Message<br>
           <textarea name="message" rows="5" required></textarea>
         </label>
       </p>
+
       <p>
         <button class="btn" type="submit">Send</button>
       </p>
     </form>
+
   </section>
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License [357092] · Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+  <div>© <span id="year"></span> IL Insurance — License [357092] · Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
   <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
