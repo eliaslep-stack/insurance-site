@@ -41,35 +41,29 @@
   <section class="card">
     <h2 class="h2">Message form</h2>
 
-    <!-- ✅ FULLY WORKING FORM (ENGLISH VERSION) -->
-    <form class="form" action="https://formsubmit.co/info@ildigitalassistant.com" method="POST">
-
-      <!-- Hidden settings -->
-      <input type="hidden" name="_subject" value="New message from Contact Form (EN)">
-      <input type="hidden" name="_next" value="https://ildigitalassistant.com/en/contact/">
-      <input type="hidden" name="_captcha" value="false">
-
+    <!-- SIMPLE MAILTO FORM -->
+    <form class="form" action="mailto:info@ildigitalassistant.com" method="POST" enctype="text/plain">
       <p>
         <label>Name<br>
-          <input type="text" name="name" required>
+          <input type="text" name="Name" required>
         </label>
       </p>
 
       <p>
         <label>Email<br>
-          <input type="email" name="email" required>
+          <input type="email" name="Email" required>
         </label>
       </p>
 
       <p>
         <label>Phone<br>
-          <input type="tel" name="phone">
+          <input type="tel" name="Phone">
         </label>
       </p>
 
       <p>
         <label>Message<br>
-          <textarea name="message" rows="5" required></textarea>
+          <textarea name="Message" rows="5" required></textarea>
         </label>
       </p>
 
