@@ -6,6 +6,18 @@
   <title>IL Insurance — Contact</title>
   <link rel="stylesheet" href="/assets/styles.css">
   <script defer src="/assets/theme.js"></script>
+
+  <style>
+    .success-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #0f3;
+      color: #000;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -25,9 +37,7 @@
 <main class="container">
   <section class="page-hero">
     <h1 class="h1">Contact</h1>
-    <p class="lead">
-      Send us a message for a quote, a question, or to book an appointment. We reply as soon as possible.
-    </p>
+    <p class="lead">Send us a message for a quote, a question or an appointment.</p>
   </section>
 
   <section class="card">
@@ -41,45 +51,65 @@
   <section class="card">
     <h2 class="h2">Message form</h2>
 
-    <form class="form" action="mailto:info@ildigitalassistant.com" method="POST" enctype="text/plain">
+    <form id="mailForm" class="form">
 
       <p>
         <label>Name<br>
-          <input type="text" name="Name" required>
+          <input type="text" id="name" required>
         </label>
       </p>
 
       <p>
         <label>Email<br>
-          <input type="email" name="Email" required>
+          <input type="email" id="email" required>
         </label>
       </p>
 
       <p>
         <label>Phone<br>
-          <input type="tel" name="Phone">
+          <input type="tel" id="phone">
         </label>
       </p>
 
       <p>
         <label>Message<br>
-          <textarea name="Message" rows="5" required></textarea>
+          <textarea id="message" rows="5" required></textarea>
         </label>
       </p>
 
-      <p>
-        <button class="btn" type="submit">Send</button>
-      </p>
-
+      <p><button class="btn" type="submit">Send</button></p>
     </form>
+
+    <div id="success" class="success-box">
+      ✔ Your message has been created. Please check your email and press “Send”.
+    </div>
+
   </section>
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance · License [357092] · Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+  <div>© <span id="year"></span> IL Insurance</div>
   <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
 
+<script>
+document.getElementById("mailForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // Prevent page from leaving
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const message = document.getElementById("message").value;
+
+  const mailto = `mailto:info@ildigitalassistant.com?subject=Message from ${name}&body=Name: ${name}%0AEmail: ${email}%0APhone: ${phone}%0A%0AMessage:%0A${message}`;
+
+  window.open(mailto, "_blank");
+
+  document.getElementById("success").style.display = "block";
+});
+</script>
+
 </body>
 </html>
+
