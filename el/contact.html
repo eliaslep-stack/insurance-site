@@ -25,15 +25,13 @@
 <main class="container">
   <section class="page-hero">
     <h1 class="h1">Επικοινωνία</h1>
-    <p class="lead">
-      Στείλτε μας μήνυμα για προσφορά, απορία ή ραντεβού. Θα απαντήσουμε το συντομότερο.
-    </p>
+    <p class="lead">Στείλτε μας μήνυμα για προσφορά, απορία ή ραντεβού.</p>
   </section>
 
   <section class="card">
     <h2 class="h2">Στοιχεία επικοινωνίας</h2>
     <p>
-      Τηλέφωνο: 6937311411<br>
+      Τηλέφωνο: +30 6937311411<br>
       Email: info@ildigitalassistant.com
     </p>
   </section>
@@ -41,11 +39,14 @@
   <section class="card">
     <h2 class="h2">Φόρμα μηνύματος</h2>
 
-    <form class="form" action="mailto:info@ildigitalassistant.com" method="POST" enctype="text/plain">
+    <form class="form"
+      action="mailto:info@ildigitalassistant.com"
+      method="POST"
+      enctype="text/plain">
 
       <p>
         <label>Ονοματεπώνυμο<br>
-          <input type="text" name="Όνομα" required>
+          <input type="text" name="Name" required>
         </label>
       </p>
 
@@ -57,26 +58,23 @@
 
       <p>
         <label>Τηλέφωνο<br>
-          <input type="tel" name="Τηλέφωνο">
+          <input type="tel" name="Phone">
         </label>
       </p>
 
       <p>
         <label>Μήνυμα<br>
-          <textarea name="Μήνυμα" rows="5" required></textarea>
+          <textarea name="Message" rows="5" required></textarea>
         </label>
       </p>
 
-      <p>
-        <button class="btn" type="submit">Αποστολή</button>
-      </p>
-
+      <p><button class="btn" type="submit">Αποστολή</button></p>
     </form>
   </section>
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092] · Τηλ: 6937311411 · Email: info@ildigitalassistant.com</div>
+  <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092]</div>
   <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
