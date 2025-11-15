@@ -41,35 +41,29 @@
   <section class="card">
     <h2 class="h2">Φόρμα μηνύματος</h2>
 
-    <!-- ✅ FULLY WORKING FORM -->
-    <form class="form" action="https://formsubmit.co/info@ildigitalassistant.com" method="POST">
-
-      <!-- Hidden settings -->
-      <input type="hidden" name="_subject" value="Νέο μήνυμα από τη φόρμα (EL)">
-      <input type="hidden" name="_next" value="https://ildigitalassistant.com/el/contact/">
-      <input type="hidden" name="_captcha" value="false">
-
+    <!-- ΑΠΛΗ ΦΟΡΜΑ MAILTO -->
+    <form class="form" action="mailto:info@ildigitalassistant.com" method="POST" enctype="text/plain">
       <p>
         <label>Ονοματεπώνυμο<br>
-          <input type="text" name="name" required>
+          <input type="text" name="Όνομα" required>
         </label>
       </p>
 
       <p>
         <label>Email<br>
-          <input type="email" name="email" required>
+          <input type="email" name="Email" required>
         </label>
       </p>
 
       <p>
         <label>Τηλέφωνο<br>
-          <input type="tel" name="phone">
+          <input type="tel" name="Τηλέφωνο">
         </label>
       </p>
 
       <p>
         <label>Μήνυμα<br>
-          <textarea name="message" rows="5" required></textarea>
+          <textarea name="Μήνυμα" rows="5" required></textarea>
         </label>
       </p>
 
