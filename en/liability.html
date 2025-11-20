@@ -78,5 +78,64 @@
       <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
     </div>
   </div>
+
+  <!-- Athena Chat Assistant -->
+  <style>
+    #athena-bubble {
+      position: fixed;
+      bottom: 20px;
+      right: 22px;
+      background: #ffffff;
+      border-radius: 50px;
+      padding: 6px 16px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+      transition: all 0.25s ease;
+    }
+
+    #athena-bubble:hover {
+      transform: scale(1.05);
+    }
+
+    #athena-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #eee;
+    }
+
+    #athena-bubble span {
+      font-size: 14px;
+      color: #333;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      #athena-bubble span {
+        display: none;
+      }
+      #athena-bubble {
+        padding: 6px;
+        border-radius: 50%;
+      }
+    }
+  </style>
+
+  <div id="athena-bubble"
+       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
+    <img id="athena-avatar"
+         src="https://insurance.ildigitalassistant.com/assets/athena.png"
+         alt="Athena Assistant">
+    <span>Ask Athena — Insurance help</span>
+  </div>
+  <!-- END Athena Chat Assistant -->
+
 </body>
 </html>
