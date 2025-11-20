@@ -26,16 +26,13 @@
     <!-- Hero Section with Background Video -->
     <section class="hero" style="position:relative; overflow:hidden; height:85vh;">
 
-      <!-- Video background (πιο φωτεινό) -->
       <video autoplay muted loop playsinline preload="auto"
         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(78%); z-index:0;">
         <source src="/assets/ildigitalassistant.com%20insurance.mp4" type="video/mp4">
       </video>
 
-      <!-- Ελαφρύ dark overlay πάνω από το βίντεο -->
       <div style="position:absolute; inset:0; background:rgba(0,0,0,0.30); z-index:1;"></div>
 
-      <!-- Foreground content πιο χαμηλά και λίγο μικρότερο -->
       <div style="position:relative; z-index:2; text-align:center; color:white; padding-top:36vh;">
         <div style="
           display:inline-block;
@@ -59,7 +56,6 @@
         </div>
       </div>
     </section>
-    <!-- End Hero Section -->
 
     <!-- Services Section -->
     <section style="margin-top:28px" class="grid">
@@ -109,5 +105,45 @@
       <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Αποδοχή</a>
     </div>
   </div>
+
+  <!-- IL Digital Assistant Floating Bubble -->
+  <script>
+    function openILAssistant() {
+      window.open(
+        "https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant",
+        "_blank"
+      );
+    }
+  </script>
+
+  <style>
+    #il-assistant-bubble {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 14px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 99999;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background 0.2s ease;
+    }
+    #il-assistant-bubble:hover {
+      background: #1f2937;
+    }
+    #il-assistant-bubble span {
+      margin-left: 6px;
+    }
+  </style>
+
+  <div id="il-assistant-bubble" onclick="openILAssistant()">
+    💬 <span>Ρώτησε τον IL Insurance Assistant</span>
+  </div>
+  <!-- End Floating Bubble -->
+
 </body>
 </html>
