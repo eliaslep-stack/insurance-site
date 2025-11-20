@@ -26,13 +26,16 @@
     <!-- Hero Section with Background Video -->
     <section class="hero" style="position:relative; overflow:hidden; height:85vh;">
 
+      <!-- Video background (πιο φωτεινό) -->
       <video autoplay muted loop playsinline preload="auto"
         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(78%); z-index:0;">
         <source src="/assets/ildigitalassistant.com%20insurance.mp4" type="video/mp4">
       </video>
 
+      <!-- Ελαφρύ dark overlay πάνω από το βίντεο -->
       <div style="position:absolute; inset:0; background:rgba(0,0,0,0.30); z-index:1;"></div>
 
+      <!-- Foreground content πιο χαμηλά και λίγο μικρότερο -->
       <div style="position:relative; z-index:2; text-align:center; color:white; padding-top:36vh;">
         <div style="
           display:inline-block;
@@ -56,6 +59,7 @@
         </div>
       </div>
     </section>
+    <!-- End Hero Section -->
 
     <!-- Services Section -->
     <section style="margin-top:28px" class="grid">
@@ -106,44 +110,61 @@
     </div>
   </div>
 
-  <!-- IL Digital Assistant Floating Bubble -->
-  <script>
-    function openILAssistant() {
-      window.open(
-        "https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant",
-        "_blank"
-      );
-    }
-  </script>
-
+  <!-- Athena Chat Assistant -->
   <style>
-    #il-assistant-bubble {
+    #athena-bubble {
       position: fixed;
-      bottom: 22px;
+      bottom: 20px;
       right: 22px;
-      background: #111827;
-      color: #ffffff;
-      font-size: 14px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      background: #ffffff;
+      border-radius: 50px;
+      padding: 6px 16px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
       cursor: pointer;
-      z-index: 99999;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      transition: background 0.2s ease;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+      transition: all 0.25s ease;
     }
-    #il-assistant-bubble:hover {
-      background: #1f2937;
+
+    #athena-bubble:hover {
+      transform: scale(1.05);
     }
-    #il-assistant-bubble span {
-      margin-left: 6px;
+
+    #athena-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #eee;
+    }
+
+    #athena-bubble span {
+      font-size: 14px;
+      color: #333;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      #athena-bubble span {
+        display: none;
+      }
+      #athena-bubble {
+        padding: 6px;
+        border-radius: 50%;
+      }
     }
   </style>
 
-  <div id="il-assistant-bubble" onclick="openILAssistant()">
-    💬 <span>Ρώτησε τον IL Insurance Assistant</span>
+  <div id="athena-bubble"
+       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
+    <img id="athena-avatar" src="/assets/athena.png" alt="Athena Assistant">
+    <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
   </div>
-  <!-- End Floating Bubble -->
+  <!-- END Athena Chat Assistant -->
 
 </body>
 </html>
