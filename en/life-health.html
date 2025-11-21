@@ -6,6 +6,26 @@
   <title>IL Insurance — Life & Health</title>
   <link rel="stylesheet" href="/assets/styles.css">
   <script defer src="/assets/theme.js"></script>
+
+  <!-- Video styles for responsive YouTube embed -->
+  <style>
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
   <header class="container">
@@ -28,6 +48,27 @@
         Protection for medical expenses, hospitalisation and income security, with clear terms and guidance at every step.
       </p>
     </section>
+
+    <!-- NEW: Video card for Health Insurance in English -->
+    <section class="card">
+      <h2 class="h2">Health Insurance – Video Overview</h2>
+      <p>
+        In this short video we explain how private health insurance works in Greece,
+        what is really covered, and what you should pay attention to before choosing
+        a plan, especially if you are a foreign resident.
+      </p>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/hSZkPIEiGO0"
+          title="Health Insurance in Greece – English"
+          loading="lazy"
+          frameborder="0"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </section>
+    <!-- END NEW VIDEO SECTION -->
 
     <section class="card">
       <h2 class="h2">Hospital Cover</h2>
