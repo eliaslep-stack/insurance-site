@@ -115,6 +115,16 @@ body {
   padding: 18px;
 }
 
+/* Ό,τι είναι μέσα στην κάρτα να είναι πάντα στο fg χρώμα */
+.card,
+.card:visited,
+.card h3,
+.card h3 a,
+.card p,
+.card p a {
+  color: var(--fg);
+}
+
 footer {
   margin-top: 40px;
   padding: 24px 0;
@@ -180,22 +190,6 @@ a:hover {
 
 /* Να μην γίνονται μωβ τα links που έχουν ήδη πατηθεί */
 a:visited {
-  color: var(--fg);
-}
-
-/* Πιο “καθαρά” links μέσα στις κάρτες */
-
-.card a {
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.card a:hover {
-  color: var(--brand);
-  text-decoration: underline;
-}
-
-.card a:visited {
   color: var(--fg);
 }
 
