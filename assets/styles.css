@@ -212,43 +212,67 @@ a:visited {
   color: var(--muted);
 }
 
+/* Πλέγμα κατηγοριών – responsive */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
 }
 
+/* Κάθε κατηγορία σαν κουμπί με εικονίδιο */
 .product-item {
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-  padding: 1rem 0.5rem;
-  border-radius: 12px;
-  background: transparent;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.2rem 0.8rem;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid #1f2533;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .product-item:hover {
-  transform: translateY(-2px);
-  background-color: rgba(255, 255, 255, 0.02);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px);
+  background-color: #181d2a;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+  border-color: rgba(46, 170, 220, 0.4);
 }
 
+/* Κυκλικό background για το SVG εικονίδιο */
+.product-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 20%, #2eaadc33, #00000055);
+  border: 1px solid #22293a;
+  margin-bottom: 0.2rem;
+}
+
+/* Το ίδιο το εικονίδιο */
 .product-icon {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 0.5rem;
+  width: 28px;
+  height: 28px;
 }
 
+/* Label κατηγορίας */
 .product-label {
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
 }
 
-/* Responsive */
 /* Ενότητα αξίας - Γιατί να συνεργαστείτε μαζί μας */
 
 .value-section {
@@ -283,6 +307,8 @@ a:visited {
   font-size: 1.8rem;
   margin-bottom: 0.3rem;
 }
+
+/* Responsive */
 
 @media (max-width: 900px) {
   .hero {
