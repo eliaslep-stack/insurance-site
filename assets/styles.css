@@ -178,6 +178,11 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Να μην γίνονται μωβ τα links που έχουν ήδη πατηθεί */
+a:visited {
+  color: var(--fg);
+}
+
 /* Πιο “καθαρά” links μέσα στις κάρτες */
 
 .card a {
@@ -188,6 +193,10 @@ a:hover {
 .card a:hover {
   color: var(--brand);
   text-decoration: underline;
+}
+
+.card a:visited {
+  color: var(--fg);
 }
 
 /* Ενότητα icons προϊόντων */
