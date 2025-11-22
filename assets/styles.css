@@ -249,6 +249,41 @@ a:visited {
 }
 
 /* Responsive */
+/* Ενότητα αξίας - Γιατί να συνεργαστείτε μαζί μας */
+
+.value-section {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.value-section h2 {
+  font-size: 1.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.value-section p.value-intro {
+  max-width: 620px;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.value-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.value-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
