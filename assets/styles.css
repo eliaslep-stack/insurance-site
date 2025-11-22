@@ -166,6 +166,30 @@ label {
   font-size: 14px;
 }
 
+/* Γενικό στυλ για links */
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+/* Πιο “καθαρά” links μέσα στις κάρτες */
+
+.card a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.card a:hover {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
 /* Ενότητα icons προϊόντων */
 
 .product-section {
