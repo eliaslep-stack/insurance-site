@@ -1,122 +1,233 @@
-  <main class="container">
+:root {
+  --bg: #0b0d12;
+  --fg: #f6f7fb;
+  --muted: #a8b0bd;
+  --brand: #2eaadc;
+  --accent: #04c29a;
+  --card: #141824;
+}
 
-    <!-- Hero Section with Background Video -->
-    <section class="hero" style="position:relative; overflow:hidden; height:85vh;">
+* {
+  box-sizing: border-box;
+}
 
-      <!-- Video background (πιο φωτεινό) -->
-      <video autoplay muted loop playsinline preload="auto"
-        style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(78%); z-index:0;">
-        <source src="/assets/ildigitalassistant.com%20insurance.mp4" type="video/mp4">
-      </video>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+}
 
-      <!-- Ελαφρύ dark overlay πάνω από το βίντεο -->
-      <div style="position:absolute; inset:0; background:rgba(0,0,0,0.30); z-index:1;"></div>
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-      <!-- Foreground content πιο χαμηλά και λίγο μικρότερο -->
-      <div style="position:relative; z-index:2; text-align:center; color:white; padding-top:36vh;">
-        <div style="
-          display:inline-block;
-          background:rgba(0,0,0,0.50);
-          padding:20px 28px;
-          border-radius:18px;
-          max-width:620px;
-          margin:0 auto;
-        ">
-          <h1 class="h1" style="font-size:2.3rem; font-weight:700; margin-bottom:10px;">
-            Ασφάλιση χωρίς θόρυβο.
-          </h1>
-          <p class="lead" style="font-size:1.15rem; margin-bottom:18px; line-height:1.4;">
-            Υγεία, Ζωή, Περιουσία, Αστική Ευθύνη, Αυτοκίνητο, Αποταμιευτικά.<br>
-            Διαφάνεια στους όρους, καθαρά βήματα.
-          </p>
-          <p>
-            <a class="btn" href="./contact.html" style="padding:10px 25px; background:#00b5ff; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Ζήτησε προσφορά</a>
-            <a class="btn alt" href="./life-health.html" style="padding:10px 25px; border:1px solid white; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Ζωή & Υγεία</a>
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- End Hero Section -->
+.nav {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+}
 
-    <!-- Icons Section -->
-    <section class="product-section">
-      <h2>Κάλυψη για όσα έχουν σημασία</h2>
-      <p>Επιλέξτε την κατηγορία που σας ενδιαφέρει για να δείτε αναλυτικά τις λύσεις μας.</p>
+.nav a {
+  color: var(--fg);
+  text-decoration: none;
+  opacity: 0.9;
+}
 
-      <div class="product-grid">
-        <a href="/el/life-health/" class="product-item">
-          <img src="/assets/icons/life-health.svg" alt="Ζωή &amp; Υγεία" class="product-icon">
-          <span class="product-label">Ζωή &amp; Υγεία</span>
-        </a>
+.nav a:hover {
+  opacity: 1;
+}
 
-        <a href="/el/property/" class="product-item">
-          <img src="/assets/icons/property-house.svg" alt="Περιουσία" class="product-icon">
-          <span class="product-label">Περιουσία</span>
-        </a>
+.logo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
-        <a href="/el/motor/" class="product-item">
-          <img src="/assets/icons/motor-car.svg" alt="Αυτοκίνητο" class="product-icon">
-          <span class="product-label">Αυτοκίνητο</span>
-        </a>
+.logo img {
+  width: 28px;
+  height: 28px;
+}
 
-        <a href="/el/business/" class="product-item">
-          <img src="/assets/icons/business.svg" alt="Επιχείρηση" class="product-icon">
-          <span class="product-label">Επιχείρηση</span>
-        </a>
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--brand);
+  color: #02131b;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #1e7aa1;
+}
 
-        <a href="/el/liability/" class="product-item">
-          <img src="/assets/icons/liability-shield.svg" alt="Αστική Ευθύνη" class="product-icon">
-          <span class="product-label">Αστική Ευθύνη</span>
-        </a>
+.btn.alt {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid #2a3444;
+}
 
-        <a href="/el/savings-pension/" class="product-item">
-          <img src="/assets/icons/savings-pension.svg" alt="Αποταμίευση – Σύνταξη" class="product-icon">
-          <span class="product-label">Αποταμίευση – Σύνταξη</span>
-        </a>
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  align-items: center;
+}
 
-        <a href="/el/what-to-do/" class="product-item">
-          <img src="/assets/icons/what-to-do.svg" alt="Τι να κάνω" class="product-icon">
-          <span class="product-label">Τι να κάνω</span>
-        </a>
+.hero video,
+.hero img {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid #22293a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
 
-        <a href="/el/contact/" class="product-item">
-          <img src="/assets/icons/contact-mail.svg" alt="Επικοινωνία" class="product-icon">
-          <span class="product-label">Επικοινωνία</span>
-        </a>
-      </div>
-    </section>
+.h1 {
+  font-size: 40px;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
 
-    <!-- Services Section -->
-    <section style="margin-top:28px" class="grid">
-      <a class="card" href="./life-health.html">
-        <h3 class="h2">Ζωή & Υγεία</h3>
-        <p>Νοσοκομειακά, capitation, εξωνοσοκομειακά, life & unit-linked.</p>
-      </a>
+.h2 {
+  font-size: 28px;
+  margin: 18px 0 6px;
+}
 
-      <a class="card" href="./property.html">
-        <h3 class="h2">Περιουσία</h3>
-        <p>Κατοικία, επαγγελματικοί χώροι, σεισμός, κλοπή.</p>
-      </a>
+.lead {
+  color: var(--muted);
+}
 
-      <a class="card" href="./liability.html">
-        <h3 class="h2">Αστική Ευθύνη</h3>
-        <p>Επαγγελματική, εργοδότη, γενική, οικογενειακή.</p>
-      </a>
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
 
-      <a class="card" href="./motor.html">
-        <h3 class="h2">Αυτοκίνητο</h3>
-        <p>Βασική, μικτή, οδική, θραύση, κάλυψη οδηγού.</p>
-      </a>
+.card {
+  background: var(--card);
+  border: 1px solid #1f2533;
+  border-radius: 16px;
+  padding: 18px;
+}
 
-      <a class="card" href="./savings.html">
-        <h3 class="h2">Αποταμιευτικά</h3>
-        <p>Συνταξιοδοτικά, unit-linked, παιδικά.</p>
-      </a>
+footer {
+  margin-top: 40px;
+  padding: 24px 0;
+  color: var(--muted);
+  font-size: 14px;
+  border-top: 1px solid #1f2533;
+}
 
-      <a class="card" href="./contact.html">
-        <h3 class="h2">Επικοινωνία</h3>
-        <p>Μήνυμα ή ραντεβού. Απαντάμε γρήγορα.</p>
-      </a>
-    </section>
+form {
+  display: grid;
+  gap: 12px;
+}
 
-  </main>
+input,
+select,
+textarea {
+  background: #0f1320;
+  color: var(--fg);
+  border: 1px solid #2a3444;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.cookie {
+  position: fixed;
+  inset: auto 16px 16px 16px;
+  background: #0f1320;
+  border: 1px solid #2a3444;
+  border-radius: 12px;
+  padding: 12px;
+  display: none;
+}
+
+.cookie.show {
+  display: block;
+}
+
+.lang {
+  font-size: 14px;
+}
+
+/* Ενότητα icons προϊόντων */
+
+.product-section {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  background: var(--bg);
+}
+
+.product-section h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-section p {
+  max-width: 540px;
+  margin-bottom: 2rem;
+  color: var(--muted);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+}
+
+.product-item {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  padding: 1rem 0.5rem;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.product-item:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.product-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.5rem;
+}
+
+.product-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
