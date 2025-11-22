@@ -221,12 +221,27 @@ a:visited {
   color: var(--muted);
 }
 
-/* Grid των icons */
+/* Grid των icons – RESPONSIVE */
+
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.8rem;
   justify-items: center;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: 4+4 χωρίς κενό */
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 /* Κάθε “κουμπί” μενού */
@@ -237,7 +252,10 @@ a:visited {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+  transition: transform 0.18s ease,
+              box-shadow 0.18s ease,
+              background-color 0.18s ease,
+              border-color 0.18s ease;
   padding: 1.1rem 1rem;
   border-radius: 18px;
   background: #111520;
@@ -252,12 +270,33 @@ a:visited {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
 }
 
-/* Icon */
+/* Icon – φωτεινά πάνω στο dark theme */
 .product-icon {
   width: 40px;
   height: 40px;
   margin-bottom: 0.75rem;
   opacity: 0.96;
+  filter: invert(1) brightness(1.25); /* αν είναι εικόνα (img/svg) σκουρόχρωμη */
+}
+
+/* Αν τα icons είναι inline SVG, τα “ασπρίζουμε” κι από εδώ */
+.product-item svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--fg);
+  fill: none;
+  opacity: 0.95;
+}
+
+.product-item svg path,
+.product-item svg line,
+.product-item svg rect,
+.product-item svg circle {
+  stroke: var(--fg);
+}
+
+.product-item svg path[fill]:not([fill="none"]) {
+  fill: var(--fg);
 }
 
 /* Label */
@@ -320,50 +359,4 @@ a:visited {
   .product-section {
     margin-top: 2.4rem;
   }
-}/* ======================================
-   ΔΙΟΡΘΩΣΗ GRID ΓΙΑ ΤΑ PRODUCT ICONS
-   ====================================== */
-
-/* Σε μεγάλες οθόνες: 4 στήλες = 4+4 κουμπιά, χωρίς κενό */
-@media (min-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    justify-items: center;
-  }
 }
-
-/* ======================================
-   ΦΩΤΕΙΝΑ ΕΙΚΟΝΙΔΙΑ ΣΤΙΣ ΚΑΡΤΕΣ
-   ====================================== */
-
-/* Αν το ίδιο το SVG έχει κλάση .product-icon */
-.product-icon {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 0.75rem;
-  opacity: 0.96;
-  color: var(--fg);        /* βασικό χρώμα = χρώμα κειμένου */
-}
-
-/* Ό,τι SVG υπάρχει μέσα στο κουμπί να παίρνει ανοιχτό χρώμα */
-.product-item svg {
-  width: 32px;
-  height: 32px;
-  stroke: var(--fg);       /* για γραμμικά icons */
-  fill: none;
-  opacity: 0.95;
-}
-
-/* Αν τα paths έχουν δικό τους fill/stroke, το “σβήνουμε” με CSS */
-.product-item svg path,
-.product-item svg line,
-.product-item svg rect,
-.product-item svg circle {
-  stroke: var(--fg);
-}
-
-/* Αν κάποια icons είναι solid (γεμάτα), τα κάνουμε κι αυτά ανοιχτά */
-.product-item svg path[fill]:not([fill="none"]) {
-  fill: var(--fg);
-}
-
