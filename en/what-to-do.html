@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — What should I do?</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+  <style>
+    .assistant-hero {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    .assistant-hero img {
+      max-width: 260px;
+      width: 100%;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 24px auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    }
+    .assistant-hero .lead {
+      max-width: 640px;
+      margin: 0 auto 16px auto;
+    }
+    .assistant-hero .sub {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="assistant-hero">
+      <h1 class="h1">What should I do?</h1>
+      <p class="lead">
+        Not sure which insurance solution fits your situation?
+        Let Athena, our digital assistant, guide you step by step.
+      </p>
+
+      <img src="https://insurance.ildigitalassistant.com/assets/athena.png"
+           alt="Athena — IL Digital Insurance Assistant">
+
+      <p class="sub">
+        Athena is configured for the Greek insurance market and can help you with life, health, property, motor,
+        business, liability and savings &amp; pension questions. You can describe your situation in simple language
+        and receive an initial direction, key questions to consider and which next steps might make sense.
+      </p>
+
+      <p class="sub">
+        For tailored recommendations and policy issuance, the final decision is always made together with me as your
+        human insurance advisor. Athena does not replace personal advice; she helps you organise your questions
+        before we speak.
+      </p>
+
+      <p>
+        <a class="btn btn-primary"
+           href="https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant"
+           target="_blank" rel="noopener">
+          Start a chat with Athena
+        </a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>
+      © <span id="year"></span> IL Insurance — Insurance mediation license [357092] ·
+      Tel: +30 6937 311 411 (Viber &amp; WhatsApp) · Email: info@ildigitalassistant.com
+    </div>
+    <div>
+      <a href="./privacy.html">Privacy</a> ·
+      <a href="./cookies.html">Cookies</a> ·
+      <a href="./terms.html">Terms</a>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </footer>
+
+</body>
+</html>
