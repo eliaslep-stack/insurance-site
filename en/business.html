@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IL Insurance — Business Insurance</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/theme.js"></script>
+</head>
+<body>
+
+  <header class="container">
+    <nav class="nav">
+      <div class="logo">
+        <img src="/assets/logo.svg" alt="Logo">
+        <strong>IL Insurance</strong>
+      </div>
+      <div class="lang">
+        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+        <a href="#" onclick="Site.setLang('en')">English</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="h1">Business Insurance</h1>
+      <p class="lead">
+        Protection for your business premises, equipment, stock and liability towards customers, partners and staff.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Premises &amp; Equipment</h2>
+      <p>
+        The foundation of business insurance is protecting your physical premises and company assets: building,
+        permanent installations, machinery, professional equipment, computers, stock and storage areas. We design the
+        coverage together so that one major claim does not turn into a financial disaster.
+      </p>
+      <p>Typical covers include fire, explosion, storm, flood, water leaks, burglary, theft and malicious damage.</p>
+      <p>
+        We take into account whether the building is owned or rented, the year and type of construction and the real
+        replacement value of the building and contents.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Public &amp; Employers’ Liability</h2>
+      <p>
+        Beyond material damage, a key risk for any business is compensation claims from third parties. Public liability
+        insurance covers bodily injury or property damage caused to customers, visitors or neighbours as a result of
+        your business activities.
+      </p>
+      <p>
+        Employers’ liability covers claims from employees for accidents that occur during or in connection with their
+        work. In technical trades and field-based operations this cover is essentially a must.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Business Interruption</h2>
+      <p>
+        A serious loss does not only cost money in repairs; it also affects your turnover and profit. Business
+        interruption cover can provide financial breathing space while you get back to normal operations.
+      </p>
+      <p>
+        It can help cover fixed expenses such as rent, salaries and running costs, and replace part of the net profit
+        you would otherwise lose because of an insured event.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Process &amp; Quote</h2>
+      <p>
+        To make sure you do not just buy “a policy” but real protection, we follow a clear process. First we record your
+        business profile: activity, size (turnover, number of employees), description of premises and equipment. Then we
+        analyse the main risks for your sector and how much loss you could realistically absorb yourself.
+      </p>
+      <p>
+        Based on this, we request targeted offers from several insurers and compare limits, exclusions, deductibles and
+        total cost. You receive a written summary of the options in simple language and choose the solution that fits
+        your needs and budget, without pressure.
+      </p>
+
+      <h3 class="h3">What we need to prepare a business insurance quote</h3>
+      <p>
+        To prepare a serious and realistic quote we usually need: company details (name, VAT number, address and legal
+        form), a clear description of your activity and any secondary activities, basic information about the premises
+        (owned or rented, size, floor, value of building and contents), approximate annual turnover, number of
+        employees and any significant past claims.
+      </p>
+      <p>
+        You can send this information through the contact form or provide it step by step by talking to our digital
+        assistant. For any questions about your business insurance, please consult our digital assistant before you
+        decide.
+      </p>
+
+      <p><a class="btn" href="./contact.html">Request a quote</a></p>
+    </section>
+
+  </main>
+
+  <footer class="container" style="margin-top:40px;">
+    <div>
+      © <span id="year"></span> IL Insurance — Insurance mediation license [357092] ·
+      Tel: +30 6937 311 411 (Viber &amp; WhatsApp) · Email: info@ildigitalassistant.com
+    </div>
+    <div>
+      <a href="./privacy.html">Privacy</a> ·
+      <a href="./cookies.html">Cookies</a> ·
+      <a href="./terms.html">Terms</a>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </footer>
+
+  <!-- Athena Chat Assistant -->
+  <style>
+    #athena-bubble {
+      position: fixed;
+      bottom: 20px;
+      right: 22px;
+      background: #ffffff;
+      border-radius: 50px;
+      padding: 6px 16px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+      transition: all 0.25s ease;
+    }
+
+    #athena-bubble:hover {
+      transform: scale(1.05);
+    }
+
+    #athena-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #eee;
+    }
+
+    #athena-bubble span {
+      font-size: 14px;
+      color: #333;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      #athena-bubble span {
+        display: none;
+      }
+      #athena-bubble {
+        padding: 6px;
+        border-radius: 50%;
+      }
+    }
+  </style>
+
+  <div id="athena-bubble"
+       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
+    <img id="athena-avatar"
+         src="https://insurance.ildigitalassistant.com/assets/athena.png"
+         alt="Athena Assistant">
+    <span>Ask Athena — Insurance help</span>
+  </div>
+  <!-- END Athena Chat Assistant -->
+
+</body>
+</html>
