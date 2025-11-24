@@ -152,20 +152,20 @@
     </section>
 
     <!-- Athena Internal Chat -->
-    <section id="athena-chat" class="assistant-box" style="max-width:720px; margin:60px auto; padding:20px;">
-      <h2>Μίλησε με την Αθηνά</h2>
+    <section class="assistant-box" style="max-width:720px; margin:60px auto 40px auto; padding:20px 20px 24px;">
+      <h2 style="margin-bottom:12px;">Μίλησε με την Αθηνά</h2>
 
       <div id="athena-messages"
            style="border:1px solid #ddd; padding:1rem; border-radius:8px;
-                  min-height:120px; max-height:400px; overflow-y:auto;
-                  font-size:0.95rem; line-height:1.4; background:#fafafa;">
+                  min-height:120px; max-height:320px; overflow-y:auto;
+                  font-size:0.95rem; line-height:1.5; background:#ffffff; color:#111;">
       </div>
 
       <form id="athena-form" style="margin-top:1rem; display:flex; gap:0.5rem;">
         <input type="text"
                id="athena-input"
                placeholder="Γράψε την ερώτησή σου για την ασφάλιση..."
-               style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;"
+               style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc; background:#fff; color:#111;"
                autocomplete="off" />
         <button type="submit"
                 style="padding:0.5rem 1rem; border-radius:6px; border:none;
@@ -182,12 +182,13 @@
 
       function addMessage(sender, text) {
         const line = document.createElement("div");
-        line.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        line.style.marginBottom = "0.35rem";
+        line.innerHTML = "<strong>" + sender + ":</strong> " + text;
         messagesDiv.appendChild(line);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       }
 
-      // Αρχικό μήνυμα
+      // Αρχικό μήνυμα ώστε να μην φαίνεται άδειο το κουτί
       window.addEventListener("DOMContentLoaded", () => {
         addMessage("Αθηνά", "Γεια σου, είμαι η ψηφιακή βοηθός σου για την ασφάλιση. Πώς μπορώ να βοηθήσω;");
       });
@@ -238,9 +239,7 @@
       <a href="./cookies.html">Cookies</a> ·
       <a href="./terms.html">Όροι</a>
     </div>
-    <script>
-      document.getElementById('y2').textContent = new Date().getFullYear();
-    </script>
+    <script>document.getElementById('y2').textContent = new Date().getFullYear();</script>
   </footer>
 
   <div class="cookie">
@@ -251,7 +250,7 @@
     </div>
   </div>
 
-  <!-- Athena Chat Bubble -->
+  <!-- Athena Chat Bubble (εξωτερικό GPT) -->
   <style>
     #athena-bubble {
       position: fixed;
@@ -297,7 +296,7 @@
   </style>
 
   <div id="athena-bubble"
-       onclick="document.getElementById('athena-chat').scrollIntoView({behavior:'smooth'});">
+       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
     <img id="athena-avatar"
          src="https://insurance.ildigitalassistant.com/assets/athena.png"
          alt="Athena Assistant">
