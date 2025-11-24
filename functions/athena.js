@@ -29,8 +29,8 @@ export async function onRequest(context) {
   const apiKey = env.OPENAI_API_KEY;
   if (!apiKey) {
     return new Response(
-      JSON.stringify({ error: "Missing API key on server" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      JSON.stringify({ reply: "Σφάλμα: Δεν βρέθηκε OPENAI_API_KEY στον server." }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }
 
@@ -168,7 +168,7 @@ Never answer questions unrelated to insurance.
 στις πραγματικές διαδικασίες των εταιριών στην Ελλάδα
   `;
 
-  // Εδώ φτιάχνουμε ένα απλό input string για το Responses API
+  // Ενιαίο input string για το Responses API
   const inputText =
     `SYSTEM INSTRUCTIONS:\n${systemPrompt}\n\n` +
     `USER QUESTION (in Greek):\n${userMessage}\n\n` +
@@ -188,11 +188,12 @@ Never answer questions unrelated to insurance.
     body: JSON.stringify(payload)
   });
 
+  // Αν η OpenAI γυρίσει σφάλμα, το επιστρέφουμε ως κείμενο
   if (!apiResponse.ok) {
     const text = await apiResponse.text();
     return new Response(
-      JSON.stringify({ error: "OpenAI error", details: text }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      JSON.stringify({ reply: "OpenAI error: " + text }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }
 
