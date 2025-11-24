@@ -175,9 +175,10 @@ Never answer questions unrelated to insurance.
     `ASSISTANT ANSWER (in Greek, following the instructions above):`;
 
   const payload = {
-    model: "gpt-5.1-mini",
-    input: inputText
-  };
+  model: "gpt-5.1",
+  input: inputText
+};
+
 
   const apiResponse = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
