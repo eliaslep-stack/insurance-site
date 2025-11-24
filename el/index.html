@@ -1,24 +1,22 @@
 <!-- Athena Internal Chat -->
-<section class="assistant-box" style="max-width:700px; margin:60px auto; padding:20px;">
+<section class="assistant-box" style="max-width:720px; margin:60px auto; padding:20px;">
   <h2>Μίλησε με την Αθηνά</h2>
 
- <div id="athena-messages"
-     style="border:1px solid #ddd; padding:1rem; border-radius:8px;
-            max-height:450px; overflow-y:auto; font-size:0.95rem; line-height:1.4;">
-</div>
+  <div id="athena-messages"
+       style="border:1px solid #ddd; padding:1rem; border-radius:8px;
+              min-height:120px; max-height:400px; overflow-y:auto;
+              font-size:0.95rem; line-height:1.4; background:#fafafa;">
+  </div>
 
-
-  <form id="athena-form"
-        style="margin-top:1rem; display:flex; gap:0.5rem;">
+  <form id="athena-form" style="margin-top:1rem; display:flex; gap:0.5rem;">
     <input type="text"
            id="athena-input"
            placeholder="Γράψε την ερώτησή σου για την ασφάλιση..."
-           style="flex:1; padding:0.5rem; border-radius:6px;
-           border:1px solid #ccc;"
-           autocomplete="off">
+           style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;"
+           autocomplete="off" />
     <button type="submit"
-            style="padding:0.5rem 1rem; border-radius:6px;
-            border:none; background:#00b5ff; color:white;">
+            style="padding:0.5rem 1rem; border-radius:6px; border:none;
+                   background:#00a8ff; color:#fff; font-weight:500; cursor:pointer;">
       Αποστολή
     </button>
   </form>
@@ -30,41 +28,48 @@
   const messagesDiv = document.getElementById("athena-messages");
 
   function addMessage(sender, text) {
-    const p = document.createElement("p");
-    p.style.margin = "0.25rem 0";
-    p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    messagesDiv.appendChild(p);
+    const line = document.createElement("div");
+    line.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    messagesDiv.appendChild(line);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  // Αρχικό μήνυμα ώστε να μην φαίνεται άδειο το κουτί
+  window.addEventListener("DOMContentLoaded", () => {
+    addMessage("Αθηνά", "Γεια σου, είμαι η ψηφιακή βοηθός σου για την ασφάλιση. Πώς μπορώ να βοηθήσω;");
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
     const text = input.value.trim();
     if (!text) return;
 
     addMessage("Εσύ", text);
     input.value = "";
-    addMessage("Αθηνά", "⏳ Σκέφτομαι…");
+    addMessage("Αθηνά", "⏳ Σκέφτομαι...");
 
     try {
-      const res = await fetch("/athena", {
+      const response = await fetch("/functions/athena", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text })
       });
 
-      const data = await res.json();
-      messagesDiv.removeChild(messagesDiv.lastChild);
+      const data = await response.json();
+      // Σβήνουμε το "Σκέφτομαι..."
+      messagesDiv.lastChild.remove();
 
       if (data.reply) {
         addMessage("Αθηνά", data.reply);
+      } else if (data.error) {
+        addMessage("Αθηνά", "Σφάλμα: " + data.error);
       } else {
         addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπαθήστε ξανά.");
       }
     } catch (err) {
-      messagesDiv.removeChild(messagesDiv.lastChild);
-      addMessage("Αθηνά", "Τεχνικό πρόβλημα. Δοκιμάστε ξανά αργότερα.");
+      messagesDiv.lastChild.remove();
+      addMessage("Αθηνά", "Σφάλμα δικτύου. Προσπαθήστε ξανά σε λίγο.");
     }
   });
 </script>
-<!-- END Athena Internal Chat -->
+
