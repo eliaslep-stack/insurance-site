@@ -168,18 +168,17 @@ Never answer questions unrelated to insurance.
 στις πραγματικές διαδικασίες των εταιριών στην Ελλάδα
   `;
 
-  // Ενιαίο input string για το Responses API
-  const inputText =
-    `SYSTEM INSTRUCTIONS:\n${systemPrompt}\n\n` +
-    `USER QUESTION (in Greek):\n${userMessage}\n\n` +
-    `ASSISTANT ANSWER (in Greek, following the instructions above):`;
-
+  // Ετοιμάζουμε το payload για Chat Completions
   const payload = {
     model: "gpt-5.1",
-    input: inputText
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userMessage }
+    ],
+    temperature: 0.4
   };
 
-  const apiResponse = await fetch("https://api.openai.com/v1/responses", {
+  const apiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${apiKey}`,
@@ -188,7 +187,7 @@ Never answer questions unrelated to insurance.
     body: JSON.stringify(payload)
   });
 
-  // Αν η OpenAI γυρίσει σφάλμα, το επιστρέφουμε ως κείμενο
+  // Αν η OpenAI γυρίσει σφάλμα
   if (!apiResponse.ok) {
     const text = await apiResponse.text();
     return new Response(
@@ -198,7 +197,7 @@ Never answer questions unrelated to insurance.
   }
 
   const data = await apiResponse.json();
-  const reply = data.output_text || "";
+  const reply = data.choices[0].message.content;
 
   return new Response(
     JSON.stringify({ reply }),
