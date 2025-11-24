@@ -132,13 +132,9 @@ SPECIAL BEHAVIOURS
 Σε αποζημιώσεις:
 
 Τι να κάνει άμεσα
-
 Ποιον να ενημερώσει
-
 Τι έγγραφα χρειάζονται
-
 Τι να προσέξει για να μην απορριφθεί
-
 Πώς επιταχύνεται η διαδικασία
 
 Σε σύγκριση προγραμμάτων:
@@ -168,19 +164,19 @@ Never answer questions unrelated to insurance.
 Όλη η γνώση και καθοδήγηση βασίζεται:
 
 στην ελληνική ασφαλιστική αγορά
-
 στην ελληνική νομοθεσία
-
 στις πραγματικές διαδικασίες των εταιριών στην Ελλάδα
   `;
 
-  // Ζητάμε απάντηση από το OpenAI
+  // Εδώ φτιάχνουμε ένα απλό input string για το Responses API
+  const inputText =
+    `SYSTEM INSTRUCTIONS:\n${systemPrompt}\n\n` +
+    `USER QUESTION (in Greek):\n${userMessage}\n\n` +
+    `ASSISTANT ANSWER (in Greek, following the instructions above):`;
+
   const payload = {
     model: "gpt-5.1-mini",
-    input: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: userMessage }
-    ]
+    input: inputText
   };
 
   const apiResponse = await fetch("https://api.openai.com/v1/responses", {
