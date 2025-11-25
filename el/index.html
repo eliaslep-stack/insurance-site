@@ -6,6 +6,12 @@
   <title>IL Insurance — Ασφαλιστικές λύσεις</title>
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
+
+  <!-- ChatKit script για την Αθηνά -->
+  <script
+    src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
+    async
+  ></script>
 </head>
 <body>
   <header class="container">
@@ -151,82 +157,6 @@
       </div>
     </section>
 
-    <!-- Athena Internal Chat -->
-    <section class="assistant-box" style="max-width:720px; margin:60px auto 40px auto; padding:20px 20px 24px;">
-      <h2 style="margin-bottom:12px;">Μίλησε με την Αθηνά</h2>
-
-      <div id="athena-messages"
-           style="border:1px solid #ddd; padding:1rem; border-radius:8px;
-                  min-height:120px; max-height:320px; overflow-y:auto;
-                  font-size:0.95rem; line-height:1.5; background:#ffffff; color:#111;">
-      </div>
-
-      <form id="athena-form" style="margin-top:1rem; display:flex; gap:0.5rem;">
-        <input type="text"
-               id="athena-input"
-               placeholder="Γράψε την ερώτησή σου για την ασφάλιση..."
-               style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc; background:#fff; color:#111;"
-               autocomplete="off" />
-        <button type="submit"
-                style="padding:0.5rem 1rem; border-radius:6px; border:none;
-                       background:#00a8ff; color:#fff; font-weight:500; cursor:pointer;">
-          Αποστολή
-        </button>
-      </form>
-    </section>
-
-    <script>
-      const form = document.getElementById("athena-form");
-      const input = document.getElementById("athena-input");
-      const messagesDiv = document.getElementById("athena-messages");
-
-      function addMessage(sender, text) {
-        const line = document.createElement("div");
-        line.style.marginBottom = "0.35rem";
-        line.innerHTML = "<strong>" + sender + ":</strong> " + text;
-        messagesDiv.appendChild(line);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      }
-
-      // Αρχικό μήνυμα ώστε να μην φαίνεται άδειο το κουτί
-      window.addEventListener("DOMContentLoaded", () => {
-        addMessage("Αθηνά", "Γεια σου, είμαι η ψηφιακή βοηθός σου για την ασφάλιση. Πώς μπορώ να βοηθήσω;");
-      });
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const text = input.value.trim();
-        if (!text) return;
-
-        addMessage("Εσύ", text);
-        input.value = "";
-        addMessage("Αθηνά", "⏳ Σκέφτομαι...");
-
-        try {
-          const response = await fetch("/functions/athena", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-          });
-
-          const data = await response.json();
-          // Σβήνουμε το "Σκέφτομαι..."
-          messagesDiv.lastChild.remove();
-
-          if (data.reply) {
-            addMessage("Αθηνά", data.reply);
-          } else if (data.error) {
-            addMessage("Αθηνά", "Σφάλμα: " + data.error);
-          } else {
-            addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπαθήστε ξανά.");
-          }
-        } catch (err) {
-          messagesDiv.lastChild.remove();
-          addMessage("Αθηνά", "Σφάλμα δικτύου. Προσπαθήστε ξανά σε λίγο.");
-        }
-      });
-    </script>
-
   </main>
 
   <footer class="container" style="margin-top:40px;">
@@ -250,59 +180,136 @@
     </div>
   </div>
 
-  <!-- Athena Chat Bubble (εξωτερικό GPT) -->
+  <!-- Athena Chat Widget με ChatKit (νέο) -->
   <style>
-    #athena-bubble {
+    #athena-widget {
       position: fixed;
       bottom: 20px;
       right: 22px;
-      background: #ffffff;
-      border-radius: 50px;
-      padding: 6px 16px 6px 6px;
+      z-index: 9999;
+    }
+
+    #athena-toggle {
       display: flex;
       align-items: center;
       gap: 8px;
+      background: #ffffff;
+      border-radius: 50px;
+      padding: 6px 16px 6px 6px;
       box-shadow: 0 4px 22px rgba(0,0,0,0.22);
       cursor: pointer;
       font-family: Arial, sans-serif;
-      z-index: 9999;
+      border: none;
       transition: all 0.25s ease;
     }
-    #athena-bubble:hover {
+
+    #athena-toggle:hover {
       transform: scale(1.05);
     }
-    #athena-avatar {
+
+    #athena-toggle img {
       width: 42px;
       height: 42px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #eee;
     }
-    #athena-bubble span {
+
+    #athena-toggle span {
       font-size: 14px;
       color: #333;
       font-weight: 500;
       white-space: nowrap;
     }
+
+    #athena-panel {
+      position: fixed;
+      bottom: 80px;
+      right: 22px;
+      width: min(420px, 100vw - 40px);
+      max-height: 70vh;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      overflow: hidden;
+      z-index: 10000;
+    }
+
     @media (max-width: 600px) {
-      #athena-bubble span {
+      #athena-toggle span {
         display: none;
       }
-      #athena-bubble {
+      #athena-toggle {
         padding: 6px;
         border-radius: 50%;
       }
     }
   </style>
 
-  <div id="athena-bubble"
-       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
-    <img id="athena-avatar"
-         src="https://insurance.ildigitalassistant.com/assets/athena.png"
-         alt="Athena Assistant">
-    <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
+  <div id="athena-widget">
+    <button id="athena-toggle" type="button" aria-label="Άνοιγμα ψηφιακού βοηθού Αθηνά">
+      <img
+        src="https://insurance.ildigitalassistant.com/assets/athena.png"
+        alt="Athena Assistant"
+      />
+      <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
+    </button>
+
+    <div id="athena-panel" hidden>
+      <openai-chatkit id="athena-chat"></openai-chatkit>
+    </div>
   </div>
-  <!-- END Athena Chat Bubble -->
+
+  <script type="module">
+    async function initAthena() {
+      const chatElement = document.getElementById("athena-chat");
+      if (!chatElement) return;
+
+      try {
+        const res = await fetch("/api/chatkit/session", { method: "POST" });
+        if (!res.ok) {
+          console.error("Failed to create ChatKit session", await res.text());
+          return;
+        }
+
+        const { client_secret } = await res.json();
+
+        chatElement.setOptions({
+          api: {
+            async getClientSecret(existing) {
+              if (!existing) return client_secret;
+              return client_secret;
+            },
+          },
+          title: "Athena – IL Digital Insurance Assistant",
+          composerPlaceholder: "Γράψε εδώ την ερώτησή σου για την ασφάλιση…",
+          locale: "el-GR",
+          theme: "light",
+        });
+      } catch (err) {
+        console.error("Error initialising Athena chat", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const panel = document.getElementById("athena-panel");
+      const btn = document.getElementById("athena-toggle");
+
+      if (btn && panel) {
+        btn.addEventListener("click", () => {
+          const isVisible = !panel.hasAttribute("hidden");
+          if (isVisible) {
+            panel.setAttribute("hidden", "true");
+          } else {
+            panel.removeAttribute("hidden");
+          }
+        });
+      }
+
+      initAthena();
+    });
+  </script>
+  <!-- END Athena Chat Widget -->
 
 </body>
 </html>
