@@ -1,26 +1,43 @@
 // /assets/athena.js
 
-async function initAthenaChat() {
+// 1. ΔΕΝ μας νοιάζει ακόμα το ChatKit. Πρώτα βάζουμε να δουλεύει το κουμπί.
+function wireAthenaToggle() {
   const panel = document.getElementById("athena-panel");
   const toggleBtn = document.getElementById("athena-toggle");
-  const chatElement = document.getElementById("athena-chat");
 
-  if (!panel || !toggleBtn || !chatElement) {
-    console.warn("Athena elements not found");
+  if (!panel || !toggleBtn) {
+    console.warn("Athena toggle or panel not found");
     return;
   }
 
-  // Άνοιγμα / κλείσιμο panel όταν πατάς το bubble
+  // Για αρχή, κρύβουμε το panel με σιγουριά
+  panel.setAttribute("hidden", "true");
+  panel.style.display = "none";
+
   toggleBtn.addEventListener("click", () => {
-    const isHidden = panel.hasAttribute("hidden");
+    const isHidden =
+      panel.hasAttribute("hidden") ||
+      panel.style.display === "none" ||
+      panel.style.display === "";
+
     if (isHidden) {
       panel.removeAttribute("hidden");
+      panel.style.display = "block";
     } else {
       panel.setAttribute("hidden", "true");
+      panel.style.display = "none";
     }
   });
+}
 
-  // Δημιουργία session στο /api/chatkit/session
+// 2. ChatKit – αν χαλάσει αυτό, το κουμπί θα συνεχίσει να δουλεύει
+async function initAthenaChat() {
+  const chatElement = document.getElementById("athena-chat");
+  if (!chatElement) {
+    console.warn("Athena chat element not found");
+    return;
+  }
+
   try {
     const res = await fetch("/api/chatkit/session", {
       method: "POST",
@@ -39,7 +56,7 @@ async function initAthenaChat() {
       return;
     }
 
-    // Περιμένουμε να οριστεί το <openai-chatkit>
+    // Περιμένουμε να φορτωθεί το custom element
     if (window.customElements && customElements.whenDefined) {
       try {
         await customElements.whenDefined("openai-chatkit");
@@ -52,7 +69,6 @@ async function initAthenaChat() {
       chatElement.setOptions({
         api: {
           async getClientSecret(existing) {
-            // Προς το παρόν γυρίζουμε πάντα το ίδιο secret
             return client_secret;
           },
         },
@@ -69,5 +85,8 @@ async function initAthenaChat() {
   }
 }
 
-// Τρέχει όταν φορτώσει η σελίδα
-window.addEventListener("load", initAthenaChat);
+// 3. Δένουμε ΟΛΑ όταν φορτώσει η σελίδα
+window.addEventListener("DOMContentLoaded", () => {
+  wireAthenaToggle();   // πρώτα το άνοιγμα / κλείσιμο
+  initAthenaChat();     // μετά το ChatKit
+});
