@@ -52,7 +52,7 @@ async function initAthenaChat() {
       chatElement.setOptions({
         api: {
           async getClientSecret(existing) {
-            // Για αρχή δίνουμε πάντα το ίδιο secret
+            // Προς το παρόν γυρίζουμε πάντα το ίδιο secret
             return client_secret;
           },
         },
