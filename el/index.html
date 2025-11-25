@@ -247,7 +247,12 @@
   </style>
 
   <div id="athena-widget">
-    <button id="athena-toggle" type="button" aria-label="Άνοιγμα ψηφιακού βοηθού Αθηνά">
+    <button
+      id="athena-toggle"
+      type="button"
+      aria-label="Άνοιγμα ψηφιακού βοηθού Αθηνά"
+      onclick="toggleAthena()"
+    >
       <img
         src="https://insurance.ildigitalassistant.com/assets/athena.png"
         alt="Athena Assistant"
@@ -260,7 +265,7 @@
     </div>
   </div>
 
-  <script type="module">
+  <script>
     async function initAthena() {
       const chatElement = document.getElementById("athena-chat");
       if (!chatElement) return;
@@ -272,41 +277,56 @@
           return;
         }
 
-        const { client_secret } = await res.json();
+        const data = await res.json();
+        const client_secret = data && data.client_secret;
 
-        chatElement.setOptions({
-          api: {
-            async getClientSecret(existing) {
-              if (!existing) return client_secret;
-              return client_secret;
+        if (!client_secret) {
+          console.error("No client_secret returned from /api/chatkit/session");
+          return;
+        }
+
+        // Περιμένουμε να οριστεί το custom element αν χρειάζεται
+        if (window.customElements && customElements.whenDefined) {
+          try {
+            await customElements.whenDefined("openai-chatkit");
+          } catch (e) {
+            console.warn("openai-chatkit element not defined yet", e);
+          }
+        }
+
+        if (typeof chatElement.setOptions === "function") {
+          chatElement.setOptions({
+            api: {
+              async getClientSecret(existing) {
+                if (!existing) return client_secret;
+                return client_secret;
+              },
             },
-          },
-          title: "Athena – IL Digital Insurance Assistant",
-          composerPlaceholder: "Γράψε εδώ την ερώτησή σου για την ασφάλιση…",
-          locale: "el-GR",
-          theme: "light",
-        });
+            title: "Athena – IL Digital Insurance Assistant",
+            composerPlaceholder: "Γράψε εδώ την ερώτησή σου για την ασφάλιση…",
+            locale: "el-GR",
+            theme: "light",
+          });
+        } else {
+          console.error("chatElement.setOptions is not a function");
+        }
       } catch (err) {
         console.error("Error initialising Athena chat", err);
       }
     }
 
-    // Το script είναι στο τέλος του body, οπότε τα στοιχεία υπάρχουν ήδη στο DOM
-    const panel = document.getElementById("athena-panel");
-    const btn = document.getElementById("athena-toggle");
-
-    if (btn && panel) {
-      btn.addEventListener("click", () => {
-        const isVisible = !panel.hasAttribute("hidden");
-        if (isVisible) {
-          panel.setAttribute("hidden", "true");
-        } else {
-          panel.removeAttribute("hidden");
-        }
-      });
+    function toggleAthena() {
+      const panel = document.getElementById("athena-panel");
+      if (!panel) return;
+      if (panel.hasAttribute("hidden")) {
+        panel.removeAttribute("hidden");
+      } else {
+        panel.setAttribute("hidden", "true");
+      }
     }
 
-    initAthena();
+    // Αρχικοποίηση μόλις φορτώσει το DOM
+    document.addEventListener("DOMContentLoaded", initAthena);
   </script>
   <!-- END Athena Chat Widget -->
 
