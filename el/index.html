@@ -291,23 +291,22 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const panel = document.getElementById("athena-panel");
-      const btn = document.getElementById("athena-toggle");
+    // Το script είναι στο τέλος του body, οπότε τα στοιχεία υπάρχουν ήδη στο DOM
+    const panel = document.getElementById("athena-panel");
+    const btn = document.getElementById("athena-toggle");
 
-      if (btn && panel) {
-        btn.addEventListener("click", () => {
-          const isVisible = !panel.hasAttribute("hidden");
-          if (isVisible) {
-            panel.setAttribute("hidden", "true");
-          } else {
-            panel.removeAttribute("hidden");
-          }
-        });
-      }
+    if (btn && panel) {
+      btn.addEventListener("click", () => {
+        const isVisible = !panel.hasAttribute("hidden");
+        if (isVisible) {
+          panel.setAttribute("hidden", "true");
+        } else {
+          panel.removeAttribute("hidden");
+        }
+      });
+    }
 
-      initAthena();
-    });
+    initAthena();
   </script>
   <!-- END Athena Chat Widget -->
 
