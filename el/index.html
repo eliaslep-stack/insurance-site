@@ -180,7 +180,7 @@
     </div>
   </div>
 
-  <!-- Athena Chat Widget με ChatKit -->
+  <!-- Athena Chat Widget με ChatKit (χωρίς inline JS) -->
   <style>
     #athena-widget {
       position: fixed;
@@ -251,13 +251,6 @@
       id="athena-toggle"
       type="button"
       aria-label="Άνοιγμα ψηφιακού βοηθού Αθηνά"
-      onclick="
-        (function(){
-          var panel = document.getElementById('athena-panel');
-          if (!panel) return;
-          panel.hidden = !panel.hidden;
-        })();
-      "
     >
       <img
         src="https://insurance.ildigitalassistant.com/assets/athena.png"
@@ -271,59 +264,8 @@
     </div>
   </div>
 
-  <script>
-    // Απλή αρχικοποίηση της Αθηνάς μέσω /api/chatkit/session
-    async function initAthena() {
-      var chatElement = document.getElementById("athena-chat");
-      if (!chatElement) return;
-
-      try {
-        var res = await fetch("/api/chatkit/session", { method: "POST" });
-        if (!res.ok) {
-          console.error("Failed to create ChatKit session", await res.text());
-          return;
-        }
-
-        var data = await res.json();
-        var client_secret = data && data.client_secret;
-        if (!client_secret) {
-          console.error("No client_secret returned from /api/chatkit/session");
-          return;
-        }
-
-        if (window.customElements && customElements.whenDefined) {
-          try {
-            await customElements.whenDefined("openai-chatkit");
-          } catch (e) {
-            console.warn("openai-chatkit element not defined yet", e);
-          }
-        }
-
-        if (typeof chatElement.setOptions === "function") {
-          chatElement.setOptions({
-            api: {
-              async getClientSecret(existing) {
-                if (!existing) return client_secret;
-                return client_secret;
-              },
-            },
-            title: "Athena – IL Digital Insurance Assistant",
-            composerPlaceholder: "Γράψε εδώ την ερώτησή σου για την ασφάλιση…",
-            locale: "el-GR",
-            theme: "light",
-          });
-        } else {
-          console.error("chatElement.setOptions is not a function");
-        }
-      } catch (err) {
-        console.error("Error initialising Athena chat", err);
-      }
-    }
-
-    // Τρέχει όταν φορτώσει η σελίδα
-    window.addEventListener("load", initAthena);
-  </script>
-  <!-- END Athena Chat Widget -->
+  <!-- Εξωτερικό script για το widget της Αθηνάς -->
+  <script defer src="/assets/athena.js"></script>
 
 </body>
 </html>
