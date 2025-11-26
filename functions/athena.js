@@ -40,3 +40,4 @@ export async function onRequest(context) {
 
   return jsonResponse({ reply: text });
 }
+ 
