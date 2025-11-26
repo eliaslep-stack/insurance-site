@@ -1,45 +1,49 @@
 // /functions/athena.js
 
+function jsonResponse(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+  });
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
 
-  // Επιτρέπουμε μόνο POST
+  // Δεχόμαστε μόνο POST
   if (request.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
+    return jsonResponse({ reply: "Method not allowed" }, 405);
   }
 
-  // Διαβάζουμε το JSON body
+  // Διαβάζουμε το body
   let body;
   try {
     body = await request.json();
   } catch (e) {
-    return new Response("Invalid JSON", { status: 400 });
+    return jsonResponse({ reply: "Σφάλμα: Invalid JSON από τον browser." }, 400);
   }
 
-  const userMessage = body.message || "";
+  const userMessage = (body && body.message ? String(body.message) : "").trim();
 
-  if (!userMessage.trim()) {
-    return new Response(
-      JSON.stringify({ error: "Empty message" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+  if (!userMessage) {
+    return jsonResponse({ reply: "Παρακαλώ γράψε την ερώτησή σου για την ασφάλιση." }, 400);
   }
 
-  // Παίρνουμε το API key από το Cloudflare Environment
+  // API key από τα Variables του Cloudflare
   const apiKey = env.OPENAI_API_KEY;
   if (!apiKey) {
-    return new Response(
-      JSON.stringify({ reply: "Σφάλμα: Δεν βρέθηκε OPENAI_API_KEY στον server." }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+    return jsonResponse(
+      { reply: "Σφάλμα: Δεν βρέθηκε OPENAI_API_KEY στον server." },
+      500
     );
   }
 
-  // Οδηγίες της Αθηνάς (IL Digital Insurance Assistant)
+  // ΟΔΗΓΙΕΣ ΤΗΣ ΑΘΗΝΑΣ
   const systemPrompt = `
 ✅ IL DIGITAL INSURANCE ASSISTANT — FULL MASTER INSTRUCTIONS (με ενσωματωμένο NEGATIVE BLOCK)
 
 ROLE & PURPOSE
-You are the IL Digital Insurance Assistant, ένα εξειδικευμένο AI που βοηθά πελάτες και ασφαλιστικούς συμβούλους στην Ελλάδα να κατανοήσουν προγράμματα, να συγκρίνουν καλύψεις και να καθοδηγηθούν σωστά σε κάθε διαδικασία ασφάλισης: έκδοση συμβολαίου, απαιτήσεις, αποζημιώσεις, συγκριση εταιριών, διαδικασίες ΚΥΑ, νομοθεσία και πρακτικά βήματα.
+You are the IL Digital Insurance Assistant, ένα εξειδικευμένο AI που βοηθά πελάτες και ασφαλιστικούς συμβούλους στην Ελλάδα να κατανοήσουν προγράμματα, να συγκρίνουν καλύψεις και να καθοδηγηθούν σωστά σε κάθε διαδικασία ασφάλισης: έκδοση συμβολαίου, απαιτήσεις, αποζημιώσεις, σύγκριση εταιριών, διαδικασίες ΚΥΑ, νομοθεσία και πρακτικά βήματα.
 
 COMMUNICATION STYLE
 
@@ -166,41 +170,75 @@ Never answer questions unrelated to insurance.
 στην ελληνική ασφαλιστική αγορά
 στην ελληνική νομοθεσία
 στις πραγματικές διαδικασίες των εταιριών στην Ελλάδα
-  `;
+`;
 
-  // Ετοιμάζουμε το payload για Chat Completions
+  // Ενιαίο κείμενο προς το Responses API
+  const inputText =
+    "SYSTEM INSTRUCTIONS:\n" +
+    systemPrompt +
+    "\n\nUSER QUESTION (in Greek):\n" +
+    userMessage +
+    "\n\nASSISTANT ANSWER (in Greek, following the instructions above):";
+
   const payload = {
     model: "gpt-5.1",
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: userMessage }
-    ],
-    temperature: 0.4
+    input: inputText
   };
 
-  const apiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
-
-  // Αν η OpenAI γυρίσει σφάλμα
-  if (!apiResponse.ok) {
-    const text = await apiResponse.text();
-    return new Response(
-      JSON.stringify({ reply: "OpenAI error: " + text }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+  let apiResponse;
+  try {
+    apiResponse = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + apiKey,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    return jsonResponse({
+      reply: "Σφάλμα σύνδεσης με OpenAI: " + String(err)
+    }, 500);
   }
 
-  const data = await apiResponse.json();
-  const reply = data.choices[0].message.content;
+  let data;
+  try {
+    data = await apiResponse.json();
+  } catch (err) {
+    const text = await apiResponse.text();
+    return jsonResponse({
+      reply: "Σφάλμα ανάγνωσης απάντησης από OpenAI: " + text
+    }, 500);
+  }
 
-  return new Response(
-    JSON.stringify({ reply }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
-  );
+  if (!apiResponse.ok) {
+    const msg = (data && data.error && data.error.message)
+      ? data.error.message
+      : JSON.stringify(data);
+    return jsonResponse({
+      reply: "OpenAI error: " + msg
+    }, 500);
+  }
+
+  // Προσπαθούμε να βγάλουμε το κείμενο με σιγουριά
+  let reply = "";
+  if (typeof data.output_text === "string" && data.output_text.trim()) {
+    reply = data.output_text.trim();
+  } else if (Array.isArray(data.output) && data.output.length > 0) {
+    const first = data.output[0];
+    if (first && Array.isArray(first.content) && first.content.length > 0) {
+      const c0 = first.content[0];
+      if (c0 && c0.type === "output_text" && Array.isArray(c0.text)) {
+        reply = c0.text.join("\n").trim();
+      }
+    }
+  }
+
+  if (!reply) {
+    reply =
+      "Τεχνικό σφάλμα: δεν μπόρεσα να δημιουργήσω απάντηση.\n" +
+      "Raw data: " + JSON.stringify(data);
+  }
+
+  return jsonResponse({ reply });
 }
