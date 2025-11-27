@@ -6,12 +6,6 @@
   <title>IL Insurance — Ασφαλιστικές λύσεις</title>
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
-
-  <!-- ChatKit script για την Αθηνά -->
-  <script
-    src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
-    async
-  ></script>
 </head>
 <body>
   <header class="container">
@@ -180,92 +174,59 @@
     </div>
   </div>
 
-  <!-- Athena Chat Widget με ChatKit -->
+  <!-- Athena Chat Bubble (ανοίγει το custom GPT σε νέο tab) -->
   <style>
-    #athena-widget {
+    #athena-bubble {
       position: fixed;
       bottom: 20px;
       right: 22px;
-      z-index: 9999;
-    }
-
-    #athena-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       background: #ffffff;
       border-radius: 50px;
       padding: 6px 16px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       box-shadow: 0 4px 22px rgba(0,0,0,0.22);
       cursor: pointer;
       font-family: Arial, sans-serif;
-      border: none;
+      z-index: 9999;
       transition: all 0.25s ease;
     }
-
-    #athena-toggle:hover {
+    #athena-bubble:hover {
       transform: scale(1.05);
     }
-
-    #athena-toggle img {
+    #athena-avatar {
       width: 42px;
       height: 42px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #eee;
     }
-
-    #athena-toggle span {
+    #athena-bubble span {
       font-size: 14px;
       color: #333;
       font-weight: 500;
       white-space: nowrap;
     }
-
-    #athena-panel {
-      position: fixed;
-      bottom: 80px;
-      right: 22px;
-      width: min(420px, 100vw - 40px);
-      max-height: 70vh;
-      border-radius: 16px;
-      background: #ffffff;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      overflow: hidden;
-      z-index: 10000;
-    }
-
     @media (max-width: 600px) {
-      #athena-toggle span {
+      #athena-bubble span {
         display: none;
       }
-      #athena-toggle {
+      #athena-bubble {
         padding: 6px;
         border-radius: 50%;
       }
     }
   </style>
 
-  <div id="athena-widget">
-    <button
-      id="athena-toggle"
-      type="button"
-      aria-label="Άνοιγμα ψηφιακού βοηθού Αθηνά"
-    >
-      <img
-        src="https://insurance.ildigitalassistant.com/assets/athena.png"
-        alt="Athena Assistant"
-      />
-      <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
-    </button>
-
-    <div id="athena-panel" hidden>
-      <openai-chatkit id="athena-chat"></openai-chatkit>
-    </div>
+  <div id="athena-bubble"
+       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
+    <img id="athena-avatar"
+         src="https://insurance.ildigitalassistant.com/assets/athena.png"
+         alt="Athena Assistant">
+    <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
   </div>
-
-  <!-- Εξωτερικό script για το widget της Αθηνάς -->
-  <script defer src="/assets/athena.js"></script>
+  <!-- END Athena Chat Bubble -->
 
 </body>
 </html>
