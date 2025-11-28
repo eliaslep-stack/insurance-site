@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Αστική Ευθύνη</title>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
 </head>
 <body>
@@ -45,7 +45,7 @@
     </section>
 
     <section class="card">
-      <h2 class="h2">Γενική & Οικογενειακή Ευθύνη</h2>
+      <h2 class="h2">Γενική &amp; Οικογενειακή Ευθύνη</h2>
       <p>
         Ατυχήματα από διαρροή νερού, ζημιές από παιδιά ή κατοικίδια — καθημερινοί κίνδυνοι που μπορεί να κοστίσουν ακριβά.
       </p>
@@ -59,7 +59,6 @@
       </p>
       <p><a class="btn" href="./contact.html">Ζήτησε προσφορά</a></p>
     </section>
-
   </main>
 
   <footer class="container" style="margin-top:40px;">
@@ -68,63 +67,161 @@
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
 
-  <!-- Athena Chat Assistant -->
+  <!-- Athena Floating Chat Widget -->
   <style>
-    #athena-bubble {
+    #athena-floating {
       position: fixed;
       bottom: 20px;
       right: 22px;
-      background: #ffffff;
+      z-index: 99999;
+    }
+
+    #athena-btn {
+      background: #fff;
       border-radius: 50px;
-      padding: 6px 16px 6px 6px;
+      padding: 6px 14px 6px 6px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
+      gap: 10px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.25);
       cursor: pointer;
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-      transition: all 0.25s ease;
+      border: none;
+      transition: all .25s ease;
     }
+    #athena-btn:hover { transform: scale(1.05); }
 
-    #athena-bubble:hover {
-      transform: scale(1.05);
-    }
-
-    #athena-avatar {
-      width: 42px;
-      height: 42px;
+    #athena-btn img {
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #eee;
     }
 
-    #athena-bubble span {
+    #athena-chatbox {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 360px;
+      max-height: 520px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+      display: none;
+      overflow: hidden;
+      z-index: 100000;
+    }
+
+    #athena-header {
+      background: #00a8ff;
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #athena-body {
+      padding: 12px;
+      height: 360px;
+      overflow-y: auto;
+      background: #f7f7f7;
       font-size: 14px;
-      color: #333;
-      font-weight: 500;
-      white-space: nowrap;
     }
 
-    @media (max-width: 600px) {
-      #athena-bubble span {
-        display: none;
-      }
-      #athena-bubble {
-        padding: 6px;
-        border-radius: 50%;
-      }
+    #athena-inputbox {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #athena-text {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    #athena-send {
+      background: #00a8ff;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      cursor: pointer;
     }
   </style>
 
-  <div id="athena-bubble"
-       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
-    <img id="athena-avatar"
-         src="https://insurance.ildigitalassistant.com/assets/athena.png"
-         alt="Athena Assistant">
-    <span>Ρωτήστε την Αθηνά — Βοήθεια ασφάλισης</span>
+  <div id="athena-floating">
+    <button id="athena-btn" type="button">
+      <img src="https://insurance.ildigitalassistant.com/assets/athena.png" alt="Αθηνά">
+      <span style="font-size:14px;color:#333;font-weight:500;">Μίλα με την Αθηνά</span>
+    </button>
   </div>
-  <!-- END Athena Chat Assistant -->
+
+  <div id="athena-chatbox">
+    <div id="athena-header">Αθηνά — Ψηφιακή Βοηθός</div>
+    <div id="athena-body"></div>
+    <div id="athena-inputbox">
+      <input id="athena-text" type="text" placeholder="Γράψε την ερώτησή σου...">
+      <button id="athena-send">➤</button>
+    </div>
+  </div>
+
+  <script>
+    const bubble = document.getElementById("athena-btn");
+    const box = document.getElementById("athena-chatbox");
+    const bodyDiv = document.getElementById("athena-body");
+    const txt = document.getElementById("athena-text");
+    const sendBtn = document.getElementById("athena-send");
+
+    bubble.onclick = () => {
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    };
+
+    function athenaAdd(sender, text) {
+      const div = document.createElement("div");
+      div.innerHTML = "<strong>" + sender + ":</strong> " + text;
+      div.style.marginBottom = "6px";
+      bodyDiv.appendChild(div);
+      bodyDiv.scrollTop = bodyDiv.scrollHeight;
+    }
+
+    // αρχικό μήνυμα
+    athenaAdd("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
+
+    async function sendAthena() {
+      const msg = txt.value.trim();
+      if (!msg) return;
+
+      athenaAdd("Εσύ", msg);
+      txt.value = "";
+      athenaAdd("Αθηνά", "⏳ Σκέφτομαι…");
+
+      try {
+        const response = await fetch("/functions/athena", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await response.json();
+        bodyDiv.lastChild.remove(); // αφαιρούμε το "Σκέφτομαι…"
+
+        if (data.reply) athenaAdd("Αθηνά", data.reply);
+        else if (data.error) athenaAdd("Αθηνά", "Σφάλμα: " + data.error);
+        else athenaAdd("Αθηνά", "Σφάλμα ή άδειο μήνυμα.");
+      } catch (e) {
+        bodyDiv.lastChild.remove();
+        athenaAdd("Αθηνά", "Πρόβλημα σύνδεσης. Προσπάθησε ξανά σε λίγο.");
+      }
+    }
+
+    sendBtn.onclick = sendAthena;
+    txt.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendAthena();
+      }
+    });
+  </script>
 
 </body>
 </html>
