@@ -231,6 +231,65 @@
   <div id="athena-panel">
     <openai-chatkit id="athena-chat"></openai-chatkit>
   </div>
+<script>
+  const bubble = document.getElementById("athena-btn");
+  const box = document.getElementById("athena-chatbox");
+  const bodyDiv = document.getElementById("athena-body");
+  const txt = document.getElementById("athena-text");
+  const sendBtn = document.getElementById("athena-send");
+
+  bubble.onclick = () => {
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  };
+
+  function athenaAdd(sender, text) {
+    const div = document.createElement("div");
+    div.innerHTML = "<strong>" + sender + ":</strong> " + text;
+    div.style.marginBottom = "6px";
+    bodyDiv.appendChild(div);
+    bodyDiv.scrollTop = bodyDiv.scrollHeight;
+  }
+
+  // αρχικό μήνυμα
+  athenaAdd("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
+
+  async function sendAthena() {
+    const msg = txt.value.trim();
+    if (!msg) return;
+
+    athenaAdd("Εσύ", msg);
+    txt.value = "";
+    athenaAdd("Αθηνά", "⏳ Σκέφτομαι…");
+
+    try {
+      const response = await fetch("/athena", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      const data = await response.json();
+      bodyDiv.lastChild.remove(); // αφαιρούμε το "Σκέφτομαι…"
+
+      if (data.reply) athenaAdd("Αθηνά", data.reply);
+      else if (data.error) athenaAdd("Αθηνά", "Σφάλμα: " + data.error);
+      else athenaAdd("Αθηνά", "Σφάλμα ή άδειο μήνυμα.");
+    } catch (e) {
+      bodyDiv.lastChild.remove();
+      athenaAdd("Αθηνά", "Πρόβλημα σύνδεσης. Προσπάθησε ξανά σε λίγο.");
+    }
+  }
+
+  sendBtn.onclick = sendAthena;
+  txt.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendAthena();
+    }
+  });
+</script>
+</body>
+</html>
 
 </body>
 </html>
