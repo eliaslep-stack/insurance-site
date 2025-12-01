@@ -1,51 +1,59 @@
-export async function onRequest(context) {
-  const { request, env } = context;
+// /functions/api/chatkit/session.js
+// Cloudflare Pages Function – δημιουργεί ChatKit session και δίνει client_secret
 
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-
+export async function onRequestPost(context) {
+  const { env } = context;
   const apiKey = env.OPENAI_API_KEY;
-  const workflowId = env.CHATKIT_WORKFLOW_ID;
+  const workflowId = env.WORKFLOW_ID; // wf_... της Athena Website Assistant
 
   if (!apiKey || !workflowId) {
-    return new Response("Missing OpenAI configuration", { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Missing OPENAI_API_KEY or WORKFLOW_ID" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 
-  const userId = crypto.randomUUID();
-
-  const upstream = await fetch("https://api.openai.com/v1/chatkit/sessions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "OpenAI-Beta": "chatkit_beta=v1",
-    },
-    body: JSON.stringify({
-      workflow: { id: workflowId },
-      user: userId
-    }),
-  });
-
-  let data;
   try {
-    data = await upstream.json();
-  } catch {
-    data = null;
-  }
-
-  if (!upstream.ok) {
-    return new Response(JSON.stringify(data || { error: "ChatKit session error" }), {
-      status: upstream.status,
-      headers: { "Content-Type": "application/json" },
+    const openaiRes = await fetch("https://api.openai.com/v1/chatkit/sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "OpenAI-Beta": "chatkit_beta=v1",
+      },
+      body: JSON.stringify({
+        workflow: { id: workflowId },
+        user: crypto.randomUUID(),
+      }),
     });
-  }
 
-  return new Response(JSON.stringify({ client_secret: data.client_secret }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-    },
-  });
+    const data = await openaiRes.json();
+
+    if (!openaiRes.ok) {
+      console.error("OpenAI ChatKit error:", data);
+      return new Response(
+        JSON.stringify({ error: "OpenAI ChatKit error" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const client_secret = data.client_secret;
+    if (!client_secret) {
+      return new Response(
+        JSON.stringify({ error: "No client_secret in response" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ client_secret }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (err) {
+    console.error("ChatKit session function error:", err);
+    return new Response(
+      JSON.stringify({ error: "Internal error" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
 }
