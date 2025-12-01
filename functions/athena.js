@@ -1,43 +1,67 @@
-// /functions/athena.js
-// ΑΠΛΗ ΔΟΚΙΜΑΣΤΙΚΗ ΕΚΔΟΣΗ ΧΩΡΙΣ OpenAI ΓΙΑ ΝΑ ΔΟΥΜΕ ΑΝ ΔΟΥΛΕΥΕΙ ΤΟ ROUTE
+// /functions/athena.js  (Cloudflare Pages Function)
 
-function jsonResponse(obj, status = 200) {
-  return new Response(JSON.stringify(obj), {
-    status,
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-  });
-}
+export const onRequest = async (context) => {
+  const { request, env } = context;
 
-export async function onRequest(context) {
-  const { request } = context;
+  // CORS preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+      },
+    });
+  }
 
-  // Δεχόμαστε μόνο POST
   if (request.method !== "POST") {
-    return jsonResponse({ reply: "Only POST is allowed." }, 405);
+    return new Response("Method Not Allowed", {
+      status: 405,
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
   }
 
-  // Διαβάζουμε το body ως JSON
-  let body;
-  try {
-    body = await request.json();
-  } catch (e) {
-    return jsonResponse({ reply: "Σφάλμα: invalid JSON από τον browser." }, 400);
+  const apiKey = env.OPENAI_API_KEY;
+  const workflowId = env.WORKFLOW_ID; // βάλε αυτό στο Cloudflare env
+
+  if (!apiKey || !workflowId) {
+    return new Response("Missing OPENAI_API_KEY or WORKFLOW_ID", {
+      status: 500,
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
   }
 
-  const userMessage = (body && body.message ? String(body.message) : "").trim();
+  const openaiRes = await fetch("https://api.openai.com/v1/chatkit/sessions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+      "OpenAI-Beta": "chatkit_beta=v1",
+    },
+    body: JSON.stringify({
+      workflow: { id: workflowId },   // π.χ. "wf_6925d4bec5f88..."
+      user: crypto.randomUUID(),
+    }),
+  });
 
-  if (!userMessage) {
-    return jsonResponse({
-      reply: "Παρακαλώ γράψε την ερώτησή σου για την ασφάλιση πριν πατήσεις Αποστολή."
-    }, 400);
+  const text = await openaiRes.text();
+
+  if (!openaiRes.ok) {
+    return new Response(text, {
+      status: openaiRes.status,
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
   }
 
-  // ΠΟΛΥ ΑΠΛΗ ΑΠΑΝΤΗΣΗ – ΜΟΝΟ ΓΙΑ ΤΕΣΤ
-  const text =
-    "Έλαβα την ερώτησή σου: «" + userMessage + "».\n\n" +
-    "Προς το παρόν τρέχω σε δοκιμαστική λειτουργία χωρίς σύνδεση στο OpenAI, " +
-    "απλώς για να επιβεβαιώσουμε ότι ο ψηφιακός οδηγός λειτουργεί τεχνικά.";
+  const data = JSON.parse(text);
 
-  return jsonResponse({ reply: text });
-}
- 
+  return new Response(JSON.stringify({ client_secret: data.client_secret }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "no-store",
+    },
+  });
+};
