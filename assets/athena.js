@@ -39,10 +39,11 @@ async function initAthenaChat() {
   }
 
   try {
-    const res = await fetch("/api/chatkit/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+   const res = await fetch("/athena", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+});
+
 
     if (!res.ok) {
       console.error("Failed to create ChatKit session", await res.text());
