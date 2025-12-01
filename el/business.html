@@ -217,6 +217,12 @@
       overflow-y: auto;
       background: #f7f7f7;
       font-size: 14px;
+      color: #222;          /* ΣΚΟΥΡΟ ΚΕΙΜΕΝΟ */
+    }
+
+    /* Τα επιμέρους μηνύματα μέσα στο chat */
+    #athena-body div {
+      color: #222;
     }
 
     #athena-inputbox {
@@ -230,6 +236,7 @@
       border: none;
       outline: none;
       font-size: 14px;
+      color: #222;          /* Σκούρο κείμενο και στο input */
     }
 
     #athena-send {
@@ -244,76 +251,4 @@
   <div id="athena-floating">
     <button id="athena-btn" type="button">
       <img src="https://insurance.ildigitalassistant.com/assets/athena.png" alt="Αθηνά">
-      <span style="font-size:14px;color:#333;font-weight:500;">Μίλα με την Αθηνά</span>
-    </button>
-  </div>
-
-  <div id="athena-chatbox">
-    <div id="athena-header">Αθηνά — Ψηφιακή Βοηθός</div>
-    <div id="athena-body"></div>
-    <div id="athena-inputbox">
-      <input id="athena-text" type="text" placeholder="Γράψε την ερώτησή σου...">
-      <button id="athena-send">➤</button>
-    </div>
-  </div>
-
-  <script>
-    const bubble = document.getElementById("athena-btn");
-    const box = document.getElementById("athena-chatbox");
-    const bodyDiv = document.getElementById("athena-body");
-    const txt = document.getElementById("athena-text");
-    const sendBtn = document.getElementById("athena-send");
-
-    bubble.onclick = () => {
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    };
-
-    function athenaAdd(sender, text) {
-      const div = document.createElement("div");
-      div.innerHTML = "<strong>" + sender + ":</strong> " + text;
-      div.style.marginBottom = "6px";
-      bodyDiv.appendChild(div);
-      bodyDiv.scrollTop = bodyDiv.scrollHeight;
-    }
-
-    // αρχικό μήνυμα
-    athenaAdd("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
-
-    async function sendAthena() {
-      const msg = txt.value.trim();
-      if (!msg) return;
-
-      athenaAdd("Εσύ", msg);
-      txt.value = "";
-      athenaAdd("Αθηνά", "⏳ Σκέφτομαι…");
-
-      try {
-        const response = await fetch("/functions/athena", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: msg })
-        });
-
-        const data = await response.json();
-        bodyDiv.lastChild.remove(); // αφαιρούμε το "Σκέφτομαι…"
-
-        if (data.reply) athenaAdd("Αθηνά", data.reply);
-        else if (data.error) athenaAdd("Αθηνά", "Σφάλμα: " + data.error);
-        else athenaAdd("Αθηνά", "Σφάλμα ή άδειο μήνυμα.");
-      } catch (e) {
-        bodyDiv.lastChild.remove();
-        athenaAdd("Αθηνά", "Πρόβλημα σύνδεσης. Προσπάθησε ξανά σε λίγο.");
-      }
-    }
-
-    sendBtn.onclick = sendAthena;
-    txt.addEventListener("keypress", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendAthena();
-      }
-    });
-  </script>
-
-</body>
-</html>
+      <span style="font-size:14px;color:#333;font-weight:500;">Μ
