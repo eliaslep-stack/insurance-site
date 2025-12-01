@@ -1,6 +1,6 @@
 // /assets/athena.js
 
-// 1. ΔΕΝ μας νοιάζει ακόμα το ChatKit. Πρώτα βάζουμε να δουλεύει το κουμπί.
+// 1. Άνοιγμα / κλείσιμο του panel
 function wireAthenaToggle() {
   const panel = document.getElementById("athena-panel");
   const toggleBtn = document.getElementById("athena-toggle");
@@ -10,7 +10,6 @@ function wireAthenaToggle() {
     return;
   }
 
-  // Για αρχή, κρύβουμε το panel με σιγουριά
   panel.setAttribute("hidden", "true");
   panel.style.display = "none";
 
@@ -30,7 +29,7 @@ function wireAthenaToggle() {
   });
 }
 
-// 2. ChatKit – αν χαλάσει αυτό, το κουμπί θα συνεχίσει να δουλεύει
+// 2. Σύνδεση με ChatKit
 async function initAthenaChat() {
   const chatElement = document.getElementById("athena-chat");
   if (!chatElement) {
@@ -39,11 +38,10 @@ async function initAthenaChat() {
   }
 
   try {
-   const res = await fetch("/athena", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-});
-
+    const res = await fetch("/api/chatkit/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
 
     if (!res.ok) {
       console.error("Failed to create ChatKit session", await res.text());
@@ -57,7 +55,6 @@ async function initAthenaChat() {
       return;
     }
 
-    // Περιμένουμε να φορτωθεί το custom element
     if (window.customElements && customElements.whenDefined) {
       try {
         await customElements.whenDefined("openai-chatkit");
@@ -86,8 +83,8 @@ async function initAthenaChat() {
   }
 }
 
-// 3. Δένουμε ΟΛΑ όταν φορτώσει η σελίδα
+// 3. Δένουμε όλα όταν φορτώσει το DOM
 window.addEventListener("DOMContentLoaded", () => {
-  wireAthenaToggle();   // πρώτα το άνοιγμα / κλείσιμο
-  initAthenaChat();     // μετά το ChatKit
+  wireAthenaToggle();
+  initAthenaChat();
 });
