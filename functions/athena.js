@@ -3,7 +3,6 @@
 export const onRequest = async (context) => {
   const { request, env } = context;
 
-  // CORS preflight
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -23,7 +22,7 @@ export const onRequest = async (context) => {
   }
 
   const apiKey = env.OPENAI_API_KEY;
-  const workflowId = env.WORKFLOW_ID; // βάλε αυτό στο Cloudflare env
+  const workflowId = env.WORKFLOW_ID; // wf_... της Athena Website Assistant
 
   if (!apiKey || !workflowId) {
     return new Response("Missing OPENAI_API_KEY or WORKFLOW_ID", {
@@ -40,7 +39,7 @@ export const onRequest = async (context) => {
       "OpenAI-Beta": "chatkit_beta=v1",
     },
     body: JSON.stringify({
-      workflow: { id: workflowId },   // π.χ. "wf_6925d4bec5f88..."
+      workflow: { id: workflowId },
       user: crypto.randomUUID(),
     }),
   });
