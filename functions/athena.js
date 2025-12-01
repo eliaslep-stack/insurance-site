@@ -1,66 +1,59 @@
-// /functions/athena.js  (Cloudflare Pages Function)
+// /functions/athena.js
+import OpenAI from "openai";
 
-export const onRequest = async (context) => {
+export async function onRequestPost(context) {
   const { request, env } = context;
 
-  if (request.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-      },
-    });
-  }
-
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", {
-      status: 405,
-      headers: { "Access-Control-Allow-Origin": "*" },
-    });
-  }
-
-  const apiKey = env.OPENAI_API_KEY;
-  const workflowId = env.WORKFLOW_ID; // wf_... της Athena Website Assistant
-
-  if (!apiKey || !workflowId) {
-    return new Response("Missing OPENAI_API_KEY or WORKFLOW_ID", {
-      status: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-    });
-  }
-
-  const openaiRes = await fetch("https://api.openai.com/v1/chatkit/sessions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-      "OpenAI-Beta": "chatkit_beta=v1",
-    },
-    body: JSON.stringify({
-      workflow: { id: workflowId },
-      user: crypto.randomUUID(),
-    }),
+  const client = new OpenAI({
+    apiKey: env.OPENAI_API_KEY,
   });
 
-  const text = await openaiRes.text();
+  try {
+    const body = await request.json();
+    const userMessage = body?.message?.trim();
 
-  if (!openaiRes.ok) {
-    return new Response(text, {
-      status: openaiRes.status,
-      headers: { "Access-Control-Allow-Origin": "*" },
+    if (!userMessage) {
+      return new Response(
+        JSON.stringify({ error: "Empty message" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // ΕΔΩ βάλε τις οδηγίες της Αθηνάς (copy–paste από το GPT σου)
+    const instructions =
+      "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα. " +
+      "Απαντάς σύντομα, καθαρά και σε απλά ελληνικά. " +
+      "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά) " +
+      "και καθοδηγείς τον χρήστη στα επόμενα βήματα χωρίς νομικές υπερβολές. " +
+      "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
+
+    const response = await client.responses.create({
+      model: "gpt-5.1-mini",
+      instructions,
+      input: userMessage,
+      // αν δεν θες να κρατάει logs, βάλε: store: false,
     });
+
+    const replyText = response.output_text ?? "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+
+    return new Response(
+      JSON.stringify({ reply: replyText }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (err) {
+    console.error("Athena error:", err);
+    return new Response(
+      JSON.stringify({ error: "Internal error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
-
-  const data = JSON.parse(text);
-
-  return new Response(JSON.stringify({ client_secret: data.client_secret }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Cache-Control": "no-store",
-    },
-  });
-};
+}
