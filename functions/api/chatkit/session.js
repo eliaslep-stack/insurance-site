@@ -3,12 +3,13 @@
 
 export async function onRequestPost(context) {
   const { env } = context;
-  const apiKey = env.OPENAI_API_KEY;
-  const workflowId = env.WORKFLOW_ID; // wf_... της Athena Website Assistant
+
+  const apiKey = env.OPENAI_API_KEY;          // ✅ ίδιο όνομα με το Cloudflare
+  const workflowId = env.CHATKIT_WORKFLOW_ID; // ✅ ίδιο όνομα με το Cloudflare
 
   if (!apiKey || !workflowId) {
     return new Response(
-      JSON.stringify({ error: "Missing OPENAI_API_KEY or WORKFLOW_ID" }),
+      JSON.stringify({ error: "Missing OPENAI_API_KEY or CHATKIT_WORKFLOW_ID" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
