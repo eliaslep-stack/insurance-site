@@ -121,7 +121,6 @@
       display: none;
       overflow: hidden;
       z-index: 100000;
-      color: #222;           /* ΣΚΟΥΡΟ κείμενο μέσα στο chat */
     }
 
     #athena-header {
@@ -138,7 +137,16 @@
       overflow-y: auto;
       background: #f7f7f7;
       font-size: 14px;
-      color: #222;           /* Εξαναγκάζουμε σκούρο κείμενο */
+    }
+
+    /* ΕΔΩ κάνουμε override ΟΛΑ τα κείμενα μέσα στο chat */
+    #athena-body,
+    #athena-body * {
+      color: #222 !important;
+    }
+
+    #athena-body strong {
+      color: #111 !important;
     }
 
     #athena-inputbox {
@@ -153,8 +161,8 @@
       border: none;
       outline: none;
       font-size: 14px;
-      color: #111;           /* Σκούρο κείμενο στο input */
-      background: #ffffff;   /* Λευκό background στο input */
+      color: #111;
+      background: #ffffff;
     }
 
     #athena-send {
@@ -195,7 +203,9 @@
 
     function athenaAdd(sender, text) {
       const div = document.createElement("div");
-      div.innerHTML = "<strong>" + sender + ":</strong> " + text;
+      div.innerHTML =
+        "<strong>" + sender + ":</strong> " +
+        "<span>" + text + "</span>";
       div.style.marginBottom = "6px";
       bodyDiv.appendChild(div);
       bodyDiv.scrollTop = bodyDiv.scrollHeight;
