@@ -139,16 +139,6 @@
       font-size: 14px;
     }
 
-    /* ΕΔΩ κάνουμε override ΟΛΑ τα κείμενα μέσα στο chat */
-    #athena-body,
-    #athena-body * {
-      color: #222 !important;
-    }
-
-    #athena-body strong {
-      color: #111 !important;
-    }
-
     #athena-inputbox {
       display: flex;
       border-top: 1px solid #ddd;
@@ -161,13 +151,11 @@
       border: none;
       outline: none;
       font-size: 14px;
-      color: #111;
-      background: #ffffff;
     }
 
     #athena-send {
       background: #00a8ff;
-      color: white;
+      color: #ffffff;
       border: none;
       padding: 10px 14px;
       cursor: pointer;
@@ -197,16 +185,35 @@
     const txt = document.getElementById("athena-text");
     const sendBtn = document.getElementById("athena-send");
 
+    // Κλειδώνουμε τα χρώματα με inline styles για να μην τα αλλάζει τίποτα άλλο
+    if (box) {
+      box.style.backgroundColor = "#ffffff";
+      box.style.color = "#222222";
+    }
+    if (bodyDiv) {
+      bodyDiv.style.backgroundColor = "#f7f7f7";
+      bodyDiv.style.color = "#222222";
+    }
+    if (txt) {
+      txt.style.backgroundColor = "#ffffff";
+      txt.style.color = "#111111";
+    }
+
     bubble.onclick = () => {
       box.style.display = box.style.display === "block" ? "none" : "block";
     };
 
     function athenaAdd(sender, text) {
       const div = document.createElement("div");
-      div.innerHTML =
-        "<strong>" + sender + ":</strong> " +
-        "<span>" + text + "</span>";
+      div.innerHTML = "<strong>" + sender + ":</strong> " + text;
       div.style.marginBottom = "6px";
+      div.style.color = "#222222";
+
+      const strongs = div.querySelectorAll("strong");
+      strongs.forEach(s => {
+        s.style.color = "#111111";
+      });
+
       bodyDiv.appendChild(div);
       bodyDiv.scrollTop = bodyDiv.scrollHeight;
     }
