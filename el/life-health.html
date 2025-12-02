@@ -185,37 +185,51 @@
     const txt = document.getElementById("athena-text");
     const sendBtn = document.getElementById("athena-send");
 
-    // Κλειδώνουμε τα χρώματα με inline styles για να μην τα αλλάζει τίποτα άλλο
-    if (box) {
-      box.style.backgroundColor = "#ffffff";
-      box.style.color = "#222222";
+    function fixAthenaColors() {
+      if (box) {
+        box.style.setProperty("background-color", "#ffffff", "important");
+        box.style.setProperty("color", "#222222", "important");
+      }
+      if (bodyDiv) {
+        bodyDiv.style.setProperty("background-color", "#f7f7f7", "important");
+        bodyDiv.style.setProperty("color", "#222222", "important");
+      }
+      if (txt) {
+        txt.style.setProperty("background-color", "#ffffff", "important");
+        txt.style.setProperty("color", "#111111", "important");
+        txt.style.setProperty("border", "none", "important");
+        txt.style.setProperty("outline", "none", "important");
+      }
+      const header = document.getElementById("athena-header");
+      if (header) {
+        header.style.setProperty("background-color", "#00a8ff", "important");
+        header.style.setProperty("color", "#ffffff", "important");
+      }
     }
-    if (bodyDiv) {
-      bodyDiv.style.backgroundColor = "#f7f7f7";
-      bodyDiv.style.color = "#222222";
-    }
-    if (txt) {
-      txt.style.backgroundColor = "#ffffff";
-      txt.style.color = "#111111";
-    }
+
+    // εφαρμόζουμε τα χρώματα στην αρχή
+    fixAthenaColors();
 
     bubble.onclick = () => {
       box.style.display = box.style.display === "block" ? "none" : "block";
+      fixAthenaColors();
     };
 
     function athenaAdd(sender, text) {
       const div = document.createElement("div");
       div.innerHTML = "<strong>" + sender + ":</strong> " + text;
       div.style.marginBottom = "6px";
-      div.style.color = "#222222";
+      div.style.setProperty("color", "#222222", "important");
 
       const strongs = div.querySelectorAll("strong");
       strongs.forEach(s => {
-        s.style.color = "#111111";
+        s.style.setProperty("color", "#111111", "important");
+        s.style.fontWeight = "bold";
       });
 
       bodyDiv.appendChild(div);
       bodyDiv.scrollTop = bodyDiv.scrollHeight;
+      fixAthenaColors();
     }
 
     // αρχικό μήνυμα
