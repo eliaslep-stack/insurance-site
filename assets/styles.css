@@ -252,10 +252,11 @@ a:visited {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.18s ease,
-              box-shadow 0.18s ease,
-              background-color 0.18s ease,
-              border-color 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
   padding: 1.1rem 1rem;
   border-radius: 18px;
   background: #111520;
@@ -358,5 +359,48 @@ a:visited {
 
   .product-section {
     margin-top: 2.4rem;
-  } 
+  }
+}
+
+/* ===========================
+   Athena Chat – Τελική ρύθμιση χρωμάτων
+   =========================== */
+
+#athena-chatbox {
+  background: #ffffff !important;
+  color: #222 !important;
+}
+
+#athena-chatbox * {
+  color: #222 !important;
+}
+
+/* Header μπάρα πάνω */
+#athena-header {
+  background: #00a8ff !important;
+  color: #ffffff !important;
+}
+
+/* Περιοχή μηνυμάτων */
+#athena-body {
+  background: #f7f7f7 !important;
+  font-size: 14px;
+}
+
+/* Εισαγωγή κειμένου & footer του chat */
+#athena-inputbox {
+  background: #ffffff !important;
+  border-top: 1px solid #ddd;
+}
+
+#athena-text {
+  color: #111 !important;
+  background: #ffffff !important;
+  border: none;
+  outline: none;
+}
+
+/* Πιο έντονο για "Αθηνά:" και "Εσύ:" */
+#athena-body strong {
+  color: #111 !important;
 }
