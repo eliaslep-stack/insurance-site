@@ -24,7 +24,7 @@
 
   <main class="container">
     <section class="page-hero">
-      <h1 class="h1">Ασφάλεια Ζωής & Υγείας</h1>
+      <h1 class="h1">Ασφάλεια Ζωής &amp; Υγείας</h1>
       <p class="lead">
         Κάλυψη για νοσηλεία, εξωνοσοκομειακές εξετάσεις και προστασία εισοδήματος — με καθαρούς όρους και σαφή καθοδήγηση.
       </p>
@@ -39,7 +39,7 @@
     </section>
 
     <section class="card">
-      <h2 class="h2">Capitation & Εξωνοσοκομειακά</h2>
+      <h2 class="h2">Capitation &amp; Εξωνοσοκομειακά</h2>
       <p>
         Τα προγράμματα capitation προσφέρουν πρόσβαση σε συγκεκριμένο νοσοκομειακό όμιλο με προβλέψιμο κόστος.
         Παράλληλα, τα εξωνοσοκομειακά προγράμματα καλύπτουν εξετάσεις, επισκέψεις και διαγνωστικούς ελέγχους.
@@ -47,7 +47,7 @@
     </section>
 
     <section class="card">
-      <h2 class="h2">Ασφάλεια Ζωής & Εισοδήματος</h2>
+      <h2 class="h2">Ασφάλεια Ζωής &amp; Εισοδήματος</h2>
       <p>
         Κάλυψη ζωής για προστασία της οικογένειας και συνδυαστικά προγράμματα με αποταμίευση ή unit-linked,
         ανάλογα με το τι επιδιώκετε: προστασία, αποταμίευση ή και τα δύο.
@@ -115,17 +115,18 @@
       right: 20px;
       width: 360px;
       max-height: 520px;
-      background: white;
+      background: #ffffff;
       border-radius: 14px;
       box-shadow: 0 8px 28px rgba(0,0,0,0.3);
       display: none;
       overflow: hidden;
       z-index: 100000;
+      color: #222;           /* ΣΚΟΥΡΟ κείμενο μέσα στο chat */
     }
 
     #athena-header {
       background: #00a8ff;
-      color: white;
+      color: #ffffff;
       padding: 12px;
       text-align: center;
       font-weight: bold;
@@ -137,11 +138,13 @@
       overflow-y: auto;
       background: #f7f7f7;
       font-size: 14px;
+      color: #222;           /* Εξαναγκάζουμε σκούρο κείμενο */
     }
 
     #athena-inputbox {
       display: flex;
       border-top: 1px solid #ddd;
+      background: #ffffff;
     }
 
     #athena-text {
@@ -150,6 +153,8 @@
       border: none;
       outline: none;
       font-size: 14px;
+      color: #111;           /* Σκούρο κείμενο στο input */
+      background: #ffffff;   /* Λευκό background στο input */
     }
 
     #athena-send {
@@ -237,6 +242,3 @@
 
 </body>
 </html>
-
-
-
