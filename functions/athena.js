@@ -52,7 +52,21 @@ export async function onRequestPost(context) {
 
     const replyText =
       (data && typeof data.output_text === "string" && data.output_text.trim()) ||
-      "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+      let replyText = "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+
+if (response.output && Array.isArray(response.output)) {
+  for (const item of response.output) {
+    if (item.type === "message" && item.content) {
+      for (const c of item.content) {
+        if (c.type === "output_text") {
+          replyText = c.text;
+          break;
+        }
+      }
+    }
+  }
+}
+
 
     return json({ reply: replyText }, 200);
   } catch (err) {
