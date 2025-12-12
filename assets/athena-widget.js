@@ -1,3 +1,4 @@
+// /assets/athena-widget.js
 document.addEventListener("DOMContentLoaded", () => {
   const bubble = document.getElementById("athena-bubble");
   const box = document.getElementById("athena-chatbox");
@@ -13,15 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleBox() {
     const isOpen = box.style.display === "flex";
     box.style.display = isOpen ? "none" : "flex";
-    if (!isOpen) {
-      input.focus();
-    }
+    if (!isOpen) input.focus();
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function addMessage(sender, text) {
     const div = document.createElement("div");
     div.className = "athena-msg";
-    div.innerHTML = "<strong>" + sender + ":</strong> " + text;
+    div.innerHTML = "<strong>" + escapeHtml(sender) + ":</strong> " + escapeHtml(text);
     bodyDiv.appendChild(div);
     bodyDiv.scrollTop = bodyDiv.scrollHeight;
   }
@@ -37,18 +45,30 @@ document.addEventListener("DOMContentLoaded", () => {
     addMessage("Αθηνά", "⏳ Σκέφτομαι…");
 
     try {
-      const res = await fetch("/functions/athena", {
+      // Cloudflare Pages Functions route for /functions/athena.js is /athena
+      const res = await fetch("/athena", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text })
       });
 
-      const data = await res.json().catch(() => ({}));
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
 
-      // βγάζουμε το "Σκέφτομαι…"
+      // remove "Σκέφτομαι…"
       const last = bodyDiv.lastChild;
       if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
         bodyDiv.removeChild(last);
+      }
+
+      if (!res.ok) {
+        const msg = data?.error ? String(data.error) : "Server error";
+        addMessage("Αθηνά", "Σφάλμα: " + msg);
+        return;
       }
 
       if (data && data.reply) {
@@ -69,7 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  bubble.addEventListener("click", toggleBox);
+  // IMPORTANT: prevent any default navigation if bubble is an <a href="...">
+  bubble.addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleBox();
+  });
 
   sendBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -83,6 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Αρχικό welcome μήνυμα
+  // Initial welcome
   addMessage("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
 });
