@@ -1,12 +1,12 @@
 // /functions/athena.js  (Cloudflare Pages Function)
-// No external imports — uses fetch to call OpenAI API directly.
+// No external imports — uses fetch to call OpenAI Responses API directly.
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
     const body = await request.json().catch(() => ({}));
-    const userMessage = (body?.message || "").trim();
+    const userMessage = String(body?.message ?? "").trim();
 
     if (!userMessage) {
       return json({ error: "Empty message" }, 400);
@@ -23,26 +23,23 @@ export async function onRequestPost(context) {
       "και καθοδηγείς τον χρήστη στα επόμενα βήματα χωρίς νομικές υπερβολές. " +
       "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
 
-    // Call OpenAI Responses API
     const upstream = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: "gpt-4.1-mini",
-
         instructions,
         input: userMessage,
-        // store: false, // αν θέλεις να μην κρατάει logs
+        // store: false,
       }),
     });
 
     const data = await upstream.json().catch(() => ({}));
 
     if (!upstream.ok) {
-      // Επιστρέφουμε ΠΡΑΓΜΑΤΙΚΟ μήνυμα λάθους (billing/quota/invalid_key κλπ)
       const msg =
         data?.error?.message ||
         data?.message ||
@@ -50,27 +47,34 @@ export async function onRequestPost(context) {
       return json({ error: msg }, 500);
     }
 
-    const replyText =
-      (data && typeof data.output_text === "string" && data.output_text.trim()) ||
-      let replyText = "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+    // Robust reply extraction (covers output_text and structured output[])
+    let replyText = "";
 
-if (response.output && Array.isArray(response.output)) {
-  for (const item of response.output) {
-    if (item.type === "message" && item.content) {
-      for (const c of item.content) {
-        if (c.type === "output_text") {
-          replyText = c.text;
-          break;
+    if (typeof data?.output_text === "string") {
+      replyText = data.output_text.trim();
+    }
+
+    if (!replyText && Array.isArray(data?.output)) {
+      for (const item of data.output) {
+        // common shape: { type: "message", content: [ { type:"output_text", text:"..." } ] }
+        if (item?.type === "message" && Array.isArray(item?.content)) {
+          for (const c of item.content) {
+            if (c?.type === "output_text" && typeof c?.text === "string") {
+              replyText = c.text.trim();
+              break;
+            }
+          }
         }
+        if (replyText) break;
       }
     }
-  }
-}
 
+    if (!replyText) {
+      replyText = "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+    }
 
     return json({ reply: replyText }, 200);
   } catch (err) {
-    // Τώρα θα βλέπεις ακριβές σφάλμα αντί για “Server error” στο σκοτάδι
     const msg = err?.message ? String(err.message) : "Internal error";
     return json({ error: msg }, 500);
   }
