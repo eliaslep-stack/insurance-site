@@ -1,119 +1,42 @@
 // /functions/athena.js  (Cloudflare Pages Function)
-// Supports: text-only JSON OR multipart/form-data with an uploaded PDF/image.
-// Uploads file to OpenAI Files API (purpose: "user_data") and sends file_id to Responses API.
+// Uses fetch to call OpenAI Responses API directly (no external imports).
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
-    if (!env.OPENAI_API_KEY) {
-      return json({ error: "Missing OPENAI_API_KEY in Cloudflare Variables" }, 500);
-    }
+    const body = await request.json().catch(() => ({}));
+    const userMessage = String(body?.message || "").trim();
 
-    const contentType = request.headers.get("content-type") || "";
-
-    let userMessage = "";
-    let uploadedFile = null; // File (Blob-like) from formData
-    let uploadedFileName = "";
-    let uploadedFileType = "";
-
-    if (contentType.includes("multipart/form-data")) {
-      const fd = await request.formData();
-      userMessage = String(fd.get("message") || "").trim();
-
-      const f = fd.get("file");
-      if (f && typeof f === "object" && typeof f.arrayBuffer === "function") {
-        uploadedFile = f;
-        uploadedFileName = f.name || "upload";
-        uploadedFileType = f.type || "application/octet-stream";
-      }
-    } else {
-      const body = await request.json().catch(() => ({}));
-      userMessage = String(body?.message || "").trim();
-    }
-
-    if (!userMessage) {
-      return json({ error: "Empty message" }, 400);
-    }
+    if (!userMessage) return json({ error: "Empty message" }, 400);
+    if (!env.OPENAI_API_KEY) return json({ error: "Missing OPENAI_API_KEY in Cloudflare Variables" }, 500);
 
     const instructions =
       "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα. " +
       "Απαντάς σύντομα, καθαρά και σε απλά ελληνικά. " +
       "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά) " +
       "και καθοδηγείς τον χρήστη στα επόμενα βήματα χωρίς νομικές υπερβολές. " +
-      "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο. " +
-      "Αν ο χρήστης ανέβασε έγγραφο/φωτογραφίες, διάβασέ τα και: (1) εξήγησε συνοπτικά τι βλέπεις, (2) βρες κρίσιμους όρους/καλύψεις/εξαιρέσεις/απαλλαγές, (3) πες καθαρά τι ΔΕΝ μπορείς να επιβεβαιώσεις χωρίς τις πλήρεις Γενικές/Ειδικές Συνθήκες.";
+      "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
 
-    // Optional: upload file to OpenAI and get file_id
-    let fileId = null;
-
-    if (uploadedFile) {
-      // Basic validation: allow pdf + images, 1–5MB (you asked this range)
-      const size = Number(uploadedFile.size || 0);
-      const maxBytes = 5 * 1024 * 1024;
-
-      const allowed =
-        uploadedFileType === "application/pdf" ||
-        uploadedFileType.startsWith("image/");
-
-      if (!allowed) {
-        return json({ error: "Allowed file types: PDF or images (jpg/png/webp)." }, 400);
-      }
-      if (size <= 0 || size > maxBytes) {
-        return json({ error: "File size must be between 1 byte and 5MB." }, 400);
-      }
-
-      // Upload to OpenAI Files API as user_data
-      // Docs: purpose="user_data", then use file_id in Responses input. :contentReference[oaicite:1]{index=1}
-      const up = new FormData();
-      up.append("purpose", "user_data");
-      up.append("file", uploadedFile, uploadedFileName);
-
-      const upRes = await fetch("https://api.openai.com/v1/files", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-        },
-        body: up,
-      });
-
-      const upJson = await upRes.json().catch(() => ({}));
-
-      if (!upRes.ok) {
-        const msg = upJson?.error?.message || upJson?.message || `File upload error (${upRes.status})`;
-        return json({ error: msg }, 500);
-      }
-
-      fileId = upJson?.id || null;
-      if (!fileId) {
-        return json({ error: "Upload succeeded but missing file id." }, 500);
-      }
-    }
-
-    // Build Responses "input" with optional input_file
-    const contentParts = [];
-    if (fileId) {
-      contentParts.push({ type: "input_file", file_id: fileId });
-    }
-    contentParts.push({ type: "input_text", text: userMessage });
-
-    const payload = {
-      // Σημείωση: PDFs δουλεύουν με vision-capable μοντέλα. :contentReference[oaicite:2]{index=2}
-      // Αν θέλεις φθηνότερο, δοκίμασε μετά πάλι "gpt-4.1-mini" — αλλά πρώτα να δουλέψει σταθερά.
-      model: "gpt-4.1",
-      instructions,
-      input: [{ role: "user", content: contentParts }],
-      // store: false,
-    };
+    // Hard timeout ώστε να μην "κρεμάει" το widget
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 25000);
 
     const upstream = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
+      signal: controller.signal,
       headers: {
         Authorization: `Bearer ${env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
-    });
+      body: JSON.stringify({
+        model: "gpt-4.1-mini",
+        instructions,
+        input: userMessage,
+        temperature: 0.3,
+        max_output_tokens: 350,
+      }),
+    }).finally(() => clearTimeout(t));
 
     const data = await upstream.json().catch(() => ({}));
 
@@ -125,16 +48,63 @@ export async function onRequestPost(context) {
       return json({ error: msg }, 500);
     }
 
-    const replyText =
-      (typeof data.output_text === "string" && data.output_text.trim())
-        ? data.output_text.trim()
-        : "Δεν μπόρεσα να απαντήσω. Προσπάθησε ξανά.";
+    const replyText = extractReplyText(data);
+
+    if (!replyText) {
+      // Αυτό είναι το κρίσιμο: αν για οποιονδήποτε λόγο δεν βγάλουμε κείμενο, στέλνουμε διαγνωστικό
+      return json(
+        {
+          error:
+            "Η OpenAI επέστρεψε απάντηση χωρίς αναγνώσιμο κείμενο. (Παρακαλώ δοκίμασε ξανά.)",
+          debug: {
+            has_output_text: typeof data?.output_text === "string",
+            output_len: Array.isArray(data?.output) ? data.output.length : 0,
+          },
+        },
+        500
+      );
+    }
 
     return json({ reply: replyText }, 200);
   } catch (err) {
-    const msg = err?.message ? String(err.message) : "Internal error";
+    const msg =
+      err?.name === "AbortError"
+        ? "Timeout: ο server άργησε να απαντήσει. Δοκίμασε ξανά."
+        : (err?.message ? String(err.message) : "Internal error");
     return json({ error: msg }, 500);
   }
+}
+
+function extractReplyText(data) {
+  // 1) Fast path: output_text (συχνά υπάρχει)
+  if (data && typeof data.output_text === "string" && data.output_text.trim()) {
+    return data.output_text.trim();
+  }
+
+  // 2) Fallback: ψάχνουμε σε output[] -> message/content -> output_text
+  if (!data || !Array.isArray(data.output)) return "";
+
+  for (const item of data.output) {
+    // αρκετές φορές το item είναι { type: "message", content: [...] }
+    if (item?.type === "message" && Array.isArray(item.content)) {
+      for (const c of item.content) {
+        if (c?.type === "output_text" && typeof c.text === "string" && c.text.trim()) {
+          return c.text.trim();
+        }
+      }
+    }
+
+    // κάποιες υλοποιήσεις έχουν content σε άλλα σημεία
+    if (Array.isArray(item?.content)) {
+      for (const c of item.content) {
+        if (c?.type === "output_text" && typeof c.text === "string" && c.text.trim()) {
+          return c.text.trim();
+        }
+      }
+    }
+  }
+
+  return "";
 }
 
 function json(obj, status = 200) {
