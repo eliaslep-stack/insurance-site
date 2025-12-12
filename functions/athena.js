@@ -31,7 +31,8 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-5.1-mini",
+        model: "gpt-4.1-mini",
+
         instructions,
         input: userMessage,
         // store: false, // αν θέλεις να μην κρατάει logs
