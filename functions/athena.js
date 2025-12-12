@@ -4,7 +4,7 @@ export async function onRequestPost(context) {
 
   if (!env?.OPENAI_API_KEY) {
     return new Response(
-      JSON.stringify({ error: "Missing OPENAI_API_KEY in environment variables." }),
+      JSON.stringify({ error: "Missing OPENAI_API_KEY (Cloudflare Pages → Settings → Variables)" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
@@ -30,31 +30,32 @@ export async function onRequestPost(context) {
     "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά) " +
     "και καθοδηγείς τον χρήστη στα επόμενα βήματα. " +
     "Δεν δίνεις νομικές συμβουλές και δεν υπόσχεσαι αποζημιώσεις ή εγκρίσεις. " +
-    "Αν λείπουν στοιχεία, κάνεις 2–4 στοχευμένες ερωτήσεις για να καταλάβεις ανάγκες/προϋπολογισμό/περιορισμούς. " +
-    "Αν κάτι ξεφεύγει από την αρμοδιότητά σου ή χρειάζεται ανθρώπινο έλεγχο, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
+    "Αν λείπουν στοιχεία, κάνεις 2–4 στοχευμένες ερωτήσεις. " +
+    "Αν χρειάζεται ανθρώπινος έλεγχος, ζητάς επικοινωνία με ασφαλιστικό σύμβουλο.";
 
   try {
     const r = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: "gpt-5.1-mini",
         instructions,
         input: userMessage,
-        store: false
-      })
+        store: false,
+      }),
     });
 
     const data = await r.json().catch(() => ({}));
 
     if (!r.ok) {
-      // Μην διαρρέουν λεπτομέρειες στον πελάτη – αλλά να φαίνεται καθαρά ότι είναι server θέμα.
-      console.error("OpenAI error:", data);
+      // επιστρέφουμε “καθαρό” μήνυμα για να δεις τι φταίει (π.χ. invalid_api_key, insufficient_quota κ.λπ.)
+      const upstream = data?.error?.message || data?.message || JSON.stringify(data);
+      console.error("OpenAI upstream error:", data);
       return new Response(
-        JSON.stringify({ error: "Upstream AI error" }),
+        JSON.stringify({ error: `Upstream error: ${upstream}` }),
         { status: 502, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -65,9 +66,9 @@ export async function onRequestPost(context) {
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
-    console.error("Athena error:", err);
+    console.error("Athena internal error:", err);
     return new Response(
-      JSON.stringify({ error: "Internal error" }),
+      JSON.stringify({ error: `Internal error: ${String(err?.message || err)}` }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
