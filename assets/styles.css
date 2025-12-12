@@ -404,3 +404,37 @@ a:visited {
 #athena-body strong {
   color: #111 !important;
 }
+/* Athena widget hard overrides */
+#athena-chatbox {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+#athena-chatbox * {
+  color: #0f172a !important;
+}
+
+#athena-body {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.athena-msg {
+  color: #0f172a !important;
+}
+
+.athena-msg strong {
+  color: #0f172a !important;
+}
+
+#athena-input {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #d1d5db !important;
+}
+
+#athena-send {
+  background: #111827 !important;
+  color: #ffffff !important;
+}
+
