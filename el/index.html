@@ -177,5 +177,22 @@
     </div>
   </div>
 
+  <!-- Athena Widget -->
+  <div id="athena-bubble" style="position:fixed;right:18px;bottom:18px;z-index:9999;cursor:pointer;">
+    <img src="/assets/athena.png" alt="Athena" style="width:56px;height:56px;border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,.18);" />
+  </div>
+
+  <div id="athena-chatbox" style="position:fixed;right:18px;bottom:86px;width:340px;max-width:calc(100vw - 36px);height:420px;display:none;flex-direction:column;z-index:9999;background:#fff;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);overflow:hidden;">
+    <div style="padding:12px 12px;background:#0f172a;color:#fff;font-weight:600;">Αθηνά • IL Insurance</div>
+    <div id="athena-body" style="padding:12px;flex:1;overflow:auto;font-size:14px;line-height:1.35;"></div>
+    <form style="display:flex;gap:8px;padding:10px;border-top:1px solid #eee;">
+      <input id="athena-input" type="text" placeholder="Γράψε εδώ..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;outline:none;" />
+      <button id="athena-send" type="submit" style="padding:10px 12px;border:0;border-radius:10px;background:#111827;color:#fff;cursor:pointer;">Send</button>
+    </form>
+  </div>
+
+  <script src="/assets/athena-widget.js" defer></script>
+  <!-- End Athena Widget -->
+
 </body>
 </html>
