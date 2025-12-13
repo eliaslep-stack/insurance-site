@@ -1,4 +1,3 @@
-// /assets/athena-widget.js
 document.addEventListener("DOMContentLoaded", () => {
   const bubble = document.getElementById("athena-bubble");
   const box = document.getElementById("athena-chatbox");
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Put toolsRow just above the input row if possible
-  const inputRow = input.parentElement; // usually the bottom row container
+  const inputRow = input.parentElement;
   if (inputRow && inputRow.parentElement) {
     toolsRow.appendChild(attachBtn);
     toolsRow.appendChild(fileNameLabel);
@@ -86,49 +85,53 @@ document.addEventListener("DOMContentLoaded", () => {
   function addMessage(sender, text) {
     const div = document.createElement("div");
     div.className = "athena-msg";
-    div.style.color = "#111"; // fixes “black on dark” issues in many themes
+    div.style.color = "#111";
     div.innerHTML = "<strong>" + escapeHtml(sender) + ":</strong> " + escapeHtml(text);
     bodyDiv.appendChild(div);
     bodyDiv.scrollTop = bodyDiv.scrollHeight;
   }
 
   async function sendMessage() {
-    const text = input.value.trim();
+    const rawText = (input.value || "");
+    const text = rawText.trim();
+
+    // Αν δεν υπάρχει ούτε κείμενο ούτε αρχείο, μην στέλνεις.
     if (!text && !selectedFile) return;
 
-    addMessage("Εσύ", text || "(επισύναψη)");
+    // ΠΟΤΕ κενό μήνυμα όταν υπάρχει αρχείο (fallback prompt)
+    const finalMessage =
+      selectedFile && !text
+        ? "Ανάλυσε το συνημμένο αρχείο και πες μου τι να προσέξω: καλύψεις, απαλλαγές, εξαιρέσεις, προϋποθέσεις και πιθανά σημεία παγίδων."
+        : text;
+
+    addMessage("Εσύ", text || (selectedFile ? "(επισύναψη)" : ""));
     input.value = "";
     sendBtn.disabled = true;
 
     addMessage("Αθηνά", "⏳ Σκέφτομαι…");
 
     try {
-      let res;
+      // Στέλνουμε ΠΑΝΤΑ FormData, με ή χωρίς αρχείο (μία ροή = λιγότερα bugs)
+      const fd = new FormData();
+      fd.append("message", finalMessage);
 
       if (selectedFile) {
-        // multipart/form-data
-        const fd = new FormData();
-        fd.append("message", text || "Διάβασε το συνημμένο και καθοδήγησέ με.");
         fd.append("file", selectedFile, selectedFile.name);
-
-        res = await fetch("/athena", {
-          method: "POST",
-          body: fd,
-        });
-      } else {
-        // JSON
-        res = await fetch("/athena", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text }),
-        });
       }
 
+      const res = await fetch("/athena", {
+        method: "POST",
+        body: fd,
+        headers: { "Accept": "application/json" }
+      });
+
       let data = {};
-      try {
+      const ct = res.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
         data = await res.json();
-      } catch {
-        data = {};
+      } else {
+        const t = await res.text();
+        data = { reply: t };
       }
 
       // remove “Σκέφτομαι…”
