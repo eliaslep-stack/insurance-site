@@ -1,27 +1,27 @@
-// /functions/athena.js (Cloudflare Pages Function)
-// Supports BOTH JSON and multipart/form-data (file upload).
-// Uploads file to OpenAI Files API, then calls Responses API with input_file.
-// Keeps "document context" across turns using file_id (returned to client).
+// /functions/athena.js
+// Cloudflare Pages Function
+// ✔ Bullet-point enforced document analysis
+// ✔ Keeps document context across turns using file_id
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
     if (!env.OPENAI_API_KEY) {
-      return json({ error: "Missing OPENAI_API_KEY in Cloudflare Variables" }, 500);
+      return json({ error: "Missing OPENAI_API_KEY" }, 500);
     }
 
     const ct = (request.headers.get("content-type") || "").toLowerCase();
 
     let userMessage = "";
-    let file = null;              // File from formData
-    let incomingFileId = null;    // persisted doc context from client
+    let file = null;
+    let incomingFileId = null;
 
-    // Read request (multipart or json)
+    // -------- Read request --------
     if (ct.includes("multipart/form-data")) {
       const form = await request.formData();
       userMessage = String(form.get("message") || "").trim();
-      file = form.get("file"); // may be null
+      file = form.get("file");
       incomingFileId = String(form.get("file_id") || "").trim() || null;
     } else {
       const body = await request.json().catch(() => ({}));
@@ -29,99 +29,98 @@ export async function onRequestPost(context) {
       incomingFileId = String(body?.file_id || "").trim() || null;
     }
 
-    const hasFile = !!file && typeof file === "object" && typeof file.arrayBuffer === "function";
+    const hasFile =
+      !!file && typeof file === "object" && typeof file.arrayBuffer === "function";
+
     const hasActiveFile = hasFile || !!incomingFileId;
 
-    // Fallback: if there's a file (or active file_id) but no text, create a strong default prompt
+    // -------- Hard fallback prompt --------
     if (!userMessage && hasActiveFile) {
-      userMessage =
-        "Ανάλυσε το συνημμένο έγγραφο και δώσε καθαρή εικόνα για: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες και Επόμενα βήματα. " +
-        "Γράψε σε bullet points, με σαφείς τίτλους.";
+      userMessage = "Ανάλυσε το έγγραφο.";
     }
 
     if (!userMessage && !hasActiveFile) {
       return json({ error: "Empty message" }, 400);
     }
 
-    // Strict file validations (only when uploading a NEW file)
+    // -------- File validation --------
     if (hasFile) {
-      const maxBytes = 10 * 1024 * 1024; // 10MB
-      if (file.size > maxBytes) {
+      if (file.size > 10 * 1024 * 1024) {
         return json({ error: "Το αρχείο είναι πολύ μεγάλο (max 10MB)." }, 400);
       }
 
-      const allowed = new Set([
+      const allowed = [
         "application/pdf",
         "image/jpeg",
         "image/png",
         "image/webp",
-      ]);
+      ];
 
-      if (!allowed.has(String(file.type || "").toLowerCase())) {
-        return json({ error: "Μη υποστηριζόμενος τύπος αρχείου. Δεκτά: PDF, JPG, PNG, WEBP." }, 400);
+      if (!allowed.includes(file.type)) {
+        return json({ error: "Μη αποδεκτός τύπος αρχείου." }, 400);
       }
     }
 
-    const baseInstructions =
-  "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα.\n" +
-  "Μιλάς καθαρά, επαγγελματικά και σε απλά ελληνικά.\n" +
-  "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά).\n" +
-  "Δεν γράφεις ποτέ μεγάλες παραγράφους όταν υπάρχει έγγραφο.\n" +
-  "Ακολουθείς ΠΑΝΤΑ τη δομή που σου ζητείται.";
+    // -------- STRONG SYSTEM INSTRUCTIONS --------
+    const instructions = `
+Είσαι η Αθηνά, επαγγελματικός ασφαλιστικός σύμβουλος στην Ελλάδα.
 
-      "Απαντάς καθαρά και σε απλά ελληνικά. " +
-      "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά) " +
-      "και καθοδηγείς τον χρήστη στα επόμενα βήματα χωρίς νομικές υπερβολές. " +
-      "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
+ΑΝ ΥΠΑΡΧΕΙ ΕΓΓΡΑΦΟ:
+ΑΠΑΝΤΑΣ ΥΠΟΧΡΕΩΤΙΚΑ ΜΕ ΤΗΝ ΠΑΡΑΚΑΤΩ ΔΟΜΗ.
+ΑΠΑΓΟΡΕΥΕΤΑΙ ΝΑ ΓΡΑΨΕΙΣ ΠΑΡΑΓΡΑΦΟΥΣ.
 
-    // Force bullet/structured output ONLY when a document is active
-    const formatRule = hasActiveFile
-      ? "Όταν υπάρχει συνημμένο/έγγραφο στη συζήτηση, απάντα ΠΑΝΤΑ με bullet points και τίτλους με αυτή τη σειρά: " +
-        "Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα. " +
-        "Να είσαι πρακτική/ος και να αποφεύγεις μακροσκελείς παραγράφους."
-      : "";
+ΜΟΡΦΗ ΑΠΑΝΤΗΣΗΣ (γράψε ΜΟΝΟ έτσι):
 
-    const instructions = baseInstructions + " " + formatRule;
+Καλύψεις:
+• …
 
-    // 1) Determine fileId: keep existing incomingFileId, overwrite only if uploading NEW file
+Απαλλαγές:
+• …
+
+Εξαιρέσεις:
+• …
+
+Προϋποθέσεις / Αναμονές:
+• …
+
+Σημεία-παγίδες:
+• …
+
+Επόμενα βήματα:
+• …
+
+ΑΝ ΔΕΝ ΥΠΑΡΧΕΙ ΕΓΓΡΑΦΟ:
+Απάντα σύντομα και καθαρά.
+
+Μίλα πάντα σε απλά ελληνικά.
+`;
+
+    // -------- Upload file only if NEW --------
     let fileId = incomingFileId || null;
 
     if (hasFile) {
-      const upController = new AbortController();
-      const upTimer = setTimeout(() => upController.abort(), 25000);
-
       const fd = new FormData();
       fd.append("purpose", "assistants");
-      fd.append("file", file, file.name || "upload");
+      fd.append("file", file, file.name || "document");
 
-      const up = await fetch("https://api.openai.com/v1/files", {
+      const upload = await fetch("https://api.openai.com/v1/files", {
         method: "POST",
-        signal: upController.signal,
         headers: {
           Authorization: `Bearer ${env.OPENAI_API_KEY}`,
         },
         body: fd,
-      }).finally(() => clearTimeout(upTimer));
+      });
 
-      const upData = await up.json().catch(() => ({}));
+      const upData = await upload.json().catch(() => ({}));
 
-      if (!up.ok) {
-        const msg = upData?.error?.message || upData?.message || `OpenAI file upload error (${up.status})`;
-        return json({ error: msg }, 500);
+      if (!upload.ok || !upData?.id) {
+        return json({ error: "Αποτυχία ανεβάσματος αρχείου." }, 500);
       }
 
-      fileId = upData?.id || null;
-
-      if (!fileId) {
-        return json({ error: "Το αρχείο ανέβηκε, αλλά δεν επιστράφηκε file id από την OpenAI." }, 500);
-      }
+      fileId = upData.id;
     }
 
-    // 2) Call Responses API
-    const controller = new AbortController();
-    const t = setTimeout(() => controller.abort(), 30000);
-
-    // If a fileId is active, attach it on EVERY turn (document dialogue)
+    // -------- Build input --------
     const input = fileId
       ? [
           {
@@ -134,9 +133,9 @@ export async function onRequestPost(context) {
         ]
       : userMessage;
 
-    const upstream = await fetch("https://api.openai.com/v1/responses", {
+    // -------- Call OpenAI --------
+    const res = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
-      signal: controller.signal,
       headers: {
         Authorization: `Bearer ${env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
@@ -145,66 +144,42 @@ export async function onRequestPost(context) {
         model: "gpt-4.1-mini",
         instructions,
         input,
-        temperature: 0.3,
-        max_output_tokens: 520,
+        temperature: 0.2,
+        max_output_tokens: 500,
       }),
-    }).finally(() => clearTimeout(t));
+    });
 
-    const data = await upstream.json().catch(() => ({}));
+    const data = await res.json().catch(() => ({}));
 
-    if (!upstream.ok) {
-      const msg = data?.error?.message || data?.message || `OpenAI error (${upstream.status})`;
-      return json({ error: msg }, 500);
+    if (!res.ok) {
+      return json({ error: "Σφάλμα απάντησης AI." }, 500);
     }
 
     const replyText = extractReplyText(data);
 
     if (!replyText) {
-      return json(
-        {
-          error: "Η OpenAI επέστρεψε απάντηση χωρίς αναγνώσιμο κείμενο. (Παρακαλώ δοκίμασε ξανά.)",
-          debug: {
-            has_output_text: typeof data?.output_text === "string",
-            output_len: Array.isArray(data?.output) ? data.output.length : 0,
-          },
-        },
-        500
-      );
+      return json({ error: "Κενή απάντηση AI." }, 500);
     }
 
-    // Return reply + file_id so the widget can keep context without re-upload
-    return json({ reply: replyText, file_id: fileId || null }, 200);
+    return json({ reply: replyText, file_id: fileId }, 200);
   } catch (err) {
-    const msg =
-      err?.name === "AbortError"
-        ? "Timeout: ο server άργησε να απαντήσει. Δοκίμασε ξανά."
-        : err?.message
-        ? String(err.message)
-        : "Internal error";
-    return json({ error: msg }, 500);
+    return json({ error: "Server error." }, 500);
   }
 }
 
+// -------- Helpers --------
 function extractReplyText(data) {
-  if (data && typeof data.output_text === "string" && data.output_text.trim()) {
+  if (typeof data?.output_text === "string" && data.output_text.trim()) {
     return data.output_text.trim();
   }
 
-  if (!data || !Array.isArray(data.output)) return "";
-
-  for (const item of data.output) {
-    if (item?.type === "message" && Array.isArray(item.content)) {
-      for (const c of item.content) {
-        if (c?.type === "output_text" && typeof c.text === "string" && c.text.trim()) {
-          return c.text.trim();
-        }
-      }
-    }
-
-    if (Array.isArray(item?.content)) {
-      for (const c of item.content) {
-        if (c?.type === "output_text" && typeof c.text === "string" && c.text.trim()) {
-          return c.text.trim();
+  if (Array.isArray(data?.output)) {
+    for (const item of data.output) {
+      if (Array.isArray(item?.content)) {
+        for (const c of item.content) {
+          if (c?.type === "output_text" && c.text?.trim()) {
+            return c.text.trim();
+          }
         }
       }
     }
