@@ -1,6 +1,7 @@
-// /functions/athena.js  (Cloudflare Pages Function)
+// /functions/athena.js (Cloudflare Pages Function)
 // Supports BOTH JSON and multipart/form-data (file upload).
 // Uploads file to OpenAI Files API, then calls Responses API with input_file.
+// Keeps "document context" across turns using file_id (returned to client).
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -13,30 +14,36 @@ export async function onRequestPost(context) {
     const ct = (request.headers.get("content-type") || "").toLowerCase();
 
     let userMessage = "";
-    let file = null; // File (from formData)
+    let file = null;              // File from formData
+    let incomingFileId = null;    // persisted doc context from client
 
+    // Read request (multipart or json)
     if (ct.includes("multipart/form-data")) {
       const form = await request.formData();
       userMessage = String(form.get("message") || "").trim();
       file = form.get("file"); // may be null
+      incomingFileId = String(form.get("file_id") || "").trim() || null;
     } else {
       const body = await request.json().catch(() => ({}));
       userMessage = String(body?.message || "").trim();
+      incomingFileId = String(body?.file_id || "").trim() || null;
     }
 
     const hasFile = !!file && typeof file === "object" && typeof file.arrayBuffer === "function";
+    const hasActiveFile = hasFile || !!incomingFileId;
 
-    // Fallback: αν υπάρχει αρχείο και δεν υπάρχει κείμενο, δημιουργούμε εμείς prompt
-    if (!userMessage && hasFile) {
+    // Fallback: if there's a file (or active file_id) but no text, create a strong default prompt
+    if (!userMessage && hasActiveFile) {
       userMessage =
-        "Ανάλυσε το συνημμένο αρχείο και δώσε καθαρή εικόνα για: βασικές καλύψεις, απαλλαγές, εξαιρέσεις, προϋποθέσεις, σημεία-παγίδες και τι πρέπει να ρωτήσει ο πελάτης πριν προχωρήσει.";
+        "Ανάλυσε το συνημμένο έγγραφο και δώσε καθαρή εικόνα για: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες και Επόμενα βήματα. " +
+        "Γράψε σε bullet points, με σαφείς τίτλους.";
     }
 
-    if (!userMessage && !hasFile) {
+    if (!userMessage && !hasActiveFile) {
       return json({ error: "Empty message" }, 400);
     }
 
-    // Σκληροί έλεγχοι αρχείου (επαγγελματική συμπεριφορά)
+    // Strict file validations (only when uploading a NEW file)
     if (hasFile) {
       const maxBytes = 10 * 1024 * 1024; // 10MB
       if (file.size > maxBytes) {
@@ -55,15 +62,24 @@ export async function onRequestPost(context) {
       }
     }
 
-    const instructions =
+    const baseInstructions =
       "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα. " +
-      "Απαντάς σύντομα, καθαρά και σε απλά ελληνικά. " +
+      "Απαντάς καθαρά και σε απλά ελληνικά. " +
       "Εξηγείς ασφαλιστικά προϊόντα (υγεία, ζωή, περιουσία, αυτοκίνητο, αστική ευθύνη, αποταμιευτικά) " +
       "και καθοδηγείς τον χρήστη στα επόμενα βήματα χωρίς νομικές υπερβολές. " +
       "Αν κάτι ξεφεύγει από την αρμοδιότητά σου, ζητάς να επικοινωνήσει με τον ασφαλιστικό σύμβουλο.";
 
-    // 1) Αν υπάρχει αρχείο, το ανεβάζουμε πρώτα στο OpenAI και παίρνουμε file_id
-    let fileId = null;
+    // Force bullet/structured output ONLY when a document is active
+    const formatRule = hasActiveFile
+      ? "Όταν υπάρχει συνημμένο/έγγραφο στη συζήτηση, απάντα ΠΑΝΤΑ με bullet points και τίτλους με αυτή τη σειρά: " +
+        "Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα. " +
+        "Να είσαι πρακτική/ος και να αποφεύγεις μακροσκελείς παραγράφους."
+      : "";
+
+    const instructions = baseInstructions + " " + formatRule;
+
+    // 1) Determine fileId: keep existing incomingFileId, overwrite only if uploading NEW file
+    let fileId = incomingFileId || null;
 
     if (hasFile) {
       const upController = new AbortController();
@@ -90,15 +106,17 @@ export async function onRequestPost(context) {
       }
 
       fileId = upData?.id || null;
+
       if (!fileId) {
         return json({ error: "Το αρχείο ανέβηκε, αλλά δεν επιστράφηκε file id από την OpenAI." }, 500);
       }
     }
 
-    // 2) Κλήση στο Responses API με input_text (+ input_file αν υπάρχει)
+    // 2) Call Responses API
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 30000);
 
+    // If a fileId is active, attach it on EVERY turn (document dialogue)
     const input = fileId
       ? [
           {
@@ -123,7 +141,7 @@ export async function onRequestPost(context) {
         instructions,
         input,
         temperature: 0.3,
-        max_output_tokens: 450,
+        max_output_tokens: 520,
       }),
     }).finally(() => clearTimeout(t));
 
@@ -149,7 +167,8 @@ export async function onRequestPost(context) {
       );
     }
 
-    return json({ reply: replyText }, 200);
+    // Return reply + file_id so the widget can keep context without re-upload
+    return json({ reply: replyText, file_id: fileId || null }, 200);
   } catch (err) {
     const msg =
       err?.name === "AbortError"
