@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ---- Upload UI (adds a paperclip + hidden file input) ----
+  // ---- Upload UI (paperclip + hidden file input + (optional) clear doc button) ----
   const toolsRow = document.createElement("div");
   toolsRow.style.display = "flex";
   toolsRow.style.gap = "8px";
@@ -28,6 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
   attachBtn.style.background = "white";
   attachBtn.style.cursor = "pointer";
 
+  // Προαιρετικό κουμπί “νέο έγγραφο” (καθαρίζει το ενεργό file_id)
+  const clearDocBtn = document.createElement("button");
+  clearDocBtn.type = "button";
+  clearDocBtn.textContent = "🧹";
+  clearDocBtn.title = "Νέο έγγραφο (καθαρισμός συνημμένου)";
+  clearDocBtn.style.width = "44px";
+  clearDocBtn.style.height = "36px";
+  clearDocBtn.style.borderRadius = "10px";
+  clearDocBtn.style.border = "1px solid rgba(0,0,0,0.15)";
+  clearDocBtn.style.background = "white";
+  clearDocBtn.style.cursor = "pointer";
+
   const fileNameLabel = document.createElement("div");
   fileNameLabel.style.fontSize = "12px";
   fileNameLabel.style.opacity = "0.85";
@@ -42,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
   fileInput.accept = "application/pdf,image/*";
   fileInput.style.display = "none";
 
-  let selectedFile = null;
+  // NEW: κρατάμε μνήμη εγγράφου με file_id
+  let selectedFile = null;   // νέο upload που επέλεξε τώρα ο χρήστης
+  let activeFileId = null;   // file_id από τον server για συνέχιση διαλόγου χωρίς re-upload
 
   attachBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -54,14 +68,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedFile) {
       fileNameLabel.textContent = selectedFile.name + " (" + Math.round(selectedFile.size / 1024) + " KB)";
     } else {
-      fileNameLabel.textContent = "Καμία επισύναψη";
+      fileNameLabel.textContent = activeFileId ? "Έγγραφο ενεργό (χωρίς νέα επισύναψη)" : "Καμία επισύναψη";
     }
+  });
+
+  clearDocBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Καθαρίζουμε και το νέο επιλεγμένο αρχείο και το ενεργό file context
+    selectedFile = null;
+    activeFileId = null;
+    fileInput.value = "";
+    fileNameLabel.textContent = "Καμία επισύναψη";
+    addMessage("Αθηνά", "ΟΚ. Ξεκινάμε με νέο έγγραφο. Ανέβασε νέο PDF/εικόνα όταν είσαι έτοιμος/η.");
   });
 
   // Put toolsRow just above the input row if possible
   const inputRow = input.parentElement;
   if (inputRow && inputRow.parentElement) {
     toolsRow.appendChild(attachBtn);
+    toolsRow.appendChild(clearDocBtn);
     toolsRow.appendChild(fileNameLabel);
     toolsRow.appendChild(fileInput);
     inputRow.parentElement.insertBefore(toolsRow, inputRow);
@@ -95,28 +120,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const rawText = (input.value || "");
     const text = rawText.trim();
 
-    // Αν δεν υπάρχει ούτε κείμενο ούτε αρχείο, μην στέλνεις.
-    if (!text && !selectedFile) return;
+    // Αν δεν υπάρχει ούτε κείμενο ούτε νέο αρχείο ούτε ενεργό αρχείο, μην στέλνεις
+    if (!text && !selectedFile && !activeFileId) return;
 
-    // ΠΟΤΕ κενό μήνυμα όταν υπάρχει αρχείο (fallback prompt)
+    // Fallback prompt μόνο όταν ανεβάζουμε αρχείο χωρίς κείμενο
     const finalMessage =
       selectedFile && !text
         ? "Ανάλυσε το συνημμένο αρχείο και πες μου τι να προσέξω: καλύψεις, απαλλαγές, εξαιρέσεις, προϋποθέσεις και πιθανά σημεία παγίδων."
-        : text;
+        : (text || "Συνέχισε την ανάλυση με βάση το ενεργό έγγραφο.");
 
-    addMessage("Εσύ", text || (selectedFile ? "(επισύναψη)" : ""));
+    addMessage("Εσύ", text || (selectedFile ? "(επισύναψη)" : "(συνέχεια στο ίδιο έγγραφο)"));
     input.value = "";
     sendBtn.disabled = true;
 
     addMessage("Αθηνά", "⏳ Σκέφτομαι…");
 
     try {
-      // Στέλνουμε ΠΑΝΤΑ FormData, με ή χωρίς αρχείο (μία ροή = λιγότερα bugs)
       const fd = new FormData();
       fd.append("message", finalMessage);
 
+      // Αν υπάρχει νέο αρχείο, το στέλνουμε.
+      // Αν όχι, αλλά υπάρχει activeFileId, στέλνουμε file_id για να μη χρειάζεται re-upload.
       if (selectedFile) {
         fd.append("file", selectedFile, selectedFile.name);
+      } else if (activeFileId) {
+        fd.append("file_id", activeFileId);
       }
 
       const res = await fetch("/athena", {
@@ -146,6 +174,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // NEW: αποθηκεύουμε το file_id για να συνεχίζει ο διάλογος χωρίς νέο upload
+      if (data && data.file_id) {
+        activeFileId = data.file_id;
+      }
+
       if (data && data.reply) {
         addMessage("Αθηνά", data.reply);
       } else if (data && data.error) {
@@ -154,10 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
         addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπάθησε ξανά σε λίγο.");
       }
 
-      // reset attachment after successful send
+      // Reset ΜΟΝΟ το νέο upload (selectedFile). Το activeFileId παραμένει για συνέχεια.
       selectedFile = null;
       fileInput.value = "";
-      fileNameLabel.textContent = "Καμία επισύναψη";
+
+      // Ετικέτα: αν υπάρχει ενεργό έγγραφο, το δείχνουμε ως “ενεργό”
+      fileNameLabel.textContent = activeFileId ? "Έγγραφο ενεργό (χωρίς νέα επισύναψη)" : "Καμία επισύναψη";
     } catch (err) {
       const last = bodyDiv.lastChild;
       if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
