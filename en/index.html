@@ -23,19 +23,14 @@
 
   <main class="container">
 
-    <!-- Hero Section with Background Video -->
     <section class="hero" style="position:relative; overflow:hidden; height:85vh;">
-
-      <!-- Video background (brighter) -->
       <video autoplay muted loop playsinline preload="auto"
         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(78%); z-index:0;">
         <source src="/assets/ildigitalassistant.com%20insurance.mp4" type="video/mp4">
       </video>
 
-      <!-- Light overlay -->
       <div style="position:absolute; inset:0; background:rgba(0,0,0,0.30); z-index:1;"></div>
 
-      <!-- Foreground content -->
       <div style="position:relative; z-index:2; text-align:center; color:white; padding-top:36vh;">
         <div style="
           display:inline-block;
@@ -59,9 +54,7 @@
         </div>
       </div>
     </section>
-    <!-- End Hero Section -->
 
-    <!-- Coverage Icons Section -->
     <section class="product-section">
       <h2>Coverage for what matters</h2>
       <p>Select the category that interests you to see our solutions in detail.</p>
@@ -110,7 +103,6 @@
 
       </div>
     </section>
-    <!-- End Coverage Icons Section -->
 
   </main>
 
@@ -150,8 +142,9 @@
     </form>
   </div>
 
-  <!-- IMPORTANT: cache-bust this if you deploy new widget JS -->
-  <script src="/assets/athena-widget.js?v=widget-2025-04"></script>
+  <!-- Language lock + cache-bust -->
+  <script>window.ATHENA_LANG = "en";</script>
+  <script src="/assets/athena-widget.js?v=2025-12-14-02"></script>
   <!-- End Athena Widget -->
 
 </body>
