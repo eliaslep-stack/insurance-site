@@ -2,6 +2,7 @@
 // Cloudflare Pages Function
 // Supports multipart/form-data with MULTIPLE files + keeps document context via file_ids[].
 // Calls OpenAI Responses API with input_text + input_file(s).
+// Language-aware (EL/EN): responds in English for /en pages, Greek for /el pages, or explicit "lang" param.
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -16,10 +17,12 @@ export async function onRequestPost(context) {
     let userMessage = "";
     let incomingFileIds = []; // persisted doc context from client
     let uploadedFiles = [];   // File[] from multipart
+    let incomingLang = "";    // "en" | "el" (optional)
 
     if (ct.includes("multipart/form-data")) {
       const form = await request.formData();
       userMessage = String(form.get("message") || "").trim();
+      incomingLang = String(form.get("lang") || "").trim();
 
       // MULTI: getAll("file")
       uploadedFiles = (form.getAll("file") || []).filter(Boolean);
@@ -33,12 +36,17 @@ export async function onRequestPost(context) {
         } catch {}
       }
     } else {
-      const body = await request.json().catch(() => ({})); // ✅ fixed
+      const body = await request.json().catch(() => ({}));
       userMessage = String(body?.message || "").trim();
+      incomingLang = String(body?.lang || "").trim();
 
       const arr = body?.file_ids;
       if (Array.isArray(arr)) incomingFileIds = arr.map(String).filter(Boolean);
     }
+
+    // ---------- Language detection ----------
+    // Priority: incomingLang > referer path > accept-language > default el
+    const lang = detectLang(request, incomingLang);
 
     // Keep doc context even if user sends no new file
     const hasUploads = uploadedFiles.length > 0;
@@ -47,8 +55,11 @@ export async function onRequestPost(context) {
     // Default prompt if doc exists but user didn't type anything
     if (!userMessage && hasActiveDocs) {
       userMessage =
-        "Ανάλυσε τα συνημμένα έγγραφα και δώσε καθαρή εικόνα ΜΟΝΟ σε bullets (•), " +
-        "με τίτλους και αυτή τη σειρά: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα.";
+        lang === "en"
+          ? "Analyze the attached documents and give a clear summary ONLY in bullets (•), " +
+            "with headings in this exact order: Coverages, Deductibles, Exclusions, Waiting periods / Conditions, Red flags / Traps, Next steps."
+          : "Ανάλυσε τα συνημμένα έγγραφα και δώσε καθαρή εικόνα ΜΟΝΟ σε bullets (•), " +
+            "με τίτλους και αυτή τη σειρά: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα.";
     }
 
     if (!userMessage && !hasActiveDocs) {
@@ -58,11 +69,11 @@ export async function onRequestPost(context) {
     // Validate uploads (only new files)
     if (hasUploads) {
       const maxBytesEach = 10 * 1024 * 1024; // 10MB per file
-      const maxFiles = 5; // πρακτικό όριο (μην βαράμε 20 uploads)
+      const maxFiles = 5; // πρακτικό όριο
       const allowed = new Set(["application/pdf", "image/jpeg", "image/png", "image/webp"]);
 
       if (uploadedFiles.length > maxFiles) {
-        return json({ error: `Πάρα πολλά αρχεία. Μέγιστο: ${maxFiles} ανά αποστολή.` }, 400);
+        return json({ error: `Too many files. Max: ${maxFiles} per message.` }, 400);
       }
 
       for (const f of uploadedFiles) {
@@ -70,38 +81,58 @@ export async function onRequestPost(context) {
           return json({ error: "Invalid file payload." }, 400);
         }
         if ((f.size || 0) > maxBytesEach) {
-          return json({ error: `Το αρχείο "${f.name || "upload"}" είναι πολύ μεγάλο (max 10MB).` }, 400);
+          return json({ error: `File "${f.name || "upload"}" is too large (max 10MB).` }, 400);
         }
         const type = String(f.type || "").toLowerCase();
         if (!allowed.has(type)) {
-          return json({ error: `Μη υποστηριζόμενος τύπος για "${f.name}". Δεκτά: PDF, JPG, PNG, WEBP.` }, 400);
+          return json({ error: `Unsupported type for "${f.name}". Allowed: PDF, JPG, PNG, WEBP.` }, 400);
         }
       }
     }
 
-    // Instructions: 1) ρόλος Αθηνάς, 2) email για περισσότερα, 3) αυστηρό format όταν υπάρχουν έγγραφα
-    const supportEmail = "info@ildigitalassistant.com"; // άλλαξέ το εδώ αν θέλεις
+    // ---------- Instructions ----------
+    const supportEmail = "info@ildigitalassistant.com"; // όπως το ζήτησες
 
-    const baseInstructions =
+    const baseInstructionsEl =
       "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα.\n" +
       "Απαντάς ΠΑΝΤΑ στα ελληνικά, καθαρά, πρακτικά και χωρίς διαφημιστική γλώσσα.\n" +
-      "Στόχος σου: (α) απαντήσεις σε ασφαλιστικές ερωτήσεις, (β) καθοδήγηση σε περίπτωση συμβάντος (βήματα), " +
+      "Στόχος σου: (α) απαντήσεις σε ασφαλιστικές ερωτήσεις, (β) καθοδήγηση σε περίπτωση συμβάντος (βήματα + χρήσιμα τηλέφωνα αν ζητηθούν), " +
       "(γ) εξήγηση δικαιωμάτων/υποχρεώσεων σε συμβόλαιο που ανεβάζει ο πελάτης.\n" +
-      `Για περισσότερες πληροφορίες/εξατομίκευση, να προτείνεις επικοινωνία στο ${supportEmail}.\n` +
-      "Αν λείπουν κρίσιμα στοιχεία, κάνε 1-2 στοχευμένες ερωτήσεις.\n" +
-      "Απόφυγε νομικές υπερβολές.\n";
+      `Για περισσότερες πληροφορίες/εξατομίκευση, προτείνεις email στο ${supportEmail}.\n` +
+      "Αν λείπουν κρίσιμα στοιχεία, κάνε 1-2 στοχευμένες ερωτήσεις. Απόφυγε νομικές υπερβολές.\n";
 
-    const docFormatRule = hasActiveDocs
+    const baseInstructionsEn =
+      "You are Athena, the digital insurance assistant of IL Insurance in Greece.\n" +
+      "You ALWAYS reply in English, clearly, practically, and without marketing fluff.\n" +
+      "Your goals: (a) answer insurance questions, (b) guide the user in case of an incident (steps + useful phone numbers when asked), " +
+      "(c) explain rights/obligations in an insurance policy the user uploads.\n" +
+      `For more details/personalization, suggest emailing ${supportEmail}.\n` +
+      "If key details are missing, ask 1–2 focused questions. Avoid legal overstatements.\n";
+
+    const docFormatRuleEl = hasActiveDocs
       ? "ΟΤΑΝ υπάρχουν έγγραφα στη συζήτηση:\n" +
         "1) ΜΗΝ χρησιμοποιείς markdown (όχι ###, όχι **bold**).\n" +
         "2) Γράφεις ΜΟΝΟ με απλό κείμενο και bullets που ξεκινούν με '• '.\n" +
         "3) Δίνεις ΑΚΡΙΒΩΣ τους τίτλους με αυτή τη σειρά και τίποτα άλλο:\n" +
         "Καλύψεις:\nΑπαλλαγές:\nΕξαιρέσεις:\nΠροϋποθέσεις/Αναμονές:\nΣημεία-παγίδες:\nΕπόμενα βήματα:\n" +
-        "4) Κάθε ενότητα max 5 bullets. Κάθε bullet max 18 λέξεις.\n" +
+        "4) Κάθε ενότητα max 6 bullets. Κάθε bullet max 20 λέξεις.\n" +
         "5) Αν δεν χωράει, κλείνεις με: 'Γράψε: ΣΥΝΕΧΕΙΑ' και σταματάς.\n"
       : "";
 
-    const instructions = baseInstructions + "\n" + docFormatRule;
+    const docFormatRuleEn = hasActiveDocs
+      ? "WHEN documents are present:\n" +
+        "1) Do NOT use markdown (no ###, no **bold**).\n" +
+        "2) Use plain text ONLY and bullets starting with '• '.\n" +
+        "3) Use EXACTLY these headings in this order and nothing else:\n" +
+        "Coverages:\nDeductibles:\nExclusions:\nWaiting periods / Conditions:\nRed flags / Traps:\nNext steps:\n" +
+        "4) Max 6 bullets per section. Max 20 words per bullet.\n" +
+        "5) If it doesn’t fit, end with: 'Type: CONTINUE' and stop.\n"
+      : "";
+
+    const instructions =
+      (lang === "en" ? baseInstructionsEn : baseInstructionsEl) +
+      "\n" +
+      (lang === "en" ? docFormatRuleEn : docFormatRuleEl);
 
     // 1) Upload new files -> collect file_ids
     let newFileIds = [];
@@ -117,7 +148,7 @@ export async function onRequestPost(context) {
 
     // 2) Call Responses API (attach ALL active file_ids every turn)
     const controller = new AbortController();
-    const t = setTimeout(() => controller.abort(), 35000);
+    const t = setTimeout(() => controller.abort(), 40000);
 
     const input = allFileIds.length
       ? [{
@@ -141,7 +172,8 @@ export async function onRequestPost(context) {
         instructions,
         input,
         temperature: 0.15,
-        max_output_tokens: 900, // ✅ μειώνει το “κόβει απότομα”
+        // Καλύτερα να μην το φουσκώνεις χωρίς λόγο. Το “κόβει απότομα” συνήθως είναι format+timeouts, όχι tokens.
+        max_output_tokens: hasActiveDocs ? 650 : 800,
       }),
     }).finally(() => clearTimeout(t));
 
@@ -153,19 +185,34 @@ export async function onRequestPost(context) {
 
     const replyText = extractReplyText(data);
     if (!replyText) {
-      return json({ error: "Η OpenAI επέστρεψε απάντηση χωρίς αναγνώσιμο κείμενο." }, 500);
+      return json({ error: "The model returned no readable text." }, 500);
     }
 
-    // Return reply + file_ids so client keeps multi-doc context
-    return json({ reply: replyText, file_ids: allFileIds }, 200);
+    // Return reply + file_ids so client keeps multi-doc context + echo lang for debugging
+    return json({ reply: replyText, file_ids: allFileIds, lang }, 200);
 
   } catch (err) {
     const msg =
       err?.name === "AbortError"
-        ? "Timeout: ο server άργησε να απαντήσει. Δοκίμασε ξανά."
+        ? "Timeout: server took too long. Please try again."
         : (err?.message ? String(err.message) : "Internal error");
     return json({ error: msg }, 500);
   }
+}
+
+function detectLang(request, incomingLang) {
+  const l = String(incomingLang || "").toLowerCase();
+  if (l === "en" || l === "el") return l;
+
+  const ref = (request.headers.get("referer") || "").toLowerCase();
+  if (ref.includes("/en/")) return "en";
+  if (ref.includes("/el/")) return "el";
+
+  const al = (request.headers.get("accept-language") || "").toLowerCase();
+  if (al.startsWith("en")) return "en";
+  if (al.startsWith("el")) return "el";
+
+  return "el";
 }
 
 async function uploadToOpenAI(file, apiKey) {
@@ -189,7 +236,7 @@ async function uploadToOpenAI(file, apiKey) {
     throw new Error(msg);
   }
   const id = upData?.id;
-  if (!id) throw new Error("Το αρχείο ανέβηκε, αλλά δεν επιστράφηκε file id από την OpenAI.");
+  if (!id) throw new Error("Uploaded but no file id returned by OpenAI.");
   return id;
 }
 
