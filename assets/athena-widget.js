@@ -1,4 +1,3 @@
-// /assets/athena-widget.js
 document.addEventListener("DOMContentLoaded", () => {
   const bubble = document.getElementById("athena-bubble");
   const box = document.getElementById("athena-chatbox");
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ---- Tools row ----
+  // ---- Upload UI (paperclip + hidden file input + clear doc button) ----
   const toolsRow = document.createElement("div");
   toolsRow.style.display = "flex";
   toolsRow.style.gap = "8px";
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const attachBtn = document.createElement("button");
   attachBtn.type = "button";
   attachBtn.textContent = "📎";
-  attachBtn.title = "Επισύναψη PDF/εικόνας (έως 3)";
+  attachBtn.title = "Επισύναψη PDF/εικόνας";
   attachBtn.style.width = "44px";
   attachBtn.style.height = "36px";
   attachBtn.style.borderRadius = "10px";
@@ -29,16 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
   attachBtn.style.background = "white";
   attachBtn.style.cursor = "pointer";
 
-  const clearDocsBtn = document.createElement("button");
-  clearDocsBtn.type = "button";
-  clearDocsBtn.textContent = "🧹";
-  clearDocsBtn.title = "Καθαρισμός όλων των εγγράφων";
-  clearDocsBtn.style.width = "44px";
-  clearDocsBtn.style.height = "36px";
-  clearDocsBtn.style.borderRadius = "10px";
-  clearDocsBtn.style.border = "1px solid rgba(0,0,0,0.15)";
-  clearDocsBtn.style.background = "white";
-  clearDocsBtn.style.cursor = "pointer";
+  const clearDocBtn = document.createElement("button");
+  clearDocBtn.type = "button";
+  clearDocBtn.textContent = "🧹";
+  clearDocBtn.title = "Νέο έγγραφο (καθαρισμός συνημμένου)";
+  clearDocBtn.style.width = "44px";
+  clearDocBtn.style.height = "36px";
+  clearDocBtn.style.borderRadius = "10px";
+  clearDocBtn.style.border = "1px solid rgba(0,0,0,0.15)";
+  clearDocBtn.style.background = "white";
+  clearDocBtn.style.cursor = "pointer";
 
   const fileNameLabel = document.createElement("div");
   fileNameLabel.style.fontSize = "12px";
@@ -52,24 +51,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "application/pdf,image/*";
-  // Βάζουμε multiple για browsers που υποστηρίζουν multi-select,
-  // ΑΛΛΑ το κρίσιμο είναι ότι εμείς κάνουμε append (διαδοχικές επιλογές) ώστε να δουλεύει παντού.
-  fileInput.multiple = true;
   fileInput.style.display = "none";
 
-  // ---- Memory ----
-  // selectedFiles: νέα αρχεία που επέλεξε ο χρήστης (ουρά προς upload), μέχρι 3
-  // activeFileIds: file_ids που ήδη έχουν ανέβει στον server και μένουν “ενεργά” για διάλογο/σύγκριση
-  let selectedFiles = [];
-  let activeFileIds = [];
+  // ---- Memory: keep doc context via file_id ----
+  let selectedFile = null;
+  let activeFileId = null;
 
-  // ---- UI helpers ----
+  attachBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", () => {
+    selectedFile = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+    if (selectedFile) {
+      fileNameLabel.textContent =
+        selectedFile.name + " (" + Math.round(selectedFile.size / 1024) + " KB)";
+    } else {
+      fileNameLabel.textContent = activeFileId
+        ? "Έγγραφο ενεργό (χωρίς νέα επισύναψη)"
+        : "Καμία επισύναψη";
+    }
+  });
+
+  // ---- IMPORTANT: renders newlines + bullets properly ----
   function addMessage(sender, text) {
     const div = document.createElement("div");
     div.className = "athena-msg";
     div.style.color = "#111";
-    div.style.whiteSpace = "pre-wrap";   // ✅ line breaks & bullets
-    div.style.wordBreak = "break-word";  // ✅ long lines wrap
+
+    // ✅ keeps line breaks & bullet points
+    div.style.whiteSpace = "pre-wrap";
+    div.style.wordBreak = "break-word";
 
     const strong = document.createElement("strong");
     strong.textContent = sender + ": ";
@@ -84,61 +97,20 @@ document.addEventListener("DOMContentLoaded", () => {
     bodyDiv.scrollTop = bodyDiv.scrollHeight;
   }
 
-  function updateLabel() {
-    if (selectedFiles.length) {
-      const totalKb = Math.round(selectedFiles.reduce((s, f) => s + (f.size || 0), 0) / 1024);
-      fileNameLabel.textContent = `Σε αναμονή: ${selectedFiles.length} αρχείο/α (${totalKb} KB)`;
-      return;
-    }
-    if (activeFileIds.length) {
-      fileNameLabel.textContent = `Έγγραφα ενεργά: ${activeFileIds.length}`;
-      return;
-    }
+  clearDocBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    selectedFile = null;
+    activeFileId = null;
+    fileInput.value = "";
     fileNameLabel.textContent = "Καμία επισύναψη";
-  }
-
-  // ---- Events ----
-  attachBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    fileInput.click();
+    addMessage("Αθηνά", "ΟΚ. Ξεκινάμε με νέο έγγραφο. Ανέβασε νέο PDF/εικόνα όταν είσαι έτοιμος/η.");
   });
 
-  // ✅ ΚΡΙΣΙΜΟ: append επιλογές (ώστε να βάζεις 2ο/3ο αρχείο σε ξεχωριστές κινήσεις)
-  fileInput.addEventListener("change", () => {
-    const newlyPicked = Array.from(fileInput.files || []);
-
-    for (const f of newlyPicked) {
-      if (selectedFiles.length >= 3) break;
-
-      // avoid duplicates (same name+size)
-      const exists = selectedFiles.some(x => x.name === f.name && x.size === f.size);
-      if (!exists) selectedFiles.push(f);
-    }
-
-    if (newlyPicked.length && selectedFiles.length >= 3) {
-      addMessage("Αθηνά", "Σημείωση: κρατάω έως 3 αρχεία για σύγκριση.");
-    }
-
-    // ✅ ΠΟΛΥ σημαντικό: επιτρέπει να ξαναδιαλέξεις αμέσως νέο αρχείο (ακόμα και το ίδιο)
-    fileInput.value = "";
-
-    updateLabel();
-  });
-
-  clearDocsBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    selectedFiles = [];
-    activeFileIds = [];
-    fileInput.value = "";
-    updateLabel();
-    addMessage("Αθηνά", "Καθάρισα όλα τα έγγραφα. Ανέβασε νέα αρχεία για σύγκριση.");
-  });
-
-  // Put toolsRow above input row
+  // Put toolsRow just above the input row if possible
   const inputRow = input.parentElement;
   if (inputRow && inputRow.parentElement) {
     toolsRow.appendChild(attachBtn);
-    toolsRow.appendChild(clearDocsBtn);
+    toolsRow.appendChild(clearDocBtn);
     toolsRow.appendChild(fileNameLabel);
     toolsRow.appendChild(fileInput);
     inputRow.parentElement.insertBefore(toolsRow, inputRow);
@@ -151,32 +123,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function sendMessage() {
-    const text = (input.value || "").trim();
+    const rawText = input.value || "";
+    const text = rawText.trim();
 
-    // nothing to send
-    if (!text && selectedFiles.length === 0 && activeFileIds.length === 0) return;
+    // If nothing to send
+    if (!text && !selectedFile && !activeFileId) return;
 
-    // message that pushes bullet structure + compare when multiple docs exist
     const finalMessage =
-      (selectedFiles.length > 0 && !text)
-        ? "Ανάλυσε τα συνημμένα και δώσε ΜΟΝΟ σε bullet points με τίτλους: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα. Αν υπάρχουν ≥2 έγγραφα, κάνε σύγκριση ανά ενότητα (A vs B vs C)."
-        : (text || "Συνέχισε/σύγκρινε με βάση τα ενεργά έγγραφα. Απάντα σε bullet points.");
+      selectedFile && !text
+        ? "Ανάλυσε το συνημμένο αρχείο και δώσε σε bullet points: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα."
+        : (text || "Συνέχισε την ανάλυση με βάση το ενεργό έγγραφο.");
 
-    addMessage("Εσύ", text || (selectedFiles.length ? "(επισύναψη)" : "(συνέχεια/σύγκριση)"));
+    addMessage("Εσύ", text || (selectedFile ? "(επισύναψη)" : "(συνέχεια στο ίδιο έγγραφο)"));
     input.value = "";
     sendBtn.disabled = true;
+
     addMessage("Αθηνά", "⏳ Σκέφτομαι…");
 
     try {
       const fd = new FormData();
       fd.append("message", finalMessage);
 
-      // ✅ Αν ανεβάζεις νέα αρχεία, στείλε ΚΑΙ τα ήδη ενεργά file_ids (ώστε να “χτιστεί” το σύνολο).
-      if (selectedFiles.length) {
-        if (activeFileIds.length) fd.append("file_ids", JSON.stringify(activeFileIds));
-        for (const f of selectedFiles) fd.append("file", f, f.name);
-      } else if (activeFileIds.length) {
-        fd.append("file_ids", JSON.stringify(activeFileIds));
+      if (selectedFile) {
+        fd.append("file", selectedFile, selectedFile.name);
+      } else if (activeFileId) {
+        fd.append("file_id", activeFileId);
       }
 
       const res = await fetch("/athena", {
@@ -186,42 +157,52 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       let data = {};
-      const ct = res.headers.get("content-type") || "";
-      if (ct.includes("application/json")) data = await res.json();
-      else data = { reply: await res.text() };
+      const rct = res.headers.get("content-type") || "";
+      if (rct.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const t = await res.text();
+        data = { reply: t };
+      }
 
-      // remove “⏳ Σκέφτομαι…”
+      // Remove "⏳ Σκέφτομαι…"
       const last = bodyDiv.lastChild;
       if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
         bodyDiv.removeChild(last);
       }
 
       if (!res.ok) {
-        addMessage("Αθηνά", "Σφάλμα: " + (data?.error || "Server error"));
+        const msg = data?.error ? String(data.error) : "Server error";
+        addMessage("Αθηνά", "Σφάλμα: " + msg);
         return;
       }
 
-      // ✅ Κρατάμε πίσω έως 3 file_ids από server
-      if (Array.isArray(data.file_ids)) {
-        activeFileIds = data.file_ids.filter(Boolean).slice(0, 3);
-      } else if (data.file_id) {
-        if (!activeFileIds.includes(data.file_id)) activeFileIds.push(data.file_id);
-        activeFileIds = activeFileIds.slice(0, 3);
+      // ✅ keep file context for next turns
+      if (data && data.file_id) {
+        activeFileId = data.file_id;
       }
 
-      addMessage("Αθηνά", data.reply || "Χωρίς απάντηση.");
+      if (data && data.reply) {
+        addMessage("Αθηνά", data.reply);
+      } else if (data && data.error) {
+        addMessage("Αθηνά", "Σφάλμα: " + data.error);
+      } else {
+        addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπάθησε ξανά σε λίγο.");
+      }
 
-      // reset only pending uploads, keep active docs
-      selectedFiles = [];
+      // Reset only the new upload selection
+      selectedFile = null;
       fileInput.value = "";
-      updateLabel();
+      fileNameLabel.textContent = activeFileId
+        ? "Έγγραφο ενεργό (χωρίς νέα επισύναψη)"
+        : "Καμία επισύναψη";
 
     } catch (err) {
       const last = bodyDiv.lastChild;
       if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
         bodyDiv.removeChild(last);
       }
-      addMessage("Αθηνά", "Πρόβλημα σύνδεσης. Δοκίμασε ξανά.");
+      addMessage("Αθηνά", "Πρόβλημα σύνδεσης. Έλεγξε το internet και δοκίμασε ξανά.");
     } finally {
       sendBtn.disabled = false;
     }
@@ -244,6 +225,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  addMessage("Αθηνά", "Γεια σου! Μπορείς να προσθέτεις 1–3 αρχεία (διαδοχικά) και να ζητήσεις σύγκριση. Τα bullets εμφανίζονται σωστά.");
-  updateLabel();
+  addMessage("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση. Μπορείς και να επισυνάψεις PDF/εικόνα.");
 });
