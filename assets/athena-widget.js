@@ -8,6 +8,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!bubble || !box || !bodyDiv || !input || !sendBtn) return;
 
+  // ---------- LANG (single source of truth) ----------
+  // Priority: window.ATHENA_LANG > <html lang> > URL path > default "el"
+  const LANG = (() => {
+    const w = String(window.ATHENA_LANG || "").toLowerCase();
+    if (w === "en" || w === "el") return w;
+
+    const htmlLang = String(document.documentElement.lang || "").toLowerCase();
+    if (htmlLang === "en" || htmlLang === "el") return htmlLang;
+
+    const p = String(location.pathname || "").toLowerCase();
+    if (p.includes("/en/")) return "en";
+    if (p.includes("/el/")) return "el";
+
+    return "el";
+  })();
+
+  const T = (key) => {
+    const dict = {
+      el: {
+        attachTitle: "Επισύναψη PDF/εικόνας (πολλαπλά)",
+        clearTitle: "Καθαρισμός ενεργών εγγράφων (νέα υπόθεση)",
+        none: "Καμία επισύναψη",
+        activeDocs: (n) => `Έγγραφα ενεργά: ${n} (χωρίς νέα επισύναψη)`,
+        filesPicked: (n, names, more) => `${n} αρχεία: ${names}${more}`,
+        you: "Εσύ",
+        athena: "Αθηνά",
+        thinking: "⏳ Σκέφτομαι…",
+        err: "Σφάλμα: ",
+        connErr: "Πρόβλημα σύνδεσης. Έλεγξε το internet και δοκίμασε ξανά.",
+        cleared: "ΟΚ. Καθάρισα τα ενεργά έγγραφα. Ανέβασε νέο PDF/εικόνα για νέα υπόθεση.",
+        placeholder: "Γράψε εδώ...",
+        continueBtn: "Συνέχεια",
+        continueWord: "ΣΥΝΕΧΕΙΑ",
+        attachTag: (n) => `(επισύναψη ${n} αρχείων)`,
+        ctxTag: "(συνέχεια στα ενεργά έγγραφα)",
+        defaultDocPrompt:
+          "Ανάλυσε τα συνημμένα έγγραφα και δώσε σε bullet points με τίτλους: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα.",
+        defaultCtxPrompt: "Συνέχισε με βάση τα ενεργά έγγραφα.",
+        hello:
+          "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση. Μπορείς να επισυνάψεις PDF/εικόνες."
+      },
+      en: {
+        attachTitle: "Attach PDF/image (multiple)",
+        clearTitle: "Clear active documents (new case)",
+        none: "No attachments",
+        activeDocs: (n) => `Active documents: ${n} (no new upload)`,
+        filesPicked: (n, names, more) => `${n} files: ${names}${more}`,
+        you: "You",
+        athena: "Athena",
+        thinking: "⏳ Thinking…",
+        err: "Error: ",
+        connErr: "Connection issue. Check your internet and try again.",
+        cleared: "OK. I cleared the active documents. Upload a new PDF/image to start a new case.",
+        placeholder: "Type here...",
+        continueBtn: "Continue",
+        continueWord: "CONTINUE",
+        attachTag: (n) => `(attached ${n} files)`,
+        ctxTag: "(continue with active documents)",
+        defaultDocPrompt:
+          "Analyze the attached documents and reply ONLY in bullet points with headings: Coverages, Deductibles, Exclusions, Waiting periods / Conditions, Red flags / Traps, Next steps.",
+        defaultCtxPrompt: "Continue based on the active documents.",
+        hello:
+          "Hi! Ask me anything about insurance. You can also attach PDFs/images."
+      }
+    };
+    return dict[LANG][key];
+  };
+
   // ---------- UI: tools row ----------
   const toolsRow = document.createElement("div");
   toolsRow.style.display = "flex";
@@ -15,8 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
   toolsRow.style.alignItems = "center";
   toolsRow.style.marginTop = "10px";
 
-  const attachBtn = mkBtn("📎", "Επισύναψη PDF/εικόνας (πολλαπλά)");
-  const clearDocBtn = mkBtn("🧹", "Καθαρισμός ενεργών εγγράφων (νέα υπόθεση)");
+  const attachBtn = mkBtn("📎", T("attachTitle"));
+  const clearDocBtn = mkBtn("🧹", T("clearTitle"));
 
   const fileNameLabel = document.createElement("div");
   fileNameLabel.style.fontSize = "12px";
@@ -25,32 +93,34 @@ document.addEventListener("DOMContentLoaded", () => {
   fileNameLabel.style.overflow = "hidden";
   fileNameLabel.style.textOverflow = "ellipsis";
   fileNameLabel.style.whiteSpace = "nowrap";
-  fileNameLabel.textContent = "Καμία επισύναψη";
+  fileNameLabel.textContent = T("none");
 
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "application/pdf,image/*";
-  fileInput.multiple = true; // ✅ multi
+  fileInput.multiple = true;
   fileInput.style.display = "none";
 
   // ---------- State ----------
-  let selectedFiles = [];  // File[] (νέα uploads, append mode)
-  let activeFileIds = [];  // string[] (persisted doc context από server)
-  let isSending = false;   // αποφυγή διπλών sends
+  let selectedFiles = [];
+  let activeFileIds = [];
+  let isSending = false;
 
-  // ---------- Helpers ----------
+  // Align placeholder with language
+  input.placeholder = T("placeholder");
+
   function updateLabel() {
     if (selectedFiles.length > 0) {
       const names = selectedFiles.slice(0, 2).map(f => f.name).join(", ");
       const more = selectedFiles.length > 2 ? ` +${selectedFiles.length - 2}` : "";
-      fileNameLabel.textContent = `${selectedFiles.length} αρχεία: ${names}${more}`;
+      fileNameLabel.textContent = T("filesPicked")(selectedFiles.length, names, more);
       return;
     }
     if (activeFileIds.length > 0) {
-      fileNameLabel.textContent = `Έγγραφα ενεργά: ${activeFileIds.length} (χωρίς νέα επισύναψη)`;
+      fileNameLabel.textContent = T("activeDocs")(activeFileIds.length);
       return;
     }
-    fileNameLabel.textContent = "Καμία επισύναψη";
+    fileNameLabel.textContent = T("none");
   }
 
   function toggleBox() {
@@ -75,18 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let html = "";
     let inUl = false;
 
-    const openUl = () => {
-      if (!inUl) {
-        html += "<ul style='margin:6px 0 6px 18px; padding:0;'>";
-        inUl = true;
-      }
-    };
-    const closeUl = () => {
-      if (inUl) {
-        html += "</ul>";
-        inUl = false;
-      }
-    };
+    const openUl = () => { if (!inUl) { html += "<ul style='margin:6px 0 6px 18px; padding:0;'>"; inUl = true; } };
+    const closeUl = () => { if (inUl) { html += "</ul>"; inUl = false; } };
 
     for (const line of lines) {
       const t = String(line ?? "").trimEnd();
@@ -118,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function removeThinkingIfAny() {
     const last = bodyDiv.lastChild;
-    if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
+    if (last && last.textContent && (last.textContent.includes("Thinking") || last.textContent.includes("Σκέφτομαι"))) {
       bodyDiv.removeChild(last);
     }
   }
@@ -138,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = document.createElement("button");
     btn.id = "athena-continue-btn";
     btn.type = "button";
-    btn.textContent = "Συνέχεια";
+    btn.textContent = T("continueBtn");
     btn.style.padding = "8px 12px";
     btn.style.borderRadius = "10px";
     btn.style.border = "1px solid rgba(0,0,0,0.15)";
@@ -147,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      input.value = "ΣΥΝΕΧΕΙΑ";
+      input.value = T("continueWord");
       sendMessage();
     });
 
@@ -158,30 +218,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function replySeemsTruncatedOrAsksContinue(reply) {
     const t = String(reply || "");
-    // Αν θες, αυστηροποίησε/χαλάρωσε τα triggers εδώ.
-    return (
-      /γράψε:\s*συνέχεια/i.test(t) ||
-      /\bσυνέχεια\b/i.test(t) ||
-      /κόβ(εται|ηκε)|συνεχίζ(ω|ουμε)/i.test(t)
-    );
+    return /type:\s*continue/i.test(t) || /γράψε:\s*συνέχεια/i.test(t);
   }
 
   // ---------- Events ----------
-  attachBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    fileInput.click();
-  });
+  attachBtn.addEventListener("click", (e) => { e.preventDefault(); fileInput.click(); });
 
-  // Append mode: προσθέτουμε, δεν αντικαθιστούμε
   fileInput.addEventListener("change", () => {
     const picked = fileInput.files ? Array.from(fileInput.files) : [];
     for (const f of picked) {
-      const exists = selectedFiles.some(
-        x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified
-      );
+      const exists = selectedFiles.some(x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified);
       if (!exists) selectedFiles.push(f);
     }
-    fileInput.value = ""; // επιτρέπει να ξαναδιαλέξει και το ίδιο αρχείο
+    fileInput.value = "";
     updateLabel();
   });
 
@@ -192,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fileInput.value = "";
     hideContinueButton();
     updateLabel();
-    addMessage("Αθηνά", "ΟΚ. Καθάρισα τα ενεργά έγγραφα. Ανέβασε νέο PDF/εικόνα για νέα υπόθεση.");
+    addMessage(T("athena"), T("cleared"));
   });
 
   // Place tools row above input row
@@ -205,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputRow.parentElement.insertBefore(toolsRow, inputRow);
   }
 
-  // Prevent form submit refresh (κλασικό bug)
+  // Prevent form refresh
   const form = sendBtn.closest("form");
   if (form) {
     form.addEventListener("submit", (e) => {
@@ -218,10 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
   sendBtn.addEventListener("click", (e) => { e.preventDefault(); sendMessage(); });
 
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   });
 
   // ---------- Main send ----------
@@ -236,25 +282,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const finalMessage =
       (hasNewUploads && !text)
-        ? "Ανάλυσε τα συνημμένα έγγραφα και δώσε σε bullet points με τίτλους: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα."
-        : (text || "Συνέχισε με βάση τα ενεργά έγγραφα.");
+        ? T("defaultDocPrompt")
+        : (text || T("defaultCtxPrompt"));
 
     hideContinueButton();
 
-    addMessage(
-      "Εσύ",
-      text || (hasNewUploads ? `(επισύναψη ${selectedFiles.length} αρχείων)` : "(συνέχεια στα ενεργά έγγραφα)")
-    );
-
+    addMessage(T("you"), text || (hasNewUploads ? T("attachTag")(selectedFiles.length) : T("ctxTag")));
     input.value = "";
     sendBtn.disabled = true;
     isSending = true;
 
-    addMessage("Αθηνά", "⏳ Σκέφτομαι…");
+    addMessage(T("athena"), T("thinking"));
 
     try {
       const fd = new FormData();
       fd.append("message", finalMessage);
+
+      // CRITICAL: send lang EVERY time
+      fd.append("lang", LANG);
 
       if (hasNewUploads) {
         for (const f of selectedFiles) fd.append("file", f, f.name);
@@ -273,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
       removeThinkingIfAny();
 
       if (!res.ok) {
-        addMessage("Αθηνά", "Σφάλμα: " + (data?.error ? String(data.error) : "Server error"));
+        addMessage(T("athena"), T("err") + (data?.error ? String(data.error) : "Server error"));
         return;
       }
 
@@ -282,20 +327,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (data?.reply) {
-        addMessage("Αθηνά", data.reply);
-        if (replySeemsTruncatedOrAsksContinue(data.reply)) {
-          showContinueButton();
-        }
+        addMessage(T("athena"), data.reply);
+        if (replySeemsTruncatedOrAsksContinue(data.reply)) showContinueButton();
       } else {
-        addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπάθησε ξανά.");
+        addMessage(T("athena"), LANG === "en" ? "Something went wrong. Please try again." : "Κάτι πήγε στραβά. Προσπάθησε ξανά.");
       }
 
-      // κρατάμε context, καθαρίζουμε μόνο τα νέα uploads
       selectedFiles = [];
       updateLabel();
     } catch (err) {
       removeThinkingIfAny();
-      addMessage("Αθηνά", "Πρόβλημα σύνδεσης. Έλεγξε το internet και δοκίμασε ξανά.");
+      addMessage(T("athena"), T("connErr"));
     } finally {
       sendBtn.disabled = false;
       isSending = false;
@@ -303,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   updateLabel();
-  addMessage("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση. Μπορείς να επισυνάψεις PDF/εικόνες.");
+  addMessage(T("athena"), T("hello"));
 });
 
 function mkBtn(txt, title) {
