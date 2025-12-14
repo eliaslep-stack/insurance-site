@@ -21,7 +21,8 @@ export async function onRequestPost(context) {
     if (ct.includes("multipart/form-data")) {
       const form = await request.formData();
       userMessage = String(form.get("message") || "").trim();
-      file = form.get("file");
+      const files = form.getAll("file").filter(Boolean); // ✅ πολλά αρχεία
+
       incomingFileId = String(form.get("file_id") || "").trim() || null;
     } else {
       const body = await request.json().catch(() => ({}));
