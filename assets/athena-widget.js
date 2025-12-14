@@ -48,10 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
   fileNameLabel.textContent = "Καμία επισύναψη";
 
   const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "application/pdf,image/*";
-  fileInput.multiple = true; // ✅ multi-document
-  fileInput.style.display = "none";
+fileInput.type = "file";
+fileInput.accept = "application/pdf,image/*";
+fileInput.multiple = true; // ✅ multi
+fileInput.style.display = "none";
+
+// ✅ DEBUG: να βλέπεις ΑΜΕΣΩΣ ότι είναι ON
+fileNameLabel.textContent = "Widget loaded — multiple=" + (fileInput.multiple ? "ON" : "OFF");
+
 
   // Multi-doc state
   let selectedFiles = [];   // File[] (νέα uploads)
