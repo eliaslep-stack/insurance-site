@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!bubble || !box || !bodyDiv || !input || !sendBtn) return;
 
-  // --- Tools row ---
+  // ---------- UI: tools row ----------
   const toolsRow = document.createElement("div");
   toolsRow.style.display = "flex";
   toolsRow.style.gap = "8px";
@@ -30,13 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "application/pdf,image/*";
-  fileInput.multiple = true;
+  fileInput.multiple = true; // ✅ multi
   fileInput.style.display = "none";
 
-  // State
-  let selectedFiles = [];   // new uploads (File[])
-  let activeFileIds = [];   // persisted context (string[])
+  // ---------- State ----------
+  let selectedFiles = [];  // File[] (νέα uploads, append mode)
+  let activeFileIds = [];  // string[] (persisted doc context από server)
+  let isSending = false;   // αποφυγή διπλών sends
 
+  // ---------- Helpers ----------
   function updateLabel() {
     if (selectedFiles.length > 0) {
       const names = selectedFiles.slice(0, 2).map(f => f.name).join(", ");
@@ -51,49 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
     fileNameLabel.textContent = "Καμία επισύναψη";
   }
 
-  attachBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    fileInput.click();
-  });
-
-  // IMPORTANT: append mode (δεν αντικαθιστούμε, προσθέτουμε)
-  fileInput.addEventListener("change", () => {
-    const picked = fileInput.files ? Array.from(fileInput.files) : [];
-    for (const f of picked) {
-      if (!selectedFiles.some(x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified)) {
-        selectedFiles.push(f);
-      }
-    }
-    fileInput.value = ""; // επιτρέπει να ξαναδιαλέξει το ίδιο αρχείο αν χρειαστεί
-    updateLabel();
-  });
-
-  clearDocBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    selectedFiles = [];
-    activeFileIds = [];
-    fileInput.value = "";
-    updateLabel();
-    addMessage("Αθηνά", "ΟΚ. Καθάρισα τα ενεργά έγγραφα. Ανέβασε νέο PDF/εικόνα για νέα υπόθεση.");
-  });
-
-  // place tools row
-  const inputRow = input.parentElement;
-  if (inputRow && inputRow.parentElement) {
-    toolsRow.appendChild(attachBtn);
-    toolsRow.appendChild(clearDocBtn);
-    toolsRow.appendChild(fileNameLabel);
-    toolsRow.appendChild(fileInput);
-    inputRow.parentElement.insertBefore(toolsRow, inputRow);
-  }
-
   function toggleBox() {
     const isOpen = box.style.display === "flex";
     box.style.display = isOpen ? "none" : "flex";
     if (!isOpen) input.focus();
   }
 
-  // Safe-ish renderer: keeps newlines and shows bullets nicely
   function escapeHtml(s) {
     return String(s)
       .replace(/&/g, "&amp;")
@@ -107,15 +72,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const raw = String(text || "");
     const lines = raw.split(/\r?\n/);
 
-    // Build simple HTML with <br> and <ul> for lines that start with "• " or "- "
     let html = "";
     let inUl = false;
 
-    const openUl = () => { if (!inUl) { html += "<ul style='margin:6px 0 6px 18px; padding:0;'>"; inUl = true; } };
-    const closeUl = () => { if (inUl) { html += "</ul>"; inUl = false; } };
+    const openUl = () => {
+      if (!inUl) {
+        html += "<ul style='margin:6px 0 6px 18px; padding:0;'>";
+        inUl = true;
+      }
+    };
+    const closeUl = () => {
+      if (inUl) {
+        html += "</ul>";
+        inUl = false;
+      }
+    };
 
     for (const line of lines) {
-      const t = line.trimEnd();
+      const t = String(line ?? "").trimEnd();
       const isBullet = /^\s*(•|-)\s+/.test(t);
 
       if (isBullet) {
@@ -124,11 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
         html += `<li style="margin:2px 0;">${escapeHtml(item)}</li>`;
       } else {
         closeUl();
-        if (t.trim() === "") {
-          html += "<br>";
-        } else {
-          html += `${escapeHtml(t)}<br>`;
-        }
+        if (t.trim() === "") html += "<br>";
+        else html += `${escapeHtml(t)}<br>`;
       }
     }
     closeUl();
@@ -145,7 +116,118 @@ document.addEventListener("DOMContentLoaded", () => {
     bodyDiv.scrollTop = bodyDiv.scrollHeight;
   }
 
+  function removeThinkingIfAny() {
+    const last = bodyDiv.lastChild;
+    if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) {
+      bodyDiv.removeChild(last);
+    }
+  }
+
+  function hideContinueButton() {
+    const w = document.getElementById("athena-continue-wrap");
+    if (w) w.remove();
+  }
+
+  function showContinueButton() {
+    if (document.getElementById("athena-continue-btn")) return;
+
+    const wrap = document.createElement("div");
+    wrap.id = "athena-continue-wrap";
+    wrap.style.margin = "10px 0 0 0";
+
+    const btn = document.createElement("button");
+    btn.id = "athena-continue-btn";
+    btn.type = "button";
+    btn.textContent = "Συνέχεια";
+    btn.style.padding = "8px 12px";
+    btn.style.borderRadius = "10px";
+    btn.style.border = "1px solid rgba(0,0,0,0.15)";
+    btn.style.background = "#f8fafc";
+    btn.style.cursor = "pointer";
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      input.value = "ΣΥΝΕΧΕΙΑ";
+      sendMessage();
+    });
+
+    wrap.appendChild(btn);
+    bodyDiv.appendChild(wrap);
+    bodyDiv.scrollTop = bodyDiv.scrollHeight;
+  }
+
+  function replySeemsTruncatedOrAsksContinue(reply) {
+    const t = String(reply || "");
+    // Αν θες, αυστηροποίησε/χαλάρωσε τα triggers εδώ.
+    return (
+      /γράψε:\s*συνέχεια/i.test(t) ||
+      /\bσυνέχεια\b/i.test(t) ||
+      /κόβ(εται|ηκε)|συνεχίζ(ω|ουμε)/i.test(t)
+    );
+  }
+
+  // ---------- Events ----------
+  attachBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    fileInput.click();
+  });
+
+  // Append mode: προσθέτουμε, δεν αντικαθιστούμε
+  fileInput.addEventListener("change", () => {
+    const picked = fileInput.files ? Array.from(fileInput.files) : [];
+    for (const f of picked) {
+      const exists = selectedFiles.some(
+        x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified
+      );
+      if (!exists) selectedFiles.push(f);
+    }
+    fileInput.value = ""; // επιτρέπει να ξαναδιαλέξει και το ίδιο αρχείο
+    updateLabel();
+  });
+
+  clearDocBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    selectedFiles = [];
+    activeFileIds = [];
+    fileInput.value = "";
+    hideContinueButton();
+    updateLabel();
+    addMessage("Αθηνά", "ΟΚ. Καθάρισα τα ενεργά έγγραφα. Ανέβασε νέο PDF/εικόνα για νέα υπόθεση.");
+  });
+
+  // Place tools row above input row
+  const inputRow = input.parentElement;
+  if (inputRow && inputRow.parentElement) {
+    toolsRow.appendChild(attachBtn);
+    toolsRow.appendChild(clearDocBtn);
+    toolsRow.appendChild(fileNameLabel);
+    toolsRow.appendChild(fileInput);
+    inputRow.parentElement.insertBefore(toolsRow, inputRow);
+  }
+
+  // Prevent form submit refresh (κλασικό bug)
+  const form = sendBtn.closest("form");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      sendMessage();
+    });
+  }
+
+  bubble.addEventListener("click", (e) => { e.preventDefault(); toggleBox(); });
+  sendBtn.addEventListener("click", (e) => { e.preventDefault(); sendMessage(); });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // ---------- Main send ----------
   async function sendMessage() {
+    if (isSending) return;
+
     const text = (input.value || "").trim();
     const hasNewUploads = selectedFiles.length > 0;
     const hasContextDocs = activeFileIds.length > 0;
@@ -157,9 +239,16 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "Ανάλυσε τα συνημμένα έγγραφα και δώσε σε bullet points με τίτλους: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα."
         : (text || "Συνέχισε με βάση τα ενεργά έγγραφα.");
 
-    addMessage("Εσύ", text || (hasNewUploads ? `(επισύναψη ${selectedFiles.length} αρχείων)` : "(συνέχεια στο ίδιο έγγραφο)"));
+    hideContinueButton();
+
+    addMessage(
+      "Εσύ",
+      text || (hasNewUploads ? `(επισύναψη ${selectedFiles.length} αρχείων)` : "(συνέχεια στα ενεργά έγγραφα)")
+    );
+
     input.value = "";
     sendBtn.disabled = true;
+    isSending = true;
 
     addMessage("Αθηνά", "⏳ Σκέφτομαι…");
 
@@ -181,9 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json().catch(() => ({}));
 
-      // remove “Σκέφτομαι…”
-      const last = bodyDiv.lastChild;
-      if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) bodyDiv.removeChild(last);
+      removeThinkingIfAny();
 
       if (!res.ok) {
         addMessage("Αθηνά", "Σφάλμα: " + (data?.error ? String(data.error) : "Server error"));
@@ -194,36 +281,26 @@ document.addEventListener("DOMContentLoaded", () => {
         activeFileIds = data.file_ids.map(String).filter(Boolean);
       }
 
-      if (data?.reply) addMessage("Αθηνά", data.reply);
-      else addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπάθησε ξανά.");
+      if (data?.reply) {
+        addMessage("Αθηνά", data.reply);
+        if (replySeemsTruncatedOrAsksContinue(data.reply)) {
+          showContinueButton();
+        }
+      } else {
+        addMessage("Αθηνά", "Κάτι πήγε στραβά. Προσπάθησε ξανά.");
+      }
 
-      // Clear ONLY new uploads; keep activeFileIds for context
+      // κρατάμε context, καθαρίζουμε μόνο τα νέα uploads
       selectedFiles = [];
       updateLabel();
     } catch (err) {
-      const last = bodyDiv.lastChild;
-      if (last && last.textContent && last.textContent.includes("Σκέφτομαι")) bodyDiv.removeChild(last);
+      removeThinkingIfAny();
       addMessage("Αθηνά", "Πρόβλημα σύνδεσης. Έλεγξε το internet και δοκίμασε ξανά.");
     } finally {
       sendBtn.disabled = false;
+      isSending = false;
     }
   }
-
-  // IMPORTANT: μην αφήνεις το <form> να κάνει submit (αλλιώς “στέλνει μόνο του” / κάνει refresh)
-  const form = sendBtn.closest("form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      sendMessage();
-    });
-  }
-
-  bubble.addEventListener("click", (e) => { e.preventDefault(); toggleBox(); });
-  sendBtn.addEventListener("click", (e) => { e.preventDefault(); sendMessage(); });
-
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  });
 
   updateLabel();
   addMessage("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση. Μπορείς να επισυνάψεις PDF/εικόνες.");
