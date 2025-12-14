@@ -22,7 +22,7 @@ export async function onRequestPost(context) {
       userMessage = String(form.get("message") || "").trim();
 
       // MULTI: getAll("file")
-      uploadedFiles = form.getAll("file").filter(Boolean);
+      uploadedFiles = (form.getAll("file") || []).filter(Boolean);
 
       // client can send file_ids as JSON string
       const raw = String(form.get("file_ids") || "").trim();
@@ -33,19 +33,22 @@ export async function onRequestPost(context) {
         } catch {}
       }
     } else {
-      const body = await request.json().catch(() => ({}));
+      const body = await request.json().catch(() => ({})); // ✅ fixed
       userMessage = String(body?.message || "").trim();
+
       const arr = body?.file_ids;
       if (Array.isArray(arr)) incomingFileIds = arr.map(String).filter(Boolean);
     }
 
+    // Keep doc context even if user sends no new file
     const hasUploads = uploadedFiles.length > 0;
     const hasActiveDocs = hasUploads || incomingFileIds.length > 0;
 
+    // Default prompt if doc exists but user didn't type anything
     if (!userMessage && hasActiveDocs) {
       userMessage =
-        "Ανάλυσε τα συνημμένα έγγραφα και δώσε καθαρή εικόνα σε bullet points, με τίτλους: " +
-        "Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα.";
+        "Ανάλυσε τα συνημμένα έγγραφα και δώσε καθαρή εικόνα ΜΟΝΟ σε bullets (•), " +
+        "με τίτλους και αυτή τη σειρά: Καλύψεις, Απαλλαγές, Εξαιρέσεις, Προϋποθέσεις/Αναμονές, Σημεία-παγίδες, Επόμενα βήματα.";
     }
 
     if (!userMessage && !hasActiveDocs) {
@@ -55,10 +58,14 @@ export async function onRequestPost(context) {
     // Validate uploads (only new files)
     if (hasUploads) {
       const maxBytesEach = 10 * 1024 * 1024; // 10MB per file
+      const maxFiles = 5; // πρακτικό όριο (μην βαράμε 20 uploads)
       const allowed = new Set(["application/pdf", "image/jpeg", "image/png", "image/webp"]);
 
+      if (uploadedFiles.length > maxFiles) {
+        return json({ error: `Πάρα πολλά αρχεία. Μέγιστο: ${maxFiles} ανά αποστολή.` }, 400);
+      }
+
       for (const f of uploadedFiles) {
-        // Some environments return strings for empty fields; keep only true File objects
         if (!f || typeof f !== "object" || typeof f.arrayBuffer !== "function") {
           return json({ error: "Invalid file payload." }, 400);
         }
@@ -72,21 +79,26 @@ export async function onRequestPost(context) {
       }
     }
 
-    // Instructions: 1) τι κάνει η Αθηνά, 2) πού στέλνει για “περισσότερα”, 3) μορφοποίηση όταν υπάρχουν έγγραφα
-    const supportEmail = "info@ildigitalassistant.com"; // άλλαξέ το εδώ αν θες άλλο
+    // Instructions: 1) ρόλος Αθηνάς, 2) email για περισσότερα, 3) αυστηρό format όταν υπάρχουν έγγραφα
+    const supportEmail = "info@ildigitalassistant.com"; // άλλαξέ το εδώ αν θέλεις
+
     const baseInstructions =
       "Είσαι η Αθηνά, ο ψηφιακός ασφαλιστικός βοηθός της IL Insurance στην Ελλάδα.\n" +
-      "Απαντάς ΠΑΝΤΑ στα ελληνικά, καθαρά και πρακτικά.\n" +
-      "Στόχος σου είναι: (α) να απαντάς ασφαλιστικές ερωτήσεις, (β) να καθοδηγείς σε περίπτωση συμβάντος (βήματα + χρήσιμα τηλέφωνα αν ζητηθούν), " +
-      "(γ) να εξηγείς δικαιώματα/υποχρεώσεις σε συμβόλαιο που ανεβάζει ο πελάτης.\n" +
+      "Απαντάς ΠΑΝΤΑ στα ελληνικά, καθαρά, πρακτικά και χωρίς διαφημιστική γλώσσα.\n" +
+      "Στόχος σου: (α) απαντήσεις σε ασφαλιστικές ερωτήσεις, (β) καθοδήγηση σε περίπτωση συμβάντος (βήματα), " +
+      "(γ) εξήγηση δικαιωμάτων/υποχρεώσεων σε συμβόλαιο που ανεβάζει ο πελάτης.\n" +
       `Για περισσότερες πληροφορίες/εξατομίκευση, να προτείνεις επικοινωνία στο ${supportEmail}.\n` +
-      "Μην κάνεις νομικές υπερβολές, και αν λείπουν κρίσιμα στοιχεία κάνε 1-2 στοχευμένες ερωτήσεις.\n";
+      "Αν λείπουν κρίσιμα στοιχεία, κάνε 1-2 στοχευμένες ερωτήσεις.\n" +
+      "Απόφυγε νομικές υπερβολές.\n";
 
     const docFormatRule = hasActiveDocs
-      ? "ΟΤΑΝ υπάρχουν έγγραφα στη συζήτηση: γράφε ΠΑΝΤΑ σε bullet points, μία πρόταση ανά bullet, " +
-        "και κράτα τους τίτλους ακριβώς με αυτή τη σειρά:\n" +
+      ? "ΟΤΑΝ υπάρχουν έγγραφα στη συζήτηση:\n" +
+        "1) ΜΗΝ χρησιμοποιείς markdown (όχι ###, όχι **bold**).\n" +
+        "2) Γράφεις ΜΟΝΟ με απλό κείμενο και bullets που ξεκινούν με '• '.\n" +
+        "3) Δίνεις ΑΚΡΙΒΩΣ τους τίτλους με αυτή τη σειρά και τίποτα άλλο:\n" +
         "Καλύψεις:\nΑπαλλαγές:\nΕξαιρέσεις:\nΠροϋποθέσεις/Αναμονές:\nΣημεία-παγίδες:\nΕπόμενα βήματα:\n" +
-        "Μην χρησιμοποιείς markdown τύπου **bold** ή ###. Μόνο απλό κείμενο + bullets (•)."
+        "4) Κάθε ενότητα max 5 bullets. Κάθε bullet max 18 λέξεις.\n" +
+        "5) Αν δεν χωράει, κλείνεις με: 'Γράψε: ΣΥΝΕΧΕΙΑ' και σταματάς.\n"
       : "";
 
     const instructions = baseInstructions + "\n" + docFormatRule;
@@ -105,14 +117,14 @@ export async function onRequestPost(context) {
 
     // 2) Call Responses API (attach ALL active file_ids every turn)
     const controller = new AbortController();
-    const t = setTimeout(() => controller.abort(), 30000);
+    const t = setTimeout(() => controller.abort(), 35000);
 
     const input = allFileIds.length
       ? [{
           role: "user",
           content: [
             { type: "input_text", text: userMessage },
-            ...allFileIds.map(id => ({ type: "input_file", file_id: id }))
+            ...allFileIds.map(id => ({ type: "input_file", file_id: id })),
           ],
         }]
       : userMessage;
@@ -125,12 +137,11 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // αν θες “αναβαθμισμένες δυνατότητες”, βάλε gpt-5.2 ή gpt-5.2-pro
         model: "gpt-5.2",
         instructions,
         input,
-        temperature: 0.2,
-        max_output_tokens: 520,
+        temperature: 0.15,
+        max_output_tokens: 900, // ✅ μειώνει το “κόβει απότομα”
       }),
     }).finally(() => clearTimeout(t));
 
@@ -147,6 +158,7 @@ export async function onRequestPost(context) {
 
     // Return reply + file_ids so client keeps multi-doc context
     return json({ reply: replyText, file_ids: allFileIds }, 200);
+
   } catch (err) {
     const msg =
       err?.name === "AbortError"
