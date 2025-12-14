@@ -54,7 +54,7 @@
           </p>
           <p>
             <a class="btn" href="./contact.html" style="padding:10px 25px; background:#00b5ff; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Request a Quote</a>
-            <a class="btn alt" href="./life-health.html" style="padding:10px 25px; border:1px solid white; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Life & Health</a>
+            <a class="btn alt" href="./life-health.html" style="padding:10px 25px; border:1px solid white; color:white; border-radius:8px; text-decoration:none; font-weight:500;">Life &amp; Health</a>
           </p>
         </div>
       </div>
@@ -117,13 +117,14 @@
   <footer class="container" style="margin-top:40px;">
     <div>
       © <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092] ·
-      Email: info@ildigitalassistant.com
+      Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="066f686069466f6a626f616f72676a6775756f75726768722865696b">[email&#160;protected]</a>
     </div>
     <div>
       <a href="./privacy.html">Privacy</a> ·
       <a href="./cookies.html">Cookies</a> ·
       <a href="./terms.html">Terms</a>
     </div>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
 
@@ -135,63 +136,23 @@
     </div>
   </div>
 
-  <!-- Athena Chat Assistant -->
-  <style>
-    #athena-bubble {
-      position: fixed;
-      bottom: 20px;
-      right: 22px;
-      background: #ffffff;
-      border-radius: 50px;
-      padding: 6px 16px 6px 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-      transition: all 0.25s ease;
-    }
-
-    #athena-bubble:hover {
-      transform: scale(1.05);
-    }
-
-    #athena-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #eee;
-    }
-
-    #athena-bubble span {
-      font-size: 14px;
-      color: #333;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 600px) {
-      #athena-bubble span {
-        display: none;
-      }
-      #athena-bubble {
-        padding: 6px;
-        border-radius: 50%;
-      }
-    }
-  </style>
-
-  <div id="athena-bubble"
-       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
-    <img id="athena-avatar"
-         src="https://insurance.ildigitalassistant.com/assets/athena.png"
-         alt="Athena Assistant">
-    <span>Ask Athena — Insurance help</span>
+  <!-- Athena Widget (SAME as /el) -->
+  <div id="athena-bubble" style="position:fixed;right:18px;bottom:18px;z-index:9999;cursor:pointer;">
+    <img src="/assets/athena.png" alt="Athena" style="width:56px;height:56px;border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,.18);" />
   </div>
-  <!-- END Athena Chat Assistant -->
+
+  <div id="athena-chatbox" style="position:fixed;right:18px;bottom:86px;width:340px;max-width:calc(100vw - 36px);height:420px;display:none;flex-direction:column;z-index:9999;background:#fff;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);overflow:hidden;">
+    <div style="padding:12px 12px;background:#0f172a;color:#fff;font-weight:600;">Athena • IL Insurance</div>
+    <div id="athena-body" style="padding:12px;flex:1;overflow:auto;font-size:14px;line-height:1.35;"></div>
+    <form style="display:flex;gap:8px;padding:10px;border-top:1px solid #eee;">
+      <input id="athena-input" type="text" placeholder="Type here..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;outline:none;" />
+      <button id="athena-send" type="submit" style="padding:10px 12px;border:0;border-radius:10px;background:#111827;color:#fff;cursor:pointer;">Send</button>
+    </form>
+  </div>
+
+  <!-- IMPORTANT: cache-bust this if you deploy new widget JS -->
+  <script src="/assets/athena-widget.js?v=widget-2025-04"></script>
+  <!-- End Athena Widget -->
 
 </body>
 </html>
