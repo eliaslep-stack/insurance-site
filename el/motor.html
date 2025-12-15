@@ -16,15 +16,9 @@
       border-radius: 8px;
       display: none;
     }
-    .helper {
-      color: #444;
-      margin-top: 8px;
-    }
-    .small-note {
-      font-size: 13px;
-      color: #555;
-      margin-top: 10px;
-    }
+    .helper { color: #444; margin-top: 8px; }
+    .small-note { font-size: 13px; color: #555; margin-top: 10px; }
+    .seo-content p { line-height: 1.7; }
   </style>
 </head>
 <body>
@@ -50,88 +44,62 @@
     <p class="helper">Η επικοινωνία γίνεται αποκλειστικά μέσω email.</p>
   </section>
 
+  <!-- ΦΟΡΜΑ -->
   <section class="card">
     <h2 class="h2">Αίτημα προσφοράς</h2>
 
     <p class="small-note">
-      Για να σας προτείνουμε σωστή κάλυψη, χρειαζόμαστε ορισμένες βασικές πληροφορίες. Τα στοιχεία χρησιμοποιούνται αποκλειστικά για την αξιολόγηση ασφαλιστικής πρότασης και για να σας απαντήσουμε μέσω email.
+      Για να σας προτείνουμε σωστή κάλυψη, χρειαζόμαστε ορισμένες βασικές πληροφορίες.
+      Τα στοιχεία χρησιμοποιούνται αποκλειστικά για την αξιολόγηση ασφαλιστικής πρότασης
+      και για απάντηση μέσω email.
     </p>
 
     <form id="motorForm" class="form">
 
-      <p>
-        <label>Ονοματεπώνυμο<br>
-          <input type="text" id="m_name" required autocomplete="name">
-        </label>
-      </p>
+      <p><label>Ονοματεπώνυμο<br>
+        <input type="text" id="m_name" required></label></p>
 
-      <p>
-        <label>Email<br>
-          <input type="email" id="m_email" required autocomplete="email">
-        </label>
-      </p>
+      <p><label>Email<br>
+        <input type="email" id="m_email" required></label></p>
 
-      <p>
-        <label>Αριθμός κυκλοφορίας<br>
-          <input type="text" id="m_plate" required placeholder="π.χ. ΙΒΧ1234">
-        </label>
-      </p>
+      <p><label>Αριθμός κυκλοφορίας<br>
+        <input type="text" id="m_plate" required placeholder="π.χ. ΙΒΧ1234"></label></p>
 
-      <p>
-        <label>Έτος 1ης κυκλοφορίας<br>
-          <input type="number" id="m_year" required min="1970" max="2030" placeholder="π.χ. 2019">
-        </label>
-      </p>
+      <p><label>Έτος 1ης κυκλοφορίας<br>
+        <input type="number" id="m_year" required min="1970" max="2030"></label></p>
 
-      <p>
-        <label>Χρήση οχήματος<br>
-          <select id="m_use" required>
-            <option value="">Επιλέξτε…</option>
-            <option value="Ιδιωτική">Ιδιωτική</option>
-            <option value="Επαγγελματική">Επαγγελματική</option>
-          </select>
-        </label>
-      </p>
+      <p><label>Χρήση οχήματος<br>
+        <select id="m_use" required>
+          <option value="">Επιλέξτε…</option>
+          <option>Ιδιωτική</option>
+          <option>Επαγγελματική</option>
+        </select></label></p>
 
-      <p>
-        <label>Λήξη τρέχουσας ασφάλισης<br>
-          <input type="date" id="m_expiry" required>
-        </label>
-      </p>
+      <p><label>Λήξη τρέχουσας ασφάλισης<br>
+        <input type="date" id="m_expiry" required></label></p>
 
-      <p>
-        <label>Ζημιά τα τελευταία 3–5 έτη;<br>
-          <select id="m_claims" required>
-            <option value="">Επιλέξτε…</option>
-            <option value="Όχι">Όχι</option>
-            <option value="Ναι">Ναι</option>
-          </select>
-        </label>
-      </p>
+      <p><label>Ζημιά τα τελευταία 3–5 έτη;<br>
+        <select id="m_claims" required>
+          <option value="">Επιλέξτε…</option>
+          <option>Όχι</option>
+          <option>Ναι</option>
+        </select></label></p>
 
-      <p>
-        <label>Πότε σας ενδιαφέρει να προχωρήσετε;<br>
-          <select id="m_when" required>
-            <option value="">Επιλέξτε…</option>
-            <option value="Άμεσα / μέσα στις επόμενες ημέρες">Άμεσα / μέσα στις επόμενες ημέρες</option>
-            <option value="Με τη λήξη του συμβολαίου">Με τη λήξη του συμβολαίου</option>
-            <option value="Απλώς ενημερωτικά">Απλώς ενημερωτικά</option>
-          </select>
-        </label>
-      </p>
+      <p><label>Πότε σας ενδιαφέρει να προχωρήσετε;<br>
+        <select id="m_when" required>
+          <option value="">Επιλέξτε…</option>
+          <option>Άμεσα</option>
+          <option>Με τη λήξη συμβολαίου</option>
+          <option>Ενημερωτικά</option>
+        </select></label></p>
 
-      <p>
-        <label>Μήνυμα (προαιρετικά)<br>
-          <textarea id="m_message" rows="4" placeholder="Π.χ. ενδιαφέρομαι για μικτή / οδική / θραύση κρυστάλλων κλπ."></textarea>
-        </label>
-      </p>
+      <p><label>Μήνυμα (προαιρετικά)<br>
+        <textarea id="m_message" rows="4"></textarea></label></p>
 
-      <p>
-        <label>
-          <input type="checkbox" id="m_consent" required>
-          Συμφωνώ τα στοιχεία μου να χρησιμοποιηθούν αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
-        </label>
-      </p>
+      <p><label>
+        <input type="checkbox" id="m_consent" required>
+        Συμφωνώ τα στοιχεία μου να χρησιμοποιηθούν αποκλειστικά για αξιολόγηση και απάντηση μέσω email.
+      </label></p>
 
       <p><button class="btn" type="submit">Δημιουργία email αιτήματος</button></p>
     </form>
@@ -141,142 +109,66 @@
     </div>
   </section>
 
+  <!-- SEO ΠΕΡΙΓΡΑΦΗ ΚΑΤΩ ΑΠΟ ΤΗ ΦΟΡΜΑ -->
+  <section class="card seo-content">
+    <h2 class="h2">Ασφάλιση αυτοκινήτου: τι να προσέξετε πριν επιλέξετε</h2>
+
+    <p>
+      Η ασφάλιση αυτοκινήτου στην Ελλάδα είναι υποχρεωτική, όμως η σωστή επιλογή
+      ασφαλιστηρίου δεν περιορίζεται μόνο στη χαμηλότερη τιμή. Κάθε όχημα,
+      κάθε οδηγός και κάθε χρήση έχει διαφορετικό επίπεδο κινδύνου.
+    </p>
+
+    <p>
+      Η βασική αστική ευθύνη καλύπτει ζημιές προς τρίτους, δεν καλύπτει όμως
+      ζημιές στο ίδιο το όχημα. Για αυτόν τον λόγο πολλοί οδηγοί επιλέγουν
+      πρόσθετες καλύψεις όπως κλοπή, θραύση κρυστάλλων, οδική βοήθεια ή μικτή ασφάλιση.
+    </p>
+
+    <p>
+      Το κόστος της ασφάλισης αυτοκινήτου επηρεάζεται από τον κυβισμό,
+      το έτος πρώτης κυκλοφορίας, την περιοχή, το ιστορικό ζημιών
+      και τη χρήση του οχήματος. Δεν υπάρχουν δύο ίδια ασφαλιστήρια,
+      όπως δεν υπάρχουν δύο ίδιοι οδηγοί.
+    </p>
+
+    <p>
+      Μέσα από τη φόρμα που συμπληρώσατε παραπάνω, συλλέγουμε μόνο
+      τα απολύτως απαραίτητα στοιχεία ώστε να αξιολογήσουμε σωστά
+      την περίπτωσή σας και να σας προτείνουμε λύση που έχει ουσία
+      και πραγματική προστασία.
+    </p>
+  </section>
+
 </main>
 
 <footer class="container" style="margin-top:40px;">
   <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092]</div>
   <div><a href="/privacy.html">Απόρρητο</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Όροι</a></div>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </footer>
 
 <script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
   document.getElementById("motorForm").addEventListener("submit", function(e) {
     e.preventDefault();
-
-    // Έλεγχος consent
     if (!document.getElementById("m_consent").checked) return;
 
-    const name = document.getElementById("m_name").value.trim();
-    const email = document.getElementById("m_email").value.trim();
-    const plate = document.getElementById("m_plate").value.trim();
-    const year = document.getElementById("m_year").value.trim();
-    const use = document.getElementById("m_use").value;
-    const expiry = document.getElementById("m_expiry").value;
-    const claims = document.getElementById("m_claims").value;
-    const when = document.getElementById("m_when").value;
-    const msg = document.getElementById("m_message").value.trim();
-
-    const subject = encodeURIComponent(`Αίτημα προσφοράς Αυτοκινήτου — ${plate}`);
+    const subject = encodeURIComponent("Αίτημα προσφοράς Ασφάλισης Αυτοκινήτου");
     const body = encodeURIComponent(
-      `Τύπος αιτήματος: Ασφάλιση Αυτοκινήτου\n\n` +
-      `Ονοματεπώνυμο: ${name}\n` +
-      `Email: ${email}\n\n` +
-      `Αριθμός κυκλοφορίας: ${plate}\n` +
-      `Έτος 1ης κυκλοφορίας: ${year}\n` +
-      `Χρήση: ${use}\n` +
-      `Λήξη τρέχουσας ασφάλισης: ${expiry}\n` +
-      `Ζημιά 3–5 έτη: ${claims}\n` +
-      `Χρονικός ορίζοντας: ${when}\n\n` +
-      (msg ? `Μήνυμα:\n${msg}\n` : "")
+      "Ονοματεπώνυμο: " + m_name.value + "\n" +
+      "Email: " + m_email.value + "\n" +
+      "Αριθμός κυκλοφορίας: " + m_plate.value + "\n" +
+      "Έτος: " + m_year.value + "\n" +
+      "Χρήση: " + m_use.value + "\n" +
+      "Λήξη ασφάλισης: " + m_expiry.value + "\n" +
+      "Ζημιές: " + m_claims.value + "\n" +
+      "Χρονικός ορίζοντας: " + m_when.value + "\n\n" +
+      m_message.value
     );
 
-    window.open(`mailto:info@ildigitalassistant.com?subject=${subject}&body=${body}`, "_blank");
-    document.getElementById("motorSuccess").style.display = "block";
-  });
-</script>
-
-<!-- Athena Floating Chat Widget (όπως στο contact σου) -->
-<style>
-  #athena-floating { position: fixed; bottom: 20px; right: 22px; z-index: 99999; }
-  #athena-btn {
-    background: #fff; border-radius: 50px; padding: 6px 14px 6px 6px;
-    display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 22px rgba(0,0,0,0.25);
-    cursor: pointer; border: none; transition: all .25s ease;
-  }
-  #athena-btn:hover { transform: scale(1.05); }
-  #athena-btn img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
-  #athena-chatbox {
-    position: fixed; bottom: 80px; right: 20px; width: 360px; max-height: 520px;
-    background: white; border-radius: 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-    display: none; overflow: hidden; z-index: 100000;
-  }
-  #athena-header { background: #00a8ff; color: white; padding: 12px; text-align: center; font-weight: bold; }
-  #athena-body { padding: 12px; height: 360px; overflow-y: auto; background: #f7f7f7; font-size: 14px; }
-  #athena-inputbox { display: flex; border-top: 1px solid #ddd; }
-  #athena-text { flex: 1; padding: 10px; border: none; outline: none; font-size: 14px; }
-  #athena-send { background: #00a8ff; color: white; border: none; padding: 10px 14px; cursor: pointer; }
-</style>
-
-<div id="athena-floating">
-  <button id="athena-btn" type="button">
-    <img src="https://ildigitalassistant.com/assets/athena.png" alt="Αθηνά">
-    <span style="font-size:14px;color:#333;font-weight:500;">Μίλα με την Αθηνά</span>
-  </button>
-</div>
-
-<div id="athena-chatbox">
-  <div id="athena-header">Αθηνά — Ψηφιακή Βοηθός</div>
-  <div id="athena-body"></div>
-  <div id="athena-inputbox">
-    <input id="athena-text" type="text" placeholder="Γράψε την ερώτησή σου...">
-    <button id="athena-send">➤</button>
-  </div>
-</div>
-
-<script>
-  const bubble = document.getElementById("athena-btn");
-  const box = document.getElementById("athena-chatbox");
-  const bodyDiv = document.getElementById("athena-body");
-  const txt = document.getElementById("athena-text");
-  const sendBtn = document.getElementById("athena-send");
-
-  bubble.onclick = () => { box.style.display = box.style.display === "block" ? "none" : "block"; };
-
-  function athenaAdd(sender, text) {
-    const div = document.createElement("div");
-    div.innerHTML = "<strong>" + sender + ":</strong> " + text;
-    div.style.marginBottom = "6px";
-    bodyDiv.appendChild(div);
-    bodyDiv.scrollTop = bodyDiv.scrollHeight;
-  }
-
-  athenaAdd("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
-
-  async function sendAthena() {
-    const msg = txt.value.trim();
-    if (!msg) return;
-
-    athenaAdd("Εσύ", msg);
-    txt.value = "";
-    athenaAdd("Αθηνά", "⏳ Σκέφτομαι…");
-
-    try {
-      const response = await fetch("/functions/athena", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg })
-      });
-
-      const data = await response.json();
-      bodyDiv.lastChild.remove();
-
-      if (data.reply) athenaAdd("Αθηνά", data.reply);
-      else if (data.error) athenaAdd("Αθηνά", "Σφάλμα: " + data.error);
-      else athenaAdd("Αθηνά", "Σφάλμα ή άδειο μήνυμα.");
-    } catch (e) {
-      bodyDiv.lastChild.remove();
-      athenaAdd("Αθηνά", "Πρόβλημα σύνδεσης. Προσπάθησε ξανά σε λίγο.");
-    }
-  }
-
-  sendBtn.onclick = sendAthena;
-  txt.addEventListener("keypress", e => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendAthena();
-    }
+    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
+    motorSuccess.style.display = "block";
   });
 </script>
 
