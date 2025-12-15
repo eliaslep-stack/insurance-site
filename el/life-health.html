@@ -3,273 +3,246 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Insurance — Ζωή & Υγεία</title>
+  <title>IL Insurance — Ασφάλιση Ζωής & Υγείας</title>
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
+
+  <style>
+    .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
+    .helper{color:#444;margin-top:8px}
+    .small-note{font-size:13px;color:#555;margin-top:10px;line-height:1.55}
+    .hint{font-size:13px;color:#666;margin-top:8px;line-height:1.55}
+    .seo-content p{line-height:1.7}
+    .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
 <body>
 
-  <header class="container">
-    <nav class="nav">
-      <div class="logo">
-        <img src="/assets/logo.svg" alt="Logo">
-        <strong>IL Insurance</strong>
+<header class="container">
+  <nav class="nav">
+    <div class="logo">
+      <img src="/assets/logo.svg" alt="Logo">
+      <strong>IL Insurance</strong>
+    </div>
+    <div class="lang">
+      <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+      <a href="#" onclick="Site.setLang('en')">English</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="page-hero">
+    <h1 class="h1">Ασφάλιση Ζωής &amp; Υγείας</h1>
+    <p class="lead">Συμπληρώστε τα βασικά στοιχεία για να σας προτείνουμε λύση που ταιριάζει στο προφίλ και στις ανάγκες σας.</p>
+    <p class="helper">Η επικοινωνία γίνεται αποκλειστικά μέσω email.</p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">Αίτημα προσφοράς</h2>
+
+    <p class="small-note">
+      Για να κάνουμε σωστή αξιολόγηση, χρειαζόμαστε ορισμένες βασικές πληροφορίες.
+      Δεν ζητάμε ευαίσθητες ιατρικές λεπτομέρειες ως υποχρεωτικές. Αν θέλετε να αναφέρετε κάτι,
+      το κάνετε προαιρετικά και μόνο με τη ρητή σας συγκατάθεση.
+    </p>
+
+    <form id="lifeHealthForm" class="form">
+
+      <div class="two-cols">
+        <p><label>Ονοματεπώνυμο<br>
+          <input type="text" id="lh_name" required autocomplete="name"></label></p>
+
+        <p><label>Email<br>
+          <input type="email" id="lh_email" required autocomplete="email"></label></p>
       </div>
-      <div class="lang">
-        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
-        <a href="#" onclick="Site.setLang('en')">English</a>
+
+      <div class="two-cols">
+        <p><label>Ηλικία<br>
+          <input type="number" id="lh_age" required min="0" max="100" placeholder="π.χ. 42"></label></p>
+
+        <p><label>Φύλο<br>
+          <select id="lh_gender" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Άνδρας</option>
+            <option>Γυναίκα</option>
+            <option>Δεν επιθυμώ να απαντήσω</option>
+          </select></label></p>
       </div>
-    </nav>
-  </header>
 
-  <main class="container">
-    <section class="page-hero">
-      <h1 class="h1">Ασφάλεια Ζωής &amp; Υγείας</h1>
-      <p class="lead">
-        Κάλυψη για νοσηλεία, εξωνοσοκομειακές εξετάσεις και προστασία εισοδήματος — με καθαρούς όρους και σαφή καθοδήγηση.
+      <div class="two-cols">
+        <p><label>Καπνιστής/Μη καπνιστής<br>
+          <select id="lh_smoker" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Μη καπνιστής</option>
+            <option>Καπνιστής</option>
+            <option>Περιστασιακά</option>
+          </select></label></p>
+
+        <p><label>Περιοχή κατοικίας (ενδεικτικά)<br>
+          <input type="text" id="lh_city" required placeholder="π.χ. Αθήνα, Χολαργός"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Τι σας ενδιαφέρει κυρίως;<br>
+          <select id="lh_interest" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Υγεία (νοσοκομειακό)</option>
+            <option>Υγεία (εξωνοσοκομειακό/διαγνωστικά)</option>
+            <option>Ζωής (κεφάλαιο σε περίπτωση θανάτου)</option>
+            <option>Προσωπικό ατύχημα</option>
+            <option>Συνδυασμός</option>
+          </select></label></p>
+
+        <p><label>Υπάρχει ήδη ιδιωτική ασφάλιση;<br>
+          <select id="lh_existing" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Όχι</option>
+            <option>Ναι, σε ισχύ</option>
+            <option>Είχα παλαιότερα</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Επιλογή κόστους / απαλλαγών (όπου εφαρμόζεται)<br>
+          <select id="lh_pricing" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Πιο οικονομικό (με απαλλαγές)</option>
+            <option>Χωρίς απαλλαγές (αν γίνεται)</option>
+            <option>Θέλω και τις 2 εκδοχές για σύγκριση</option>
+          </select></label></p>
+
+        <p><label>Στόχος κάλυψης<br>
+          <select id="lh_goal" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Βασική προστασία</option>
+            <option>Καλή προστασία</option>
+            <option>Πλήρης προστασία</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Επιθυμητό κεφάλαιο ζωής (€) (αν σας αφορά)<br>
+          <input type="number" id="lh_lifeSum" min="0" step="1000" placeholder="π.χ. 100000"></label></p>
+
+        <p><label>Επιθυμητό όριο/κέφαλαιο υγείας (ενδεικτικά)<br>
+          <select id="lh_healthLevel">
+            <option value="">Επιλέξτε (προαιρετικά)…</option>
+            <option>Οικονομικό νοσοκομειακό</option>
+            <option>Μεσαίο νοσοκομειακό</option>
+            <option>Υψηλό / premium</option>
+            <option>Δεν γνωρίζω – θέλω πρόταση</option>
+          </select></label></p>
+      </div>
+
+      <p class="hint">
+        Για να αποφύγουμε καθυστερήσεις, αν υπάρχουν ήδη γνωστές παθήσεις ή πρόσφατες νοσηλείες,
+        συνήθως οι εταιρείες ζητούν συμπληρωματικό ιατρικό ερωτηματολόγιο. Δεν το ζητάμε εδώ υποχρεωτικά.
+        Αν θέλετε, γράψτε απλώς “υπάρχει ιστορικό” χωρίς λεπτομέρειες και θα το χειριστούμε σωστά στο επόμενο βήμα.
       </p>
-    </section>
 
-    <section class="card">
-      <h2 class="h2">Νοσοκομειακά Προγράμματα</h2>
-      <p>
-        Κάλυψη σε ιδιωτικά νοσοκομεία στην Ελλάδα και το εξωτερικό, με ξεκάθαρη απαλλαγή και διαφανή όρια.
-        Επιλέγουμε μαζί ανάμεσα σε open ή closed network, ανάλογα με τις ανάγκες και το διαθέσιμο budget.
-      </p>
-    </section>
+      <p><label>Ιατρικό ιστορικό (προαιρετικά – σύντομα)<br>
+        <textarea id="lh_medical" rows="3" placeholder="Π.χ. 'υπάρχει ιστορικό' ή 'όχι' (χωρίς λεπτομέρειες)"></textarea></label></p>
 
-    <section class="card">
-      <h2 class="h2">Capitation &amp; Εξωνοσοκομειακά</h2>
-      <p>
-        Τα προγράμματα capitation προσφέρουν πρόσβαση σε συγκεκριμένο νοσοκομειακό όμιλο με προβλέψιμο κόστος.
-        Παράλληλα, τα εξωνοσοκομειακά προγράμματα καλύπτουν εξετάσεις, επισκέψεις και διαγνωστικούς ελέγχους.
-      </p>
-    </section>
+      <p><label>Μήνυμα (προαιρετικά)<br>
+        <textarea id="lh_message" rows="4" placeholder="Π.χ. θέλω πρόσβαση σε συγκεκριμένα νοσοκομεία, ενδιαφέρον για οικογενειακό πρόγραμμα, προϋπολογισμό κλπ."></textarea></label></p>
 
-    <section class="card">
-      <h2 class="h2">Ασφάλεια Ζωής &amp; Εισοδήματος</h2>
-      <p>
-        Κάλυψη ζωής για προστασία της οικογένειας και συνδυαστικά προγράμματα με αποταμίευση ή unit-linked,
-        ανάλογα με το τι επιδιώκετε: προστασία, αποταμίευση ή και τα δύο.
-      </p>
-    </section>
+      <p><label>
+        <input type="checkbox" id="lh_consent" required>
+        Συμφωνώ τα στοιχεία μου να χρησιμοποιηθούν αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
+      </label></p>
 
-    <section class="card">
-      <h2 class="h2">Διαδικασία</h2>
-      <p>
-        Αναλύουμε τις πραγματικές ανάγκες σας, συγκρίνουμε εταιρείες και εξηγούμε με απλά λόγια όλες τις εξαιρέσεις.
-        Λαμβάνετε γραπτές προτάσεις με σενάρια και διαλέγετε το πρόγραμμα που ταιριάζει στις δικές σας ανάγκες.
-      </p>
-      <p><a class="btn" href="./contact.html">Ζήτησε προσφορά</a></p>
-    </section>
-  </main>
+      <p><label>
+        <input type="checkbox" id="lh_sensitive">
+        Κατανοώ ότι τυχόν στοιχεία υγείας που γράψω στο πεδίο “Ιατρικό ιστορικό” αποτελούν ευαίσθητα δεδομένα και τα παρέχω προαιρετικά για τη δημιουργία προσφοράς.
+      </label></p>
 
-  <footer class="container" style="margin-top:40px;">
-    <div>
-      © <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092] ·
-      Τηλ: 6937311411 · Email: info@ildigitalassistant.com
+      <p><button class="btn" type="submit">Δημιουργία email αιτήματος</button></p>
+    </form>
+
+    <div id="lifeHealthSuccess" class="success-box">
+      ✔ Το αίτημα δημιουργήθηκε. Ελέγξτε το email σας και πατήστε “Αποστολή”.
     </div>
-    <div>
-      <a href="./privacy.html">Απόρρητο</a> ·
-      <a href="./cookies.html">Cookies</a> ·
-      <a href="./terms.html">Όροι</a>
-    </div>
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-  </footer>
+  </section>
 
-  <!-- Athena Floating Chat Widget -->
-  <style>
-    #athena-floating {
-      position: fixed;
-      bottom: 20px;
-      right: 22px;
-      z-index: 99999;
+  <section class="card seo-content">
+    <h2 class="h2">Ασφάλιση υγείας και ζωής: τι αξίζει να κοιτάξετε πριν πληρώσετε</h2>
+
+    <p>
+      Στην πράξη, η “σωστή” ασφάλιση υγείας ή ζωής δεν είναι αυτή που έχει τα περισσότερα λόγια,
+      αλλά αυτή που ταιριάζει στο προφίλ σας: ηλικία, καπνιστική συνήθεια, στόχος κάλυψης, και το πώς θέλετε να χρησιμοποιείτε
+      το ιδιωτικό σύστημα (νοσοκομειακά, διαγνωστικά, εξωνοσοκομειακά).
+    </p>
+
+    <p>
+      Τα περισσότερα προβλήματα προκύπτουν όταν γίνεται επιλογή μόνο με βάση το ασφάλιστρο.
+      Σημασία έχουν: οι απαλλαγές, οι όροι προϋπαρχουσών παθήσεων, τα όρια κάλυψης, οι εξαιρέσεις,
+      και η πραγματική διαδικασία αποζημίωσης. Γι’ αυτό ζητάμε τα ελάχιστα κρίσιμα στοιχεία
+      για να δώσουμε πρόταση με νόημα και όχι “τυφλή” τιμή.
+    </p>
+
+    <p>
+      Αν ο στόχος σας είναι προστασία οικογένειας ή δανείου, τότε το κεφάλαιο ζωής παίζει κεντρικό ρόλο.
+      Αν ο στόχος είναι πρόσβαση σε ιδιωτικές υπηρεσίες υγείας, τότε η σωστή δομή νοσοκομειακού/εξωνοσοκομειακού
+      είναι αυτό που κάνει τη διαφορά.
+    </p>
+  </section>
+
+</main>
+
+<footer class="container" style="margin-top:40px;">
+  <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092]</div>
+  <div><a href="/privacy.html">Απόρρητο</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Όροι</a></div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const medField = document.getElementById("lh_medical");
+  const sensCheck = document.getElementById("lh_sensitive");
+
+  // Αν ο χρήστης γράψει κάτι στο ιατρικό, “ζητάμε” να τσεκάρει το δεύτερο checkbox (χωρίς να τον μπλοκάρουμε άδικα).
+  function hasMedicalText() {
+    return (medField.value || "").trim().length > 0;
+  }
+
+  document.getElementById("lifeHealthForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    if (!document.getElementById("lh_consent").checked) return;
+
+    // Αν έχει γράψει ιατρικό ιστορικό, απαιτούμε το extra checkbox
+    if (hasMedicalText() && !sensCheck.checked) {
+      alert("Έχετε συμπληρώσει ιατρικό ιστορικό. Παρακαλώ τσεκάρετε ότι το παρέχετε προαιρετικά ως ευαίσθητο δεδομένο.");
+      return;
     }
 
-    #athena-btn {
-      background: #fff;
-      border-radius: 50px;
-      padding: 6px 14px 6px 6px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.25);
-      cursor: pointer;
-      border: none;
-      transition: all .25s ease;
-    }
-    #athena-btn:hover { transform: scale(1.05); }
+    const subject = encodeURIComponent("Αίτημα προσφοράς Ασφάλισης Ζωής & Υγείας");
 
-    #athena-btn img {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+    const body = encodeURIComponent(
+      "Τύπος αιτήματος: Ασφάλιση Ζωής & Υγείας\n\n" +
+      "Ονοματεπώνυμο: " + lh_name.value + "\n" +
+      "Email: " + lh_email.value + "\n\n" +
+      "Ηλικία: " + lh_age.value + "\n" +
+      "Φύλο: " + lh_gender.value + "\n" +
+      "Καπνιστής: " + lh_smoker.value + "\n" +
+      "Περιοχή: " + lh_city.value + "\n\n" +
+      "Ενδιαφέρον: " + lh_interest.value + "\n" +
+      "Υπάρχει ήδη ασφάλιση: " + lh_existing.value + "\n" +
+      "Επιλογή απαλλαγών: " + lh_pricing.value + "\n" +
+      "Στόχος κάλυψης: " + lh_goal.value + "\n\n" +
+      "Επιθυμητό κεφάλαιο ζωής (€): " + (lh_lifeSum.value || "-") + "\n" +
+      "Επιθυμητό επίπεδο υγείας: " + (lh_healthLevel.value || "-") + "\n\n" +
+      "Ιατρικό ιστορικό (προαιρετικά):\n" + (lh_medical.value || "-") + "\n\n" +
+      "Μήνυμα:\n" + (lh_message.value || "-")
+    );
 
-    #athena-chatbox {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 360px;
-      max-height: 520px;
-      background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-      display: none;
-      overflow: hidden;
-      z-index: 100000;
-    }
-
-    #athena-header {
-      background: #00a8ff;
-      color: #ffffff;
-      padding: 12px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    #athena-body {
-      padding: 12px;
-      height: 360px;
-      overflow-y: auto;
-      background: #f7f7f7;
-      font-size: 14px;
-    }
-
-    #athena-inputbox {
-      display: flex;
-      border-top: 1px solid #ddd;
-      background: #ffffff;
-    }
-
-    #athena-text {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-    }
-
-    #athena-send {
-      background: #00a8ff;
-      color: #ffffff;
-      border: none;
-      padding: 10px 14px;
-      cursor: pointer;
-    }
-  </style>
-
-  <div id="athena-floating">
-    <button id="athena-btn" type="button">
-      <img src="https://insurance.ildigitalassistant.com/assets/athena.png" alt="Αθηνά">
-      <span style="font-size:14px;color:#333;font-weight:500;">Μίλα με την Αθηνά</span>
-    </button>
-  </div>
-
-  <div id="athena-chatbox">
-    <div id="athena-header">Αθηνά — Ψηφιακή Βοηθός</div>
-    <div id="athena-body"></div>
-    <div id="athena-inputbox">
-      <input id="athena-text" type="text" placeholder="Γράψε την ερώτησή σου...">
-      <button id="athena-send">➤</button>
-    </div>
-  </div>
-
-  <script>
-    const bubble = document.getElementById("athena-btn");
-    const box = document.getElementById("athena-chatbox");
-    const bodyDiv = document.getElementById("athena-body");
-    const txt = document.getElementById("athena-text");
-    const sendBtn = document.getElementById("athena-send");
-
-    function fixAthenaColors() {
-      if (box) {
-        box.style.setProperty("background-color", "#ffffff", "important");
-        box.style.setProperty("color", "#222222", "important");
-      }
-      if (bodyDiv) {
-        bodyDiv.style.setProperty("background-color", "#f7f7f7", "important");
-        bodyDiv.style.setProperty("color", "#222222", "important");
-      }
-      if (txt) {
-        txt.style.setProperty("background-color", "#ffffff", "important");
-        txt.style.setProperty("color", "#111111", "important");
-        txt.style.setProperty("border", "none", "important");
-        txt.style.setProperty("outline", "none", "important");
-      }
-      const header = document.getElementById("athena-header");
-      if (header) {
-        header.style.setProperty("background-color", "#00a8ff", "important");
-        header.style.setProperty("color", "#ffffff", "important");
-      }
-    }
-
-    // εφαρμόζουμε τα χρώματα στην αρχή
-    fixAthenaColors();
-
-    bubble.onclick = () => {
-      box.style.display = box.style.display === "block" ? "none" : "block";
-      fixAthenaColors();
-    };
-
-    function athenaAdd(sender, text) {
-      const div = document.createElement("div");
-      div.innerHTML = "<strong>" + sender + ":</strong> " + text;
-      div.style.marginBottom = "6px";
-      div.style.setProperty("color", "#222222", "important");
-
-      const strongs = div.querySelectorAll("strong");
-      strongs.forEach(s => {
-        s.style.setProperty("color", "#111111", "important");
-        s.style.fontWeight = "bold";
-      });
-
-      bodyDiv.appendChild(div);
-      bodyDiv.scrollTop = bodyDiv.scrollHeight;
-      fixAthenaColors();
-    }
-
-    // αρχικό μήνυμα
-    athenaAdd("Αθηνά", "Γεια σου! Πες μου τι θέλεις να μάθεις για την ασφάλιση.");
-
-    async function sendAthena() {
-      const msg = txt.value.trim();
-      if (!msg) return;
-
-      athenaAdd("Εσύ", msg);
-      txt.value = "";
-      athenaAdd("Αθηνά", "⏳ Σκέφτομαι…");
-
-      try {
-        const response = await fetch("/functions/athena", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: msg })
-        });
-
-        const data = await response.json();
-        bodyDiv.lastChild.remove(); // αφαιρούμε το "Σκέφτομαι…"
-
-        if (data.reply) athenaAdd("Αθηνά", data.reply);
-        else if (data.error) athenaAdd("Αθηνά", "Σφάλμα: " + data.error);
-        else athenaAdd("Αθηνά", "Σφάλμα ή άδειο μήνυμα.");
-      } catch (e) {
-        bodyDiv.lastChild.remove();
-        athenaAdd("Αθηνά", "Πρόβλημα σύνδεσης. Προσπάθησε ξανά σε λίγο.");
-      }
-    }
-
-    sendBtn.onclick = sendAthena;
-    txt.addEventListener("keypress", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendAthena();
-      }
-    });
-  </script>
+    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
+    lifeHealthSuccess.style.display = "block";
+  });
+</script>
 
 </body>
 </html>
