@@ -3,252 +3,357 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Insurance — Επιχείρηση</title>
+  <title>IL Insurance — Ασφάλιση Επιχείρησης</title>
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
+
+  <style>
+    .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
+    .helper{color:#444;margin-top:8px}
+    .small-note{font-size:13px;color:#555;margin-top:10px;line-height:1.55}
+    .hint{font-size:13px;color:#666;margin-top:8px;line-height:1.55}
+    .seo-content p{line-height:1.7}
+    .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
+    .pill{font-size:12px;background:#f1f1f1;border-radius:999px;padding:6px 10px;display:inline-block;margin-top:8px}
+    .section-title{margin-top:10px}
+    .hidden{display:none}
+    @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
 <body>
 
-  <header class="container">
-    <nav class="nav">
-      <div class="logo">
-        <img src="/assets/logo.svg" alt="Logo">
-        <strong>IL Insurance</strong>
-      </div>
-      <div class="lang">
-        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
-        <a href="#" onclick="Site.setLang('en')">English</a>
-      </div>
-    </nav>
-  </header>
-
-  <main class="container">
-    <section class="page-hero">
-      <h1 class="h1">Ασφάλιση Επιχείρησης</h1>
-      <p class="lead">
-        Προστασία επαγγελματικού χώρου, εξοπλισμού, αποθεμάτων και ευθύνης απέναντι σε πελάτες, συνεργάτες και προσωπικό.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Ασφάλιση Επαγγελματικού Χώρου &amp; Εξοπλισμού</h2>
-      <p>
-        Η βάση της ασφάλισης επιχείρησης είναι η προστασία του χώρου και της περιουσίας σας: κτίριο, μόνιμες
-        εγκαταστάσεις, εξοπλισμός, εμπορεύματα και αποθήκες. Σχεδιάζουμε μαζί την κάλυψη, ώστε μια ζημιά να μην
-        μετατραπεί σε οικονομική καταστροφή.
-      </p>
-      <p>Τυπικές καλύψεις περιλαμβάνουν:</p>
-      <ul>
-        <li>φωτιά, έκρηξη, κεραυνό,</li>
-        <li>πλημμύρα, καταιγίδα, θύελλα,</li>
-        <li>διαρροές από σωληνώσεις,</li>
-        <li>διάρρηξη, κλοπή και ζημιές από απόπειρα κλοπής,</li>
-        <li>θραύση υαλοπινάκων και κακόβουλες ενέργειες.</li>
-      </ul>
-      <p>
-        Λαμβάνουμε υπόψη αν ο χώρος είναι ιδιόκτητος ή μισθωμένος, το έτος κατασκευής, τον τύπο κατασκευής και την
-        πραγματική αξία ανακατασκευής και περιεχομένου.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Αστική &amp; Εργοδοτική Ευθύνη</h2>
-      <p>
-        Εκτός από τις υλικές ζημιές, η επιχείρηση εκτίθεται σε απαιτήσεις τρίτων. Η αστική ευθύνη καλύπτει ζημιές
-        που μπορεί να προκληθούν σε πελάτες, επισκέπτες ή γείτονες.
-      </p>
-      <p>Ενδεικτικά περιστατικά:</p>
-      <ul>
-        <li>σωματική βλάβη πελάτη στον χώρο σας (π.χ. γλίστρημα),</li>
-        <li>υλική ζημιά σε γειτονικό κατάστημα από φωτιά ή διαρροή,</li>
-        <li>ζημιές κατά την εργασία σας σε χώρους τρίτων.</li>
-      </ul>
-      <p>
-        Η εργοδοτική ευθύνη καλύπτει απαιτήσεις εργαζομένων για ατύχημα που συμβαίνει κατά τη διάρκεια ή με αφορμή την
-        εργασία. Σε τεχνικούς κλάδους και εταιρείες με προσωπικό πεδίου, η κάλυψη αυτή είναι ουσιαστικά απαραίτητη.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Απώλεια Κερδών / Διακοπή Εργασιών</h2>
-      <p>
-        Μια μεγάλη ζημιά δεν κοστίζει μόνο σε επισκευές, αλλά και σε χαμένο χρόνο και χαμένο τζίρο. Η κάλυψη
-        «Απώλεια Κερδών» ή «Διακοπή Εργασιών» μπορεί να σας δώσει οικονομική ανάσα μέχρι να επανέλθει η επιχείρηση.
-      </p>
-      <p>Μπορεί να καλύψει:</p>
-      <ul>
-        <li>πάγια έξοδα (ενοίκιο, μισθούς, λειτουργικά),</li>
-        <li>μέρος του καθαρού κέρδους που χάνεται λόγω ζημιάς,</li>
-        <li>το χρονικό διάστημα που απαιτείται για επαναλειτουργία.</li>
-      </ul>
-      <p>
-        Έτσι, μια φωτιά ή πλημμύρα δεν εξελίσσεται σε διακοπή της επιχειρηματικής δραστηριότητας.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Διαδικασία &amp; Προσφορά</h2>
-      <p>Για να μην αγοράζετε απλώς «ένα συμβόλαιο», αλλά ουσιαστική προστασία, ακολουθούμε μια καθαρή διαδικασία:</p>
-      <ul>
-        <li>
-          <strong>1. Καταγραφή προφίλ επιχείρησης:</strong>
-          είδος δραστηριότητας, μέγεθος (κύκλος εργασιών, αριθμός εργαζομένων), περιγραφή χώρων και εξοπλισμού.
-        </li>
-        <li>
-          <strong>2. Ανάλυση κινδύνων:</strong>
-          ποιοι κίνδυνοι είναι πιο κρίσιμοι (φωτιά, πλημμύρα, κλοπή, ευθύνη προς τρίτους, λάθη/παραλείψεις).
-        </li>
-        <li>
-          <strong>3. Σύγκριση προσφορών:</strong>
-          ζητάμε προτάσεις από ασφαλιστικές εταιρείες και συγκρίνουμε όρια, εξαιρέσεις, απαλλαγές και κόστος.
-        </li>
-        <li>
-          <strong>4. Παρουσίαση &amp; επιλογή λύσης:</strong>
-          λαμβάνετε γραπτή σύνοψη επιλογών σε απλή γλώσσα και επιλέγετε πρόγραμμα χωρίς πίεση.
-        </li>
-      </ul>
-
-      <h3 class="h3">Τι χρειάζεται για να λάβετε προσφορά ασφάλισης επιχείρησης</h3>
-      <p>Για μια σοβαρή και ρεαλιστική προσφορά, συνήθως ζητάμε:</p>
-      <ul>
-        <li>
-          <strong>Στοιχεία επιχείρησης:</strong>
-          επωνυμία, ΑΦΜ, διεύθυνση ασφαλιζόμενου χώρου, νομική μορφή.
-        </li>
-        <li>
-          <strong>Δραστηριότητα:</strong>
-          ακριβής περιγραφή κλάδου και τυχόν δευτερεύουσες δραστηριότητες (π.χ. delivery, εγκαταστάσεις σε τρίτους).
-        </li>
-        <li>
-          <strong>Χώροι &amp; περιουσία:</strong>
-          αν το κτίριο είναι ιδιόκτητο ή μισθωμένο, τετραγωνικά, όροφος, αξία κτιρίου και περιεχομένου.
-        </li>
-        <li>
-          <strong>Οικονομικά στοιχεία:</strong>
-          ενδεικτικός ετήσιος κύκλος εργασιών, αριθμός εργαζομένων.
-        </li>
-        <li>
-          <strong>Ιστορικό ζημιών:</strong>
-          τυχόν μεγάλες ζημιές τα τελευταία χρόνια ή ήδη υπάρχον ασφαλιστήριο προς σύγκριση.
-        </li>
-      </ul>
-
-      <p>
-        Όλα τα παραπάνω μπορείτε να τα στείλετε μέσω της φόρμας επικοινωνίας ή να τα δώσετε βήμα-βήμα
-        συνομιλώντας με τον ηλεκτρονικό μας βοηθό. Για οποιαδήποτε απορία σχετικά με την ασφάλιση της επιχείρησής σας,
-        συμβουλευτείτε τον ηλεκτρονικό μας βοηθό πριν αποφασίσετε.
-      </p>
-
-      <p><a class="btn" href="./contact.html">Ζήτησε προσφορά</a></p>
-    </section>
-
-  </main>
-
-  <footer class="container" style="margin-top:40px;">
-    <div>
-      © <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092] ·
-      Τηλ: 6937311411 (Viber &amp; WhatsApp) · Email: info@ildigitalassistant.com
+<header class="container">
+  <nav class="nav">
+    <div class="logo">
+      <img src="/assets/logo.svg" alt="Logo">
+      <strong>IL Insurance</strong>
     </div>
-    <div>
-      <a href="./privacy.html">Απόρρητο</a> ·
-      <a href="./cookies.html">Cookies</a> ·
-      <a href="./terms.html">Όροι</a>
+    <div class="lang">
+      <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+      <a href="#" onclick="Site.setLang('en')">English</a>
     </div>
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-  </footer>
+  </nav>
+</header>
 
-  <!-- Athena Floating Chat Widget -->
-  <style>
-    #athena-floating {
-      position: fixed;
-      bottom: 20px;
-      right: 22px;
-      z-index: 99999;
-    }
+<main class="container">
 
-    #athena-btn {
-      background: #fff;
-      border-radius: 50px;
-      padding: 6px 14px 6px 6px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.25);
-      cursor: pointer;
-      border: none;
-      transition: all .25s ease;
-    }
-    #athena-btn:hover { transform: scale(1.05); }
+  <section class="page-hero">
+    <h1 class="h1">Ασφάλιση Επιχείρησης</h1>
+    <p class="lead">Συμπληρώστε τα βασικά στοιχεία της επιχείρησης και του κινδύνου για να σας δώσουμε πρόταση που στέκεται.</p>
+    <p class="helper">Η επικοινωνία γίνεται αποκλειστικά μέσω email.</p>
+  </section>
 
-    #athena-btn img {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+  <section class="card">
+    <h2 class="h2">Αίτημα προσφοράς επιχείρησης</h2>
 
-    #athena-chatbox {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 360px;
-      max-height: 520px;
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-      display: none;
-      overflow: hidden;
-      z-index: 100000;
-    }
+    <p class="small-note">
+      Τα στοιχεία χρησιμοποιούνται αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
+      Για σωστή τιμολόγηση, κρίσιμα είναι: διεύθυνση κινδύνου, δραστηριότητα, τετραγωνικά και τα κεφάλαια κάλυψης.
+    </p>
 
-    #athena-header {
-      background: #00a8ff;
-      color: white;
-      padding: 12px;
-      text-align: center;
-      font-weight: bold;
-    }
+    <form id="businessForm" class="form">
 
-    #athena-body {
-      padding: 12px;
-      height: 360px;
-      overflow-y: auto;
-      background: #f7f7f7;
-      font-size: 14px;
-      color: #222;          /* ΣΚΟΥΡΟ ΚΕΙΜΕΝΟ */
-    }
+      <div class="two-cols">
+        <p><label>Ονοματεπώνυμο<br>
+          <input type="text" id="b_name" required autocomplete="name"></label></p>
 
-    /* Τα επιμέρους μηνύματα μέσα στο chat */
-    #athena-body div {
-      color: #222;
-    }
+        <p><label>Email<br>
+          <input type="email" id="b_email" required autocomplete="email"></label></p>
+      </div>
 
-    #athena-inputbox {
-      display: flex;
-      border-top: 1px solid #ddd;
-    }
+      <div class="two-cols">
+        <p><label>Επωνυμία επιχείρησης (προαιρετικά)<br>
+          <input type="text" id="b_company" placeholder="π.χ. ABC ΙΚΕ"></label></p>
 
-    #athena-text {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      color: #222;          /* Σκούρο κείμενο και στο input */
-    }
+        <p><label>ΑΦΜ (προαιρετικά)<br>
+          <input type="text" id="b_vat" placeholder="π.χ. 099999999"></label></p>
+      </div>
 
-    #athena-send {
-      background: #00a8ff;
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      cursor: pointer;
-    }
-  </style>
+      <p><label>Διεύθυνση κινδύνου (οδός – αριθμός – Τ.Κ. – πόλη)<br>
+        <input type="text" id="b_address" required placeholder="π.χ. Ερμού 10, 10563, Αθήνα"></label></p>
 
-  <div id="athena-floating">
-    <button id="athena-btn" type="button">
-      <img src="https://insurance.ildigitalassistant.com/assets/athena.png" alt="Αθηνά">
-      <span style="font-size:14px;color:#333;font-weight:500;">Μ
+      <div class="two-cols">
+        <p><label>Τύπος χώρου<br>
+          <select id="b_spaceType" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Γραφείο</option>
+            <option>Κατάστημα λιανικής</option>
+            <option>Εστίαση (καφέ/εστιατόριο)</option>
+            <option>Αποθήκη</option>
+            <option>Εργαστήριο / βιοτεχνία</option>
+            <option>Ιατρείο / υγειονομικό</option>
+            <option>Κομμωτήριο / αισθητική</option>
+            <option>Γυμναστήριο / studio</option>
+            <option>Άλλο</option>
+          </select></label></p>
+
+        <p><label>Περιγραφή δραστηριότητας (σύντομα)<br>
+          <input type="text" id="b_activity" required placeholder="π.χ. λογιστικό γραφείο / mini market / καφέ"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Ιδιοκτησία χώρου<br>
+          <select id="b_tenure" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Ιδιοκτήτης</option>
+            <option>Ενοικιαστής</option>
+          </select></label></p>
+
+        <p><label>Έτος κατασκευής / άδειας (αν γνωρίζετε)<br>
+          <input type="number" id="b_year" min="1900" max="2030" placeholder="π.χ. 2008"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Τετραγωνικά κύριου χώρου (τ.μ.)<br>
+          <input type="number" id="b_area" required min="1" step="1" placeholder="π.χ. 85"></label></p>
+
+        <p><label>Βοηθητικοί χώροι (είδος/τ.μ.) (προαιρετικά)<br>
+          <input type="text" id="b_aux" placeholder="π.χ. αποθήκη 10τμ, υπόγειο 20τμ"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Αριθμός εργαζομένων<br>
+          <input type="number" id="b_staff" required min="0" max="999" placeholder="π.χ. 3"></label></p>
+
+        <p><label>Ώρες λειτουργίας (ενδεικτικά)<br>
+          <input type="text" id="b_hours" required placeholder="π.χ. Δευ-Παρ 09:00–17:00"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Υπάρχει συναγερμός;<br>
+          <select id="b_alarm" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Όχι</option>
+            <option>Ναι</option>
+          </select></label></p>
+
+        <p><label>Υπάρχει σύστημα πυρανίχνευσης / πυρόσβεσης;<br>
+          <select id="b_fireSystem" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Όχι</option>
+            <option>Ναι</option>
+            <option>Δεν γνωρίζω</option>
+          </select></label></p>
+      </div>
+
+      <p class="pill">Επιλογή κόστους / απαλλαγών</p>
+
+      <div class="two-cols">
+        <p><label>Τιμή / απαλλαγές (όπου εφαρμόζεται)<br>
+          <select id="b_pricing" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Πιο οικονομικό (με απαλλαγές)</option>
+            <option>Χωρίς απαλλαγές (αν γίνεται)</option>
+            <option>Θέλω και τις 2 εκδοχές για σύγκριση</option>
+          </select></label></p>
+
+        <p><label>Στόχος κάλυψης<br>
+          <select id="b_goal" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Βασική προστασία</option>
+            <option>Καλή προστασία</option>
+            <option>Πλήρης προστασία</option>
+          </select></label></p>
+      </div>
+
+      <p class="hint">
+        Τα κεφάλαια κάλυψης είναι κρίσιμα. Υπασφάλιση μπορεί να οδηγήσει σε αναλογική μείωση αποζημίωσης σε μεγάλη ζημιά.
+        Υπερασφάλιση σημαίνει υψηλότερο ασφάλιστρο χωρίς αντίστοιχο όφελος. Αν δεν είστε σίγουροι, δώστε μια εκτίμηση και το βελτιώνουμε μαζί.
+      </p>
+
+      <div class="two-cols">
+        <p><label>Κεφάλαιο κτιρίου (€) (αν ασφαλίζεται κτίριο)<br>
+          <input type="number" id="b_sumBuilding" min="0" step="1" placeholder="π.χ. 250000"></label></p>
+
+        <p><label>Κεφάλαιο περιεχομένου/εμπορευμάτων (€)<br>
+          <input type="number" id="b_sumContents" required min="0" step="1" placeholder="π.χ. 60000"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Κεφάλαιο εξοπλισμού/μηχανημάτων (€) (αν υπάρχει)<br>
+          <input type="number" id="b_sumEquipment" min="0" step="1" placeholder="π.χ. 30000"></label></p>
+
+        <p><label>Επιθυμείτε αστική ευθύνη επιχείρησης;<br>
+          <select id="b_liability" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Ναι</option>
+            <option>Όχι</option>
+            <option>Δεν ξέρω – θέλω σύσταση</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Ενδεικτικό όριο αστικής ευθύνης (€) (αν σας αφορά)<br>
+          <select id="b_liabilityLimit">
+            <option value="">Επιλέξτε (προαιρετικά)…</option>
+            <option>100.000</option>
+            <option>300.000</option>
+            <option>500.000</option>
+            <option>1.000.000</option>
+            <option>Δεν γνωρίζω</option>
+          </select></label></p>
+
+        <p><label>Θέλετε κάλυψη απώλειας κερδών/διακοπής εργασιών;<br>
+          <select id="b_bi" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Ναι</option>
+            <option>Όχι</option>
+            <option>Δεν ξέρω – θέλω σύσταση</option>
+          </select></label></p>
+      </div>
+
+      <p class="pill">Εξειδίκευση ανά τύπο επιχείρησης (όπου χρειάζεται)</p>
+
+      <div id="foodSection" class="hidden">
+        <h3 class="section-title">Εστίαση</h3>
+        <div class="two-cols">
+          <p><label>Υπάρχει κουζίνα με φούρνο/τηγάνια/φλόγα;<br>
+            <select id="b_kitchen">
+              <option value="">Επιλέξτε…</option>
+              <option>Όχι</option>
+              <option>Ναι</option>
+            </select></label></p>
+
+          <p><label>Θέσεις καθήμενων (ενδεικτικά)<br>
+            <input type="number" id="b_seats" min="0" max="2000" placeholder="π.χ. 40"></label></p>
+        </div>
+      </div>
+
+      <div id="warehouseSection" class="hidden">
+        <h3 class="section-title">Αποθήκη / logistics</h3>
+        <div class="two-cols">
+          <p><label>Υπάρχουν εύφλεκτα/χημικά;<br>
+            <select id="b_flammables">
+              <option value="">Επιλέξτε…</option>
+              <option>Όχι</option>
+              <option>Ναι</option>
+              <option>Μικρή ποσότητα</option>
+            </select></label></p>
+
+          <p><label>Μέγιστη αξία αποθέματος (€) σε αιχμή<br>
+            <input type="number" id="b_peakStock" min="0" step="1" placeholder="π.χ. 120000"></label></p>
+        </div>
+      </div>
+
+      <div id="medicalSection" class="hidden">
+        <h3 class="section-title">Ιατρείο / υγειονομικό</h3>
+        <div class="two-cols">
+          <p><label>Υπάρχουν επεμβατικές πράξεις;<br>
+            <select id="b_invasive">
+              <option value="">Επιλέξτε…</option>
+              <option>Όχι</option>
+              <option>Ναι</option>
+            </select></label></p>
+
+          <p><label>Ενδεικτικός αριθμός επισκέψεων/ημέρα<br>
+            <input type="number" id="b_visits" min="0" max="10000" placeholder="π.χ. 20"></label></p>
+        </div>
+      </div>
+
+      <p><label>Μήνυμα (προαιρετικά)<br>
+        <textarea id="b_message" rows="4" placeholder="Π.χ. τι καλύψεις θεωρείτε κρίσιμες (κλοπή, θραύση, ηλεκτρικά φαινόμενα, φυσικά φαινόμενα, κλπ.)"></textarea></label></p>
+
+      <p><label>
+        <input type="checkbox" id="b_consent" required>
+        Συμφωνώ τα στοιχεία μου να χρησιμοποιηθούν αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
+      </label></p>
+
+      <p><button class="btn" type="submit">Δημιουργία email αιτήματος</button></p>
+    </form>
+
+    <div id="businessSuccess" class="success-box">
+      ✔ Το αίτημα δημιουργήθηκε. Ελέγξτε το email σας και πατήστε “Αποστολή”.
+    </div>
+  </section>
+
+  <section class="card seo-content">
+    <h2 class="h2">Ασφάλιση επιχείρησης: τι πληρώνεις πραγματικά και τι μένει ακάλυπτο</h2>
+    <p>
+      Η ασφάλιση επιχείρησης δεν είναι “ένα συμβόλαιο πυρός”. Είναι δομή προστασίας για περιουσία, αστική ευθύνη,
+      και (όπου χρειάζεται) απώλεια κερδών από διακοπή εργασιών. Το λάθος που βλέπω συχνότερα είναι να δηλώνονται
+      πρόχειρα τα κεφάλαια και να κυνηγιέται μόνο η χαμηλότερη τιμή.
+    </p>
+    <p>
+      Με υπασφάλιση, σε μεγάλη ζημιά μπορεί να υπάρξει αναλογική μείωση αποζημίωσης. Με υπερασφάλιση, πληρώνεις παραπάνω
+      χωρίς να έχεις αντίστοιχο όφελος. Οι απαλλαγές μπορούν να ρίξουν το ασφάλιστρο, αλλά πρέπει να ξέρεις
+      τι συμμετοχή αναλαμβάνεις σε κάθε ζημιά.
+    </p>
+    <p>
+      Συμπλήρωσε τα βασικά στοιχεία παραπάνω και θα σου στείλουμε πρόταση που “στέκεται”, με καθαρή εικόνα κόστους/όρων
+      και εναλλακτικές (με ή χωρίς απαλλαγές), ανάλογα με τη δραστηριότητά σου.
+    </p>
+  </section>
+
+</main>
+
+<footer class="container" style="margin-top:40px;">
+  <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092]</div>
+  <div><a href="/privacy.html">Απόρρητο</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Όροι</a></div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const spaceType = document.getElementById("b_spaceType");
+  const foodSection = document.getElementById("foodSection");
+  const warehouseSection = document.getElementById("warehouseSection");
+  const medicalSection = document.getElementById("medicalSection");
+
+  function showSections(){
+    const v = spaceType.value;
+    foodSection.classList.add("hidden");
+    warehouseSection.classList.add("hidden");
+    medicalSection.classList.add("hidden");
+
+    if (v === "Εστίαση (καφέ/εστιατόριο)") foodSection.classList.remove("hidden");
+    if (v === "Αποθήκη") warehouseSection.classList.remove("hidden");
+    if (v === "Ιατρείο / υγειονομικό") medicalSection.classList.remove("hidden");
+  }
+  spaceType.addEventListener("change", showSections);
+  showSections();
+
+  document.getElementById("businessForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    if (!document.getElementById("b_consent").checked) return;
+
+    const subject = encodeURIComponent("Αίτημα προσφοράς Ασφάλισης Επιχείρησης");
+
+    const body = encodeURIComponent(
+      "Τύπος αιτήματος: Ασφάλιση Επιχείρησης\n\n" +
+      "Ονοματεπώνυμο: " + b_name.value + "\n" +
+      "Email: " + b_email.value + "\n" +
+      "Επωνυμία: " + (b_company.value || "-") + "\n" +
+      "ΑΦΜ: " + (b_vat.value || "-") + "\n\n" +
+      "Διεύθυνση κινδύνου: " + b_address.value + "\n" +
+      "Τύπος χώρου: " + b_spaceType.value + "\n" +
+      "Δραστηριότητα: " + b_activity.value + "\n" +
+      "Ιδιοκτησία: " + b_tenure.value + "\n" +
+      "Έτος κατασκευής/άδειας: " + (b_year.value || "-") + "\n\n" +
+      "Τ.μ. κύριου χώρου: " + b_area.value + "\n" +
+      "Βοηθητικοί χώροι: " + (b_aux.value || "-") + "\n" +
+      "Εργαζόμενοι: " + b_staff.value + "\n" +
+      "Ώρες λειτουργίας: " + b_hours.value + "\n\n" +
+      "Συναγερμός: " + b_alarm.value + "\n" +
+      "Πυρανίχνευση/Πυρόσβεση: " + b_fireSystem.value + "\n\n" +
+      "Επιλογή απαλλαγών: " + b_pricing.value + "\n" +
+      "Στόχος κάλυψης: " + b_goal.value + "\n\n" +
+      "Κεφάλαιο κτιρίου (€): " + (b_sumBuilding.value || "-") + "\n" +
+      "Κεφάλαιο περιεχομένου/εμπορευμάτων (€): " + b_sumContents.value + "\n" +
+      "Κεφάλαιο εξοπλισμού/μηχανημάτων (€): " + (b_sumEquipment.value || "-") + "\n\n" +
+      "Αστική ευθύνη: " + b_liability.value + "\n" +
+      "Όριο Α.Ε. (€): " + (b_liabilityLimit.value || "-") + "\n" +
+      "Απώλεια κερδών/διακοπή εργασιών: " + b_bi.value + "\n\n" +
+      "— Εξειδίκευση —\n" +
+      "Εστίαση: κουζίνα με φλόγα: " + (document.getElementById("b_kitchen")?.value || "-") + ", θέσεις: " + (document.getElementById("b_seats")?.value || "-") + "\n" +
+      "Αποθήκη: εύφλεκτα: " + (document.getElementById("b_flammables")?.value || "-") + ", απόθεμα αιχμής (€): " + (document.getElementById("b_peakStock")?.value || "-") + "\n" +
+      "Ιατρείο: επεμβατικές: " + (document.getElementById("b_invasive")?.value || "-") + ", επισκέψεις/ημέρα: " + (document.getElementById("b_visits")?.value || "-") + "\n\n" +
+      "Μήνυμα:\n" + (b_message.value || "-")
+    );
+
+    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
+    businessSuccess.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
