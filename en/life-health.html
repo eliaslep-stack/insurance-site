@@ -3,139 +3,241 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Insurance — Life & Health</title>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <title>IL Insurance — Life & Health Insurance</title>
+  <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
+
+  <style>
+    .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
+    .helper{color:#444;margin-top:8px}
+    .small-note{font-size:13px;color:#555;margin-top:10px;line-height:1.55}
+    .hint{font-size:13px;color:#666;margin-top:8px;line-height:1.55}
+    .seo-content p{line-height:1.7}
+    .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
 <body>
-  <header class="container">
-    <nav class="nav">
-      <div class="logo">
-        <img src="/assets/logo.svg" alt="Logo">
-        <strong>IL Insurance</strong>
-      </div>
-      <div class="lang">
-        <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
-        <a href="#" onclick="Site.setLang('en')">English</a>
-      </div>
-    </nav>
-  </header>
 
-  <main class="container">
-    <section class="page-hero">
-      <h1 class="h1">Life & Health Insurance</h1>
-      <p class="lead">
-        Protection for medical expenses, hospitalisation and income security, with clear terms and guidance at every step.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Hospital Cover</h2>
-      <p>
-        Plans that cover private hospitals in Greece and abroad, with clear deductibles and transparent limits.
-        Together we choose between open network and closed network solutions, depending on your budget and the hospitals you prefer.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Capitation & Outpatient Care</h2>
-      <p>
-        Capitation programs give you access to a specific hospital group with a fixed annual cost and predictable participation.
-        Outpatient covers diagnostics, visits and exams so that you do not postpone preventive checks for financial reasons.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Life Insurance & Income Protection</h2>
-      <p>
-        Life insurance protects your family from the financial impact of a sudden loss.
-        We can combine pure term cover with savings or unit linked, depending on whether your priority is protection, savings or both.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">How We Work Together</h2>
-      <p>
-        We start from your real needs and your budget, compare programs from different companies and explain the exclusions one by one.
-        You receive written proposals with scenarios and you decide without pressure, knowing exactly what is covered and what is not.
-      </p>
-      <p>
-        <a class="btn" href="./contact.html">Request a personalised proposal</a>
-      </p>
-    </section>
-  </main>
-
-  <footer class="container" style="margin-top:40px;">
-    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
-    <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-  </footer>
-
-  <div class="cookie">
-    <div class="container">
-      We use cookies for essential functions.
-      <a href="./cookies.html">Learn more</a>.
-      <a class="btn" style="margin-left:12px" href="#" onclick="Site.consent()">Accept</a>
+<header class="container">
+  <nav class="nav">
+    <div class="logo">
+      <img src="/assets/logo.svg" alt="Logo">
+      <strong>IL Insurance</strong>
     </div>
-  </div>
+    <div class="lang">
+      <a href="#" onclick="Site.setLang('el')">Ελληνικά</a> |
+      <a href="#" onclick="Site.setLang('en')">English</a>
+    </div>
+  </nav>
+</header>
 
-  <!-- Athena Chat Assistant -->
-  <style>
-    #athena-bubble {
-      position: fixed;
-      bottom: 20px;
-      right: 22px;
-      background: #ffffff;
-      border-radius: 50px;
-      padding: 6px 16px 6px 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.22);
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-      transition: all 0.25s ease;
+<main class="container">
+
+  <section class="page-hero">
+    <h1 class="h1">Life &amp; Health Insurance</h1>
+    <p class="lead">Share a few key details so we can recommend a solution that fits your needs and profile.</p>
+    <p class="helper">We communicate exclusively via email.</p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">Quote request</h2>
+
+    <p class="small-note">
+      We only use your information to assess an insurance proposal and reply via email.
+      We do not require sensitive medical details. If you choose to share anything related to health,
+      it is optional and only with your explicit consent.
+    </p>
+
+    <form id="lifeHealthForm" class="form">
+
+      <div class="two-cols">
+        <p><label>Full name<br>
+          <input type="text" id="lh_name" required autocomplete="name"></label></p>
+
+        <p><label>Email<br>
+          <input type="email" id="lh_email" required autocomplete="email"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Age<br>
+          <input type="number" id="lh_age" required min="0" max="100" placeholder="e.g. 42"></label></p>
+
+        <p><label>Gender<br>
+          <select id="lh_gender" required>
+            <option value="">Select…</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Smoking status<br>
+          <select id="lh_smoker" required>
+            <option value="">Select…</option>
+            <option>Non-smoker</option>
+            <option>Smoker</option>
+            <option>Occasionally</option>
+          </select></label></p>
+
+        <p><label>City / area (approx.)<br>
+          <input type="text" id="lh_city" required placeholder="e.g. Athens"></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Main interest<br>
+          <select id="lh_interest" required>
+            <option value="">Select…</option>
+            <option>Health (hospital plan)</option>
+            <option>Health (outpatient / diagnostics)</option>
+            <option>Life insurance (death benefit)</option>
+            <option>Personal accident</option>
+            <option>Combination</option>
+          </select></label></p>
+
+        <p><label>Do you already have private insurance?<br>
+          <select id="lh_existing" required>
+            <option value="">Select…</option>
+            <option>No</option>
+            <option>Yes, active policy</option>
+            <option>I had one in the past</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Pricing preference / deductibles (where applicable)<br>
+          <select id="lh_pricing" required>
+            <option value="">Select…</option>
+            <option>More affordable (with deductibles)</option>
+            <option>No deductibles (if available)</option>
+            <option>I want both options to compare</option>
+          </select></label></p>
+
+        <p><label>Coverage goal<br>
+          <select id="lh_goal" required>
+            <option value="">Select…</option>
+            <option>Basic protection</option>
+            <option>Good protection</option>
+            <option>Full protection</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Desired life insurance sum (€) (if relevant)<br>
+          <input type="number" id="lh_lifeSum" min="0" step="1000" placeholder="e.g. 100000"></label></p>
+
+        <p><label>Desired health plan level (optional)<br>
+          <select id="lh_healthLevel">
+            <option value="">Select (optional)…</option>
+            <option>Budget hospital plan</option>
+            <option>Mid-level hospital plan</option>
+            <option>High / premium</option>
+            <option>Not sure — suggest options</option>
+          </select></label></p>
+      </div>
+
+      <p class="hint">
+        For underwriting, insurers may require a medical questionnaire if there are known conditions or recent hospitalizations.
+        We do not request details here. If you want, you can simply write “there is medical history” (without specifics).
+      </p>
+
+      <p><label>Medical history (optional — keep it brief)<br>
+        <textarea id="lh_medical" rows="3" placeholder="e.g. 'medical history exists' or 'no' (no details)"></textarea></label></p>
+
+      <p><label>Message (optional)<br>
+        <textarea id="lh_message" rows="4" placeholder="e.g. preferred hospitals, family plan, budget range, timeline to proceed, etc."></textarea></label></p>
+
+      <p><label>
+        <input type="checkbox" id="lh_consent" required>
+        I agree that my details will be used exclusively to assess an insurance proposal and reply via email.
+      </label></p>
+
+      <p><label>
+        <input type="checkbox" id="lh_sensitive">
+        I understand that any health-related information I choose to write in “Medical history” is sensitive data and I provide it voluntarily for the purpose of receiving an insurance quote.
+      </label></p>
+
+      <p><button class="btn" type="submit">Generate request email</button></p>
+    </form>
+
+    <div id="lifeHealthSuccess" class="success-box">
+      ✔ Request created. Please check your email app and press “Send”.
+    </div>
+  </section>
+
+  <section class="card seo-content">
+    <h2 class="h2">Life &amp; health insurance: what matters before you commit</h2>
+
+    <p>
+      The right life or health policy is not the one with the best marketing. It’s the one that fits your profile:
+      age, smoking status, the level of protection you want, and how you expect to use private healthcare
+      (hospitalization, diagnostics, outpatient benefits).
+    </p>
+
+    <p>
+      Most problems happen when people choose based only on the premium. What really matters is the structure:
+      deductibles, limits, exclusions, pre-existing condition rules, and how claims are handled in practice.
+      That’s why we ask only for the essentials, so we can propose options that make sense—rather than a “blind price”.
+    </p>
+
+    <p>
+      If your goal is family or loan protection, the life insurance sum is central. If your goal is private medical access,
+      then the right hospital/outpatient structure is what makes the difference.
+    </p>
+  </section>
+
+</main>
+
+<footer class="container" style="margin-top:40px;">
+  <div>© <span id="year"></span> IL Insurance — License [357092]</div>
+  <div><a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Terms</a></div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const medField = document.getElementById("lh_medical");
+  const sensCheck = document.getElementById("lh_sensitive");
+
+  function hasMedicalText() {
+    return (medField.value || "").trim().length > 0;
+  }
+
+  document.getElementById("lifeHealthForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    if (!document.getElementById("lh_consent").checked) return;
+
+    // If user typed anything medical-related, require the sensitive-data checkbox
+    if (hasMedicalText() && !sensCheck.checked) {
+      alert("You filled in the Medical history field. Please confirm you provide this sensitive information voluntarily.");
+      return;
     }
 
-    #athena-bubble:hover {
-      transform: scale(1.05);
-    }
+    const subject = encodeURIComponent("Life & Health Insurance Quote Request");
 
-    #athena-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #eee;
-    }
+    const body = encodeURIComponent(
+      "Request type: Life & Health Insurance\n\n" +
+      "Full name: " + lh_name.value + "\n" +
+      "Email: " + lh_email.value + "\n\n" +
+      "Age: " + lh_age.value + "\n" +
+      "Gender: " + lh_gender.value + "\n" +
+      "Smoking status: " + lh_smoker.value + "\n" +
+      "City/Area: " + lh_city.value + "\n\n" +
+      "Main interest: " + lh_interest.value + "\n" +
+      "Existing private insurance: " + lh_existing.value + "\n" +
+      "Pricing preference/deductibles: " + lh_pricing.value + "\n" +
+      "Coverage goal: " + lh_goal.value + "\n\n" +
+      "Desired life sum (€): " + (lh_lifeSum.value || "-") + "\n" +
+      "Desired health plan level: " + (lh_healthLevel.value || "-") + "\n\n" +
+      "Medical history (optional):\n" + (lh_medical.value || "-") + "\n\n" +
+      "Message:\n" + (lh_message.value || "-")
+    );
 
-    #athena-bubble span {
-      font-size: 14px;
-      color: #333;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 600px) {
-      #athena-bubble span {
-        display: none;
-      }
-      #athena-bubble {
-        padding: 6px;
-        border-radius: 50%;
-      }
-    }
-  </style>
-
-  <div id="athena-bubble"
-       onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
-    <img id="athena-avatar"
-         src="https://insurance.ildigitalassistant.com/assets/athena.png"
-         alt="Athena Assistant">
-    <span>Ask Athena — Insurance help</span>
-  </div>
-  <!-- END Athena Chat Assistant -->
+    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
+    lifeHealthSuccess.style.display = "block";
+  });
+</script>
 
 </body>
 </html>
