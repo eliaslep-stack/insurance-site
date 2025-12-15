@@ -4,27 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Liability Insurance</title>
+  <meta name="description" content="Professional, employer’s and general liability insurance. Clear advice on limits, deductibles and real risk exposure, not just price.">
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
 
   <style>
     .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
-    .helper{color:#444;margin-top:8px}
-    .small-note{font-size:13px;color:#555;margin-top:10px;line-height:1.55}
-    .hint{font-size:13px;color:#666;margin-top:8px;line-height:1.55}
-    .seo-content p{line-height:1.7}
-    .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
-    .pill{font-size:12px;background:#f1f1f1;border-radius:999px;padding:6px 10px;display:inline-block;margin-top:8px}
-    .hidden{display:none}
-    @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
+    .helper{color:#9aa;margin-top:6px}
+    .small-note{font-size:13px;color:#aaa;margin-bottom:12px;line-height:1.6}
+    .seo-text p{line-height:1.75;margin-bottom:14px}
+    .two-cols{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
   </style>
 </head>
+
 <body>
 
 <header class="container">
   <nav class="nav">
     <div class="logo">
-      <img src="/assets/logo.svg" alt="Logo">
+      <img src="/assets/logo.svg" alt="IL Insurance">
       <strong>IL Insurance</strong>
     </div>
     <div class="lang">
@@ -36,77 +35,94 @@
 
 <main class="container">
 
+  <!-- HERO -->
   <section class="page-hero">
     <h1 class="h1">Liability Insurance</h1>
-    <p class="lead">Share a few key details so we can propose the right limits and terms, not just a “blind price”.</p>
-    <p class="helper">We communicate exclusively via email.</p>
+    <p class="lead">
+      Protection when a third party claims bodily injury or material damage against you or your business.
+    </p>
+    <p class="helper">Clear structure, realistic limits, no blind pricing.</p>
+  </section>
+
+  <!-- CONTENT CARDS (όπως ήδη έχεις) -->
+  <section class="card">
+    <h2 class="h2">Professional Liability</h2>
+    <p>
+      For freelancers and professionals who provide advice or services and may face claims for errors,
+      omissions or negligence. We clarify retroactive dates, jurisdiction and key exclusions before any contract is signed.
+    </p>
   </section>
 
   <section class="card">
-    <h2 class="h2">Liability quote request</h2>
+    <h2 class="h2">Employer’s Liability</h2>
+    <p>
+      Covers claims from employees for accidents at work, beyond statutory social security protection.
+      Essential for businesses with staff or higher-risk activities.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">General & Family Liability</h2>
+    <p>
+      Everyday risks such as water leaks, accidents caused by family members or pets can lead to unexpected claims.
+      General and family liability insurance protects your personal finances.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">Why Work with an Advisor</h2>
+    <p>
+      Liability wording is often complex and legalistic. My role is to translate clauses into plain language
+      and match coverage limits to your real exposure — avoiding underinsurance or pointless overinsurance.
+    </p>
+  </section>
+
+  <!-- FORM -->
+  <section class="card">
+    <h2 class="h2">Liability Insurance Quote Request</h2>
 
     <p class="small-note">
-      Your details are used only to assess an insurance proposal and reply via email.
-      For liability insurance, the critical items are: type of activity, exposure to third parties/public, and coverage limits.
+      The information below allows a correct assessment of risk and coverage limits.
+      Your details are used exclusively to prepare an insurance proposal and reply via email.
     </p>
 
     <form id="liabilityForm" class="form">
 
       <div class="two-cols">
         <p><label>Full name<br>
-          <input type="text" id="l_name" required autocomplete="name"></label></p>
+          <input type="text" id="l_name" required></label></p>
 
         <p><label>Email<br>
-          <input type="email" id="l_email" required autocomplete="email"></label></p>
+          <input type="email" id="l_email" required></label></p>
       </div>
 
-      <div class="two-cols">
-        <p><label>Liability type<br>
-          <select id="l_type" required>
-            <option value="">Select…</option>
-            <option>Private (home liability)</option>
-            <option>Professional / Business liability</option>
-            <option>Employer’s liability</option>
-            <option>Product liability</option>
-            <option>Event liability</option>
-            <option>Other</option>
-          </select></label></p>
+      <p><label>Type of liability<br>
+        <select id="l_type" required>
+          <option value="">Select…</option>
+          <option>Professional liability</option>
+          <option>Employer’s liability</option>
+          <option>General / family liability</option>
+          <option>Event liability</option>
+          <option>Other</option>
+        </select></label></p>
 
-        <p><label>Activity / case description (brief)<br>
-          <input type="text" id="l_activity" required placeholder="e.g. café 80 sqm / accounting office / event 200 guests"></label></p>
-      </div>
+      <p><label>Activity / short description of risk<br>
+        <input type="text" id="l_activity" required placeholder="e.g. accounting office, café, private residence"></label></p>
 
-      <p><label>Risk address (if there is a premises) (street – number – postal code – city)<br>
-        <input type="text" id="l_address" placeholder="e.g. Patision 20, 10434, Athens"></label></p>
+      <p><label>Risk address (if applicable)<br>
+        <input type="text" id="l_address" placeholder="Street, number, city"></label></p>
 
       <div class="two-cols">
-        <p><label>Is there public/customer access on site?<br>
+        <p><label>Public / customer access on premises?<br>
           <select id="l_public" required>
             <option value="">Select…</option>
             <option>No</option>
             <option>Yes</option>
           </select></label></p>
 
-        <p><label>Max number of people on site at once (if applicable)<br>
-          <input type="number" id="l_people" min="0" max="100000" placeholder="e.g. 30"></label></p>
+        <p><label>Employees (if any)<br>
+          <input type="number" id="l_staff" min="0"></label></p>
       </div>
-
-      <div class="two-cols">
-        <p><label>Annual turnover (optional but helpful)<br>
-          <select id="l_turnover">
-            <option value="">Select (optional)…</option>
-            <option>&lt; €50,000</option>
-            <option>€50,000 – €150,000</option>
-            <option>€150,000 – €500,000</option>
-            <option>€500,000 – €1,000,000</option>
-            <option>&gt; €1,000,000</option>
-          </select></label></p>
-
-        <p><label>Number of employees (if relevant)<br>
-          <input type="number" id="l_staff" min="0" max="9999" placeholder="e.g. 5"></label></p>
-      </div>
-
-      <p class="pill">Coverage limits & pricing</p>
 
       <div class="two-cols">
         <p><label>Desired limit per claim (€)<br>
@@ -116,67 +132,53 @@
             <option>300,000</option>
             <option>500,000</option>
             <option>1,000,000</option>
-            <option>Not sure — recommend</option>
+            <option>Not sure – advise me</option>
           </select></label></p>
 
-        <p><label>Pricing preference / deductibles (where applicable)<br>
+        <p><label>Pricing preference<br>
           <select id="l_pricing" required>
             <option value="">Select…</option>
             <option>More affordable (with deductibles)</option>
-            <option>No deductibles (if available)</option>
-            <option>I want both options to compare</option>
+            <option>No deductibles (where available)</option>
+            <option>Both options for comparison</option>
           </select></label></p>
       </div>
 
-      <p class="hint">
-        With liability insurance, the “right” choice is not to shrink the limit blindly just to lower the premium.
-        The limit must match the real exposure (public access, premises, activity, products, employees).
-        If unsure, choose “recommend”.
+      <p><label>Claims in the last 3–5 years?<br>
+        <select id="l_claims" required>
+          <option value="">Select…</option>
+          <option>No</option>
+          <option>Yes</option>
+        </select></label></p>
+
+      <p><label>Additional notes (optional)<br>
+        <textarea id="l_message" rows="4"></textarea></label></p>
+
+      <p>
+        <label>
+          <input type="checkbox" id="l_consent" required>
+          I agree that my data will be used exclusively to assess an insurance proposal and reply via email.
+        </label>
       </p>
 
-      <div class="two-cols">
-        <p><label>Any claims/incidents in the last 3–5 years?<br>
-          <select id="l_claims" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes</option>
-          </select></label></p>
-
-        <p><label>When do you want to proceed?<br>
-          <select id="l_when" required>
-            <option value="">Select…</option>
-            <option>Immediately / within days</option>
-            <option>At current policy renewal</option>
-            <option>Information only</option>
-          </select></label></p>
-      </div>
-
-      <p><label>Notes (optional)<br>
-        <textarea id="l_message" rows="4" placeholder="e.g. event date, special requirements, additional covers (product/employer/etc.)"></textarea></label></p>
-
-      <p><label>
-        <input type="checkbox" id="l_consent" required>
-        I agree that my details will be used exclusively to assess an insurance proposal and reply via email.
-      </label></p>
-
-      <p><button class="btn" type="submit">Generate request email</button></p>
+      <p><button class="btn" type="submit">Create request email</button></p>
     </form>
 
     <div id="liabilitySuccess" class="success-box">
-      ✔ Request created. Please check your email app and press “Send”.
+      ✔ Request created. Please check your email and press “Send”.
     </div>
   </section>
 
-  <section class="card seo-content">
-    <h2 class="h2">Liability insurance: why “cheapest premium” often backfires</h2>
+  <!-- SEO TEXT -->
+  <section class="card seo-text">
+    <h2 class="h2">Understanding Liability Insurance</h2>
     <p>
-      Liability insurance pays when a third party suffers bodily injury or property damage as a result of your activity or premises.
-      The real differences between policies are not only the premium, but the limit, exclusions, deductibles and whether the wording
-      properly reflects what you actually do.
+      Liability insurance covers financial claims arising from bodily injury or property damage caused to third parties.
+      The real value of a policy lies in its limits, exclusions and wording — not only in the premium.
     </p>
     <p>
-      The most common mistake is choosing a low limit just to reduce cost while the exposure is higher (public access, premises, products,
-      employees). You don’t need exaggeration—you need correct matching. With the information above, we can propose options with clear terms.
+      Choosing limits that are too low can expose you to serious personal or business risk, while excessive limits
+      may lead to unnecessary cost. A proper assessment balances exposure, activity and real-world scenarios.
     </p>
   </section>
 
@@ -184,41 +186,32 @@
 
 <footer class="container" style="margin-top:40px;">
   <div>© <span id="year"></span> IL Insurance — License [357092]</div>
-  <div><a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Terms</a></div>
+  <div>
+    <a href="/privacy.html">Privacy</a> ·
+    <a href="/cookies.html">Cookies</a> ·
+    <a href="/terms.html">Terms</a>
+  </div>
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const publicSel = document.getElementById("l_public");
-  const people = document.getElementById("l_people");
-
-  publicSel.addEventListener("change", () => {
-    if (publicSel.value === "Yes") people.placeholder = "e.g. 30 (recommended)";
-    else { people.value = ""; people.placeholder = "e.g. 30"; }
-  });
-
-  document.getElementById("liabilityForm").addEventListener("submit", function(e) {
+  document.getElementById("liabilityForm").addEventListener("submit", function(e){
     e.preventDefault();
-    if (!document.getElementById("l_consent").checked) return;
+    if(!l_consent.checked) return;
 
     const subject = encodeURIComponent("Liability Insurance Quote Request");
-
     const body = encodeURIComponent(
-      "Request type: Liability Insurance\n\n" +
       "Full name: " + l_name.value + "\n" +
       "Email: " + l_email.value + "\n\n" +
       "Liability type: " + l_type.value + "\n" +
-      "Activity/Case: " + l_activity.value + "\n" +
-      "Risk address: " + (l_address.value || "-") + "\n\n" +
-      "Public/customer access: " + l_public.value + "\n" +
-      "Max people on site: " + (l_people.value || "-") + "\n" +
-      "Annual turnover: " + (l_turnover.value || "-") + "\n" +
-      "Employees: " + (l_staff.value || "-") + "\n\n" +
-      "Limit per claim (€): " + l_limit.value + "\n" +
-      "Pricing preference/deductibles: " + l_pricing.value + "\n" +
-      "Claims last 3–5 years: " + l_claims.value + "\n" +
-      "Timeline: " + l_when.value + "\n\n" +
+      "Activity: " + l_activity.value + "\n" +
+      "Risk address: " + (l_address.value || "-") + "\n" +
+      "Public access: " + l_public.value + "\n" +
+      "Employees: " + (l_staff.value || "0") + "\n\n" +
+      "Limit per claim: " + l_limit.value + "\n" +
+      "Pricing preference: " + l_pricing.value + "\n" +
+      "Claims history: " + l_claims.value + "\n\n" +
       "Notes:\n" + (l_message.value || "-")
     );
 
