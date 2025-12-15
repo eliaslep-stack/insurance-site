@@ -8,19 +8,13 @@
   <script defer src="/assets/theme.js"></script>
 
   <style>
-    .success-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: #0f3;
-      color: #000;
-      border-radius: 8px;
-      display: none;
-    }
-    .helper { color:#444; margin-top: 8px; }
-    .small-note { font-size: 13px; color:#555; margin-top: 10px; }
-    .seo-content p { line-height: 1.7; }
-    .two-cols { display:grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 900px) { .two-cols { grid-template-columns: 1fr 1fr; } }
+    .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
+    .helper{color:#444;margin-top:8px}
+    .small-note{font-size:13px;color:#555;margin-top:10px}
+    .hint{font-size:13px;color:#666;margin-top:8px;line-height:1.55}
+    .seo-content p{line-height:1.7}
+    .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -46,13 +40,12 @@
     <p class="helper">Η επικοινωνία γίνεται αποκλειστικά μέσω email.</p>
   </section>
 
-  <!-- FORM -->
   <section class="card">
     <h2 class="h2">Αίτημα προσφοράς κατοικίας</h2>
 
     <p class="small-note">
-      Για να σας προτείνουμε σωστή κάλυψη, χρειαζόμαστε ορισμένες βασικές πληροφορίες για την κατοικία.
-      Τα στοιχεία χρησιμοποιούνται αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και για απάντηση μέσω email.
+      Τα στοιχεία χρησιμοποιούνται αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
+      Για να βγει σωστή τιμολόγηση, είναι κρίσιμα τα κεφάλαια κάλυψης και το αν θέλετε απαλλαγές ή όχι.
     </p>
 
     <form id="propertyForm" class="form">
@@ -93,16 +86,26 @@
             <option>Δευτερεύουσα</option>
           </select></label></p>
 
+        <p><label>Τι θέλετε να ασφαλίσετε;<br>
+          <select id="p_coverTarget" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Κτίριο</option>
+            <option>Περιεχόμενο</option>
+            <option>Κτίριο &amp; Περιεχόμενο</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
         <p><label>Είναι ενυπόθηκο;<br>
           <select id="p_mortgage" required>
             <option value="">Επιλέξτε…</option>
             <option>Όχι</option>
             <option>Ναι</option>
           </select></label></p>
-      </div>
 
-      <p><label>Ποσό εκχώρησης (€) (αν είναι ενυπόθηκο)<br>
-        <input type="number" id="p_assignment" min="0" step="1" placeholder="π.χ. 120000"></label></p>
+        <p><label>Ποσό εκχώρησης (€) (αν είναι ενυπόθηκο)<br>
+          <input type="number" id="p_assignment" min="0" step="1" placeholder="π.χ. 120000"></label></p>
+      </div>
 
       <div class="two-cols">
         <p><label>Τύπος κατοικίας<br>
@@ -118,35 +121,98 @@
       </div>
 
       <div class="two-cols">
+        <p><label>Τύπος κατασκευής / σκελετός<br>
+          <select id="p_structure" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Οπλισμένο σκυρόδεμα (μπετόν)</option>
+            <option>Τοιχοποιία / πέτρα / παραδοσιακή</option>
+            <option>Μεταλλική κατασκευή</option>
+            <option>Άλλο / Δεν γνωρίζω</option>
+          </select></label></p>
+
         <p><label>Έτος έκδοσης άδειας οικοδομής<br>
           <input type="number" id="p_permitYear" required min="1900" max="2030" placeholder="π.χ. 2005"></label></p>
-
-        <p><label>Έτος ανακαίνισης (αν υπάρχει)<br>
-          <input type="number" id="p_renoYear" min="1900" max="2030" placeholder="π.χ. 2018"></label></p>
       </div>
 
-      <p><label>Τι ανακαινίστηκε; (σοβάδες / πατώματα / ηλεκτρολογικά / υδραυλικά)<br>
-        <input type="text" id="p_renoWhat" placeholder="π.χ. ηλεκτρολογικά + υδραυλικά + κουφώματα"></label></p>
+      <div class="two-cols">
+        <p><label>Έτος ανακαίνισης (αν υπάρχει)<br>
+          <input type="number" id="p_renoYear" min="1900" max="2030" placeholder="π.χ. 2018"></label></p>
+
+        <p><label>Τι ανακαινίστηκε; (σοβάδες / πατώματα / ηλεκτρολογικά / υδραυλικά)<br>
+          <input type="text" id="p_renoWhat" placeholder="π.χ. ηλεκτρολογικά + υδραυλικά + κουφώματα"></label></p>
+      </div>
 
       <div class="two-cols">
-        <p><label>Πλήθος ορόφων εκτός ισογείου (π.χ. 2 για διώροφο)<br>
+        <p><label>Πλήθος ορόφων εκτός ισογείου<br>
           <input type="number" id="p_floorsAbove" required min="0" max="20" placeholder="π.χ. 2"></label></p>
 
         <p><label>Σύνολο στεγασμένης επιφάνειας (τ.μ.)<br>
           <input type="number" id="p_totalArea" required min="1" step="1" placeholder="π.χ. 120"></label></p>
       </div>
 
-      <p><label>Τετραγωνικά κύριων χώρων (τ.μ.)<br>
-        <input type="number" id="p_mainArea" required min="1" step="1" placeholder="π.χ. 95"></label></p>
+      <div class="two-cols">
+        <p><label>Τετραγωνικά κύριων χώρων (τ.μ.)<br>
+          <input type="number" id="p_mainArea" required min="1" step="1" placeholder="π.χ. 95"></label></p>
 
-      <p><label>Βοηθητικοί χώροι: είδος/περιγραφή (π.χ. γκαράζ, αποθήκη, υπόγειο)<br>
-        <input type="text" id="p_auxTypes" placeholder="π.χ. αποθήκη + κλειστό γκαράζ"></label></p>
+        <p><label>Βοηθητικοί χώροι: είδος/περιγραφή<br>
+          <input type="text" id="p_auxTypes" placeholder="π.χ. αποθήκη + κλειστό γκαράζ"></label></p>
+      </div>
 
-      <p><label>Βοηθητικοί χώροι: τ.μ. κάθε χώρου (γράψτε αναλυτικά)<br>
+      <p><label>Βοηθητικοί χώροι: τ.μ. κάθε χώρου (αναλυτικά)<br>
         <textarea id="p_auxAreas" rows="3" placeholder="π.χ. Αποθήκη 8τμ, Γκαράζ 15τμ"></textarea></label></p>
 
+      <div class="two-cols">
+        <p><label>Υπάρχει πόρτα ασφαλείας;<br>
+          <select id="p_secDoor" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Όχι</option>
+            <option>Ναι</option>
+          </select></label></p>
+
+        <p><label>Υπάρχει συναγερμός;<br>
+          <select id="p_alarm" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Όχι</option>
+            <option>Ναι</option>
+          </select></label></p>
+      </div>
+
+      <div class="two-cols">
+        <p><label>Επιλογή κόστους / απαλλαγών<br>
+          <select id="p_pricing" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Πιο οικονομικό (με απαλλαγές)</option>
+            <option>Χωρίς απαλλαγές (αν γίνεται)</option>
+            <option>Θέλω και τις 2 εκδοχές για σύγκριση</option>
+          </select></label></p>
+
+        <p><label>Στόχος κάλυψης (σύντομο)<br>
+          <select id="p_goal" required>
+            <option value="">Επιλέξτε…</option>
+            <option>Βασική προστασία</option>
+            <option>Καλή προστασία</option>
+            <option>Πλήρης προστασία</option>
+          </select></label></p>
+      </div>
+
+      <p class="hint">
+        Τα κεφάλαια κάλυψης είναι κρίσιμα. Υπασφάλιση σημαίνει ότι σε μεγάλη ζημιά η αποζημίωση μπορεί να μειωθεί αναλογικά.
+        Υπερασφάλιση σημαίνει ότι πληρώνετε παραπάνω ασφάλιστρο χωρίς να αποζημιώνεστε παραπάνω από τη ζημιά. Αν δεν είστε σίγουρος/η, γράψτε μια εκτίμηση και θα το διορθώσουμε μαζί.
+      </p>
+
+      <div class="two-cols">
+        <p><label>Κεφάλαιο κτιρίου (€) (αν ασφαλίζεται κτίριο)<br>
+          <input type="number" id="p_sumBuilding" min="0" step="1" placeholder="π.χ. 180000"></label></p>
+
+        <p><label>Κεφάλαιο περιεχομένου (€) (αν ασφαλίζεται περιεχόμενο)<br>
+          <input type="number" id="p_sumContents" min="0" step="1" placeholder="π.χ. 30000"></label></p>
+      </div>
+
+      <p><label>Σημείωση για κεφάλαια (προαιρετικά)<br>
+        <input type="text" id="p_sumNote" placeholder="π.χ. κτίριο με βάση κόστος ανακατασκευής / περιεχόμενο εκτίμηση"></label></p>
+
       <p><label>Μήνυμα (προαιρετικά)<br>
-        <textarea id="p_message" rows="4" placeholder="Οτιδήποτε θεωρείτε σημαντικό (π.χ. συναγερμός, πόρτα ασφαλείας, κατοικίδια, προηγούμενη ζημιά κλπ.)"></textarea></label></p>
+        <textarea id="p_message" rows="4" placeholder="Π.χ. θέλω και φυσικά φαινόμενα, σεισμό, διαρροές, αστική ευθύνη ιδιώτη, κλοπή κλπ."></textarea></label></p>
 
       <p><label>
         <input type="checkbox" id="p_consent" required>
@@ -161,32 +227,17 @@
     </div>
   </section>
 
-  <!-- SEO CONTENT BELOW THE FORM -->
   <section class="card seo-content">
-    <h2 class="h2">Ασφάλιση κατοικίας: τι καλύπτει και πώς επιλέγετε σωστά</h2>
-
+    <h2 class="h2">Ασφάλιση κατοικίας: κεφάλαια, απαλλαγές και οι παγίδες που κοστίζουν</h2>
     <p>
-      Η ασφάλιση κατοικίας δεν αφορά μόνο “να υπάρχει ένα συμβόλαιο”, αλλά να υπάρχει η σωστή κάλυψη
-      για τον πραγματικό κίνδυνο του ακινήτου σας. Διαφορετικές ανάγκες έχει μια κύρια κατοικία
-      που ιδιοκατοικείται, διαφορετικές μια κατοικία που μισθώνεται, και εντελώς διαφορετικές
-      μια κατοικία βραχυχρόνιας μίσθωσης.
+      Η σωστή ασφάλιση κατοικίας δεν είναι μόνο «τιμή». Είναι συνδυασμός κεφαλαίων κάλυψης, όρων, εξαιρέσεων και (όπου εφαρμόζεται) απαλλαγών.
+      Η επιλογή “πιο οικονομικό με απαλλαγές” μπορεί να έχει νόημα, αλλά πρέπει να ξέρετε τι ποσό μένει δική σας συμμετοχή σε κάθε ζημιά.
+      Αντίστροφα, η επιλογή “χωρίς απαλλαγές” συνήθως κοστίζει περισσότερο και δεν είναι πάντα διαθέσιμη σε όλες τις καλύψεις/εταιρείες.
     </p>
-
     <p>
-      Για να προκύψει αξιόπιστη πρόταση, είναι κρίσιμο να γνωρίζουμε τα βασικά στοιχεία του κινδύνου:
-      ακριβή διεύθυνση, τύπο κατοικίας (διαμέρισμα, μονοκατοικία, μεζονέτα), έτος άδειας οικοδομής,
-      επιφάνειες κύριων και βοηθητικών χώρων, καθώς και αν υπάρχει ενυπόθηκη/εκχώρηση.
-    </p>
-
-    <p>
-      Στην πράξη, τα συχνότερα “κενά” σε μια ασφάλιση κατοικίας προκύπτουν από ελλιπή στοιχεία
-      ή από λάθος εκτίμηση επιφανειών και χρήσης. Γι’ αυτό η φόρμα παραπάνω ζητά μόνο όσα χρειάζονται
-      για να γίνει σωστή αξιολόγηση και να έχετε πρόταση με ουσία — όχι απλώς ένα νούμερο.
-    </p>
-
-    <p>
-      Αν θέλετε, στο μήνυμα μπορείτε να σημειώσετε επιπλέον στοιχεία (π.χ. συναγερμός, πόρτα ασφαλείας,
-      ανακαινίσεις, προηγούμενες ζημιές), ώστε η πρόταση να είναι ακόμη πιο ακριβής.
+      Το πιο συχνό πρόβλημα στην αγορά είναι τα λάθος κεφάλαια. Με υπασφάλιση, σε μεγάλη ζημιά μπορεί να προκύψει αναλογική μείωση αποζημίωσης.
+      Με υπερασφάλιση, πληρώνετε αυξημένο ασφάλιστρο χωρίς να παίρνετε “έξτρα” αποζημίωση πέρα από τη ζημιά.
+      Γι’ αυτό τα κεφάλαια πρέπει να προσεγγίζουν την πραγματική αξία (συνήθως κόστος ανακατασκευής για κτίριο και ρεαλιστική αποτίμηση για περιεχόμενο).
     </p>
   </section>
 
@@ -200,13 +251,27 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // show/hide assignment amount based on mortgage
   const mortSel = document.getElementById("p_mortgage");
   const assignment = document.getElementById("p_assignment");
   mortSel.addEventListener("change", () => {
     if (mortSel.value === "Ναι") assignment.required = true;
     else { assignment.required = false; assignment.value = ""; }
   });
+
+  // Optional smart hint: if user selects "Κτίριο" enforce sumBuilding; if "Περιεχόμενο" enforce sumContents; if both enforce both.
+  const coverTarget = document.getElementById("p_coverTarget");
+  const sumB = document.getElementById("p_sumBuilding");
+  const sumC = document.getElementById("p_sumContents");
+
+  function syncSumsRequired(){
+    const v = coverTarget.value;
+    sumB.required = (v === "Κτίριο" || v === "Κτίριο & Περιεχόμενο");
+    sumC.required = (v === "Περιεχόμενο" || v === "Κτίριο & Περιεχόμενο");
+    if (!sumB.required) sumB.value = "";
+    if (!sumC.required) sumC.value = "";
+  }
+  coverTarget.addEventListener("change", syncSumsRequired);
+  syncSumsRequired();
 
   document.getElementById("propertyForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -222,10 +287,12 @@
       "Ιδιοκτήτης/Ενοικιαστής: " + p_role.value + "\n" +
       "Χρήση: " + p_use.value + "\n" +
       "Κύρια/Δευτερεύουσα: " + p_primary.value + "\n" +
+      "Τι ασφαλίζεται: " + p_coverTarget.value + "\n\n" +
       "Ενυπόθηκο: " + p_mortgage.value + "\n" +
       "Ποσό εκχώρησης (€): " + (p_assignment.value || "-") + "\n\n" +
       "Τύπος κατοικίας: " + p_type.value + "\n" +
       "Όροφος: " + (p_floor.value || "-") + "\n" +
+      "Τύπος κατασκευής/σκελετός: " + p_structure.value + "\n" +
       "Έτος άδειας οικοδομής: " + p_permitYear.value + "\n" +
       "Έτος ανακαίνισης: " + (p_renoYear.value || "-") + "\n" +
       "Τι ανακαινίστηκε: " + (p_renoWhat.value || "-") + "\n" +
@@ -234,6 +301,13 @@
       "Κύριοι χώροι (τ.μ.): " + p_mainArea.value + "\n" +
       "Βοηθητικοί χώροι (είδος): " + (p_auxTypes.value || "-") + "\n" +
       "Βοηθητικοί χώροι (τ.μ.): " + (p_auxAreas.value || "-") + "\n\n" +
+      "Πόρτα ασφαλείας: " + p_secDoor.value + "\n" +
+      "Συναγερμός: " + p_alarm.value + "\n\n" +
+      "Επιλογή κόστους/απαλλαγών: " + p_pricing.value + "\n" +
+      "Στόχος κάλυψης: " + p_goal.value + "\n" +
+      "Κεφάλαιο κτιρίου (€): " + (p_sumBuilding.value || "-") + "\n" +
+      "Κεφάλαιο περιεχομένου (€): " + (p_sumContents.value || "-") + "\n" +
+      "Σημείωση κεφαλαίων: " + (p_sumNote.value || "-") + "\n\n" +
       "Μήνυμα:\n" + (p_message.value || "-")
     );
 
