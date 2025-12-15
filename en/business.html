@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Insurance — Business Insurance</title>
+  <title>IL Insurance — Liability Insurance</title>
   <link rel="stylesheet" href="/assets/styles.css?v=2">
   <script defer src="/assets/theme.js"></script>
 
@@ -15,7 +15,6 @@
     .seo-content p{line-height:1.7}
     .two-cols{display:grid;grid-template-columns:1fr;gap:12px}
     .pill{font-size:12px;background:#f1f1f1;border-radius:999px;padding:6px 10px;display:inline-block;margin-top:8px}
-    .section-title{margin-top:10px}
     .hidden{display:none}
     @media (min-width:900px){.two-cols{grid-template-columns:1fr 1fr}}
   </style>
@@ -38,250 +37,146 @@
 <main class="container">
 
   <section class="page-hero">
-    <h1 class="h1">Business Insurance</h1>
-    <p class="lead">Share the key business and risk details so we can prepare an insurance proposal that actually makes sense.</p>
+    <h1 class="h1">Liability Insurance</h1>
+    <p class="lead">Share a few key details so we can propose the right limits and terms, not just a “blind price”.</p>
     <p class="helper">We communicate exclusively via email.</p>
   </section>
 
   <section class="card">
-    <h2 class="h2">Business quote request</h2>
+    <h2 class="h2">Liability quote request</h2>
 
     <p class="small-note">
       Your details are used only to assess an insurance proposal and reply via email.
-      For accurate pricing, the critical items are: risk address, activity, square meters and sums insured.
+      For liability insurance, the critical items are: type of activity, exposure to third parties/public, and coverage limits.
     </p>
 
-    <form id="businessForm" class="form">
+    <form id="liabilityForm" class="form">
 
       <div class="two-cols">
         <p><label>Full name<br>
-          <input type="text" id="b_name" required autocomplete="name"></label></p>
+          <input type="text" id="l_name" required autocomplete="name"></label></p>
 
         <p><label>Email<br>
-          <input type="email" id="b_email" required autocomplete="email"></label></p>
+          <input type="email" id="l_email" required autocomplete="email"></label></p>
       </div>
 
       <div class="two-cols">
-        <p><label>Business name (optional)<br>
-          <input type="text" id="b_company" placeholder="e.g. ABC Ltd"></label></p>
-
-        <p><label>VAT / Tax ID (optional)<br>
-          <input type="text" id="b_vat" placeholder="e.g. 099999999"></label></p>
-      </div>
-
-      <p><label>Risk address (street – number – postal code – city)<br>
-        <input type="text" id="b_address" required placeholder="e.g. Ermou 10, 10563, Athens"></label></p>
-
-      <div class="two-cols">
-        <p><label>Premises type<br>
-          <select id="b_spaceType" required>
+        <p><label>Liability type<br>
+          <select id="l_type" required>
             <option value="">Select…</option>
-            <option>Office</option>
-            <option>Retail shop</option>
-            <option>Food & beverage (café/restaurant)</option>
-            <option>Warehouse</option>
-            <option>Workshop / light manufacturing</option>
-            <option>Medical practice / healthcare</option>
-            <option>Hair/beauty salon</option>
-            <option>Gym / studio</option>
+            <option>Private (home liability)</option>
+            <option>Professional / Business liability</option>
+            <option>Employer’s liability</option>
+            <option>Product liability</option>
+            <option>Event liability</option>
             <option>Other</option>
           </select></label></p>
 
-        <p><label>Activity description (brief)<br>
-          <input type="text" id="b_activity" required placeholder="e.g. accounting office / mini market / café"></label></p>
+        <p><label>Activity / case description (brief)<br>
+          <input type="text" id="l_activity" required placeholder="e.g. café 80 sqm / accounting office / event 200 guests"></label></p>
       </div>
 
-      <div class="two-cols">
-        <p><label>Occupancy / tenure<br>
-          <select id="b_tenure" required>
-            <option value="">Select…</option>
-            <option>Owner</option>
-            <option>Tenant</option>
-          </select></label></p>
-
-        <p><label>Year built / permit year (if known)<br>
-          <input type="number" id="b_year" min="1900" max="2030" placeholder="e.g. 2008"></label></p>
-      </div>
+      <p><label>Risk address (if there is a premises) (street – number – postal code – city)<br>
+        <input type="text" id="l_address" placeholder="e.g. Patision 20, 10434, Athens"></label></p>
 
       <div class="two-cols">
-        <p><label>Main area (sq.m.)<br>
-          <input type="number" id="b_area" required min="1" step="1" placeholder="e.g. 85"></label></p>
-
-        <p><label>Auxiliary areas (type/sq.m.) (optional)<br>
-          <input type="text" id="b_aux" placeholder="e.g. storage 10 sqm, basement 20 sqm"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Number of employees<br>
-          <input type="number" id="b_staff" required min="0" max="999" placeholder="e.g. 3"></label></p>
-
-        <p><label>Business hours (approx.)<br>
-          <input type="text" id="b_hours" required placeholder="e.g. Mon–Fri 09:00–17:00"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Alarm system?<br>
-          <select id="b_alarm" required>
+        <p><label>Is there public/customer access on site?<br>
+          <select id="l_public" required>
             <option value="">Select…</option>
             <option>No</option>
             <option>Yes</option>
           </select></label></p>
 
-        <p><label>Fire detection / fire suppression system?<br>
-          <select id="b_fireSystem" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes</option>
-            <option>Not sure</option>
-          </select></label></p>
+        <p><label>Max number of people on site at once (if applicable)<br>
+          <input type="number" id="l_people" min="0" max="100000" placeholder="e.g. 30"></label></p>
       </div>
 
-      <p class="pill">Pricing / deductibles</p>
+      <div class="two-cols">
+        <p><label>Annual turnover (optional but helpful)<br>
+          <select id="l_turnover">
+            <option value="">Select (optional)…</option>
+            <option>&lt; €50,000</option>
+            <option>€50,000 – €150,000</option>
+            <option>€150,000 – €500,000</option>
+            <option>€500,000 – €1,000,000</option>
+            <option>&gt; €1,000,000</option>
+          </select></label></p>
+
+        <p><label>Number of employees (if relevant)<br>
+          <input type="number" id="l_staff" min="0" max="9999" placeholder="e.g. 5"></label></p>
+      </div>
+
+      <p class="pill">Coverage limits & pricing</p>
 
       <div class="two-cols">
-        <p><label>Pricing preference (where applicable)<br>
-          <select id="b_pricing" required>
+        <p><label>Desired limit per claim (€)<br>
+          <select id="l_limit" required>
+            <option value="">Select…</option>
+            <option>100,000</option>
+            <option>300,000</option>
+            <option>500,000</option>
+            <option>1,000,000</option>
+            <option>Not sure — recommend</option>
+          </select></label></p>
+
+        <p><label>Pricing preference / deductibles (where applicable)<br>
+          <select id="l_pricing" required>
             <option value="">Select…</option>
             <option>More affordable (with deductibles)</option>
             <option>No deductibles (if available)</option>
             <option>I want both options to compare</option>
           </select></label></p>
-
-        <p><label>Coverage goal<br>
-          <select id="b_goal" required>
-            <option value="">Select…</option>
-            <option>Basic protection</option>
-            <option>Good protection</option>
-            <option>Full protection</option>
-          </select></label></p>
       </div>
 
       <p class="hint">
-        Sums insured matter. Underinsurance may reduce claim payments proportionally in a major loss.
-        Overinsurance means higher premium without extra benefit beyond the actual damage.
-        If you are unsure, provide an estimate and we will refine it with you.
+        With liability insurance, the “right” choice is not to shrink the limit blindly just to lower the premium.
+        The limit must match the real exposure (public access, premises, activity, products, employees).
+        If unsure, choose “recommend”.
       </p>
 
       <div class="two-cols">
-        <p><label>Building sum insured (€) (if insuring the building)<br>
-          <input type="number" id="b_sumBuilding" min="0" step="1" placeholder="e.g. 250000"></label></p>
-
-        <p><label>Contents / stock sum insured (€)<br>
-          <input type="number" id="b_sumContents" required min="0" step="1" placeholder="e.g. 60000"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Equipment / machinery sum insured (€) (if any)<br>
-          <input type="number" id="b_sumEquipment" min="0" step="1" placeholder="e.g. 30000"></label></p>
-
-        <p><label>Do you need Business Liability coverage?<br>
-          <select id="b_liability" required>
+        <p><label>Any claims/incidents in the last 3–5 years?<br>
+          <select id="l_claims" required>
             <option value="">Select…</option>
-            <option>Yes</option>
             <option>No</option>
-            <option>Not sure — recommend</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Indicative liability limit (€) (if relevant)<br>
-          <select id="b_liabilityLimit">
-            <option value="">Select (optional)…</option>
-            <option>100,000</option>
-            <option>300,000</option>
-            <option>500,000</option>
-            <option>1,000,000</option>
-            <option>Not sure</option>
+            <option>Yes</option>
           </select></label></p>
 
-        <p><label>Business interruption / loss of profit coverage?<br>
-          <select id="b_bi" required>
+        <p><label>When do you want to proceed?<br>
+          <select id="l_when" required>
             <option value="">Select…</option>
-            <option>Yes</option>
-            <option>No</option>
-            <option>Not sure — recommend</option>
+            <option>Immediately / within days</option>
+            <option>At current policy renewal</option>
+            <option>Information only</option>
           </select></label></p>
       </div>
 
-      <p class="pill">Type-specific details (when needed)</p>
-
-      <div id="foodSection" class="hidden">
-        <h3 class="section-title">Food & Beverage</h3>
-        <div class="two-cols">
-          <p><label>Kitchen with open flame / frying / ovens?<br>
-            <select id="b_kitchen">
-              <option value="">Select…</option>
-              <option>No</option>
-              <option>Yes</option>
-            </select></label></p>
-
-          <p><label>Seating capacity (approx.)<br>
-            <input type="number" id="b_seats" min="0" max="2000" placeholder="e.g. 40"></label></p>
-        </div>
-      </div>
-
-      <div id="warehouseSection" class="hidden">
-        <h3 class="section-title">Warehouse / Logistics</h3>
-        <div class="two-cols">
-          <p><label>Flammables / chemicals on site?<br>
-            <select id="b_flammables">
-              <option value="">Select…</option>
-              <option>No</option>
-              <option>Yes</option>
-              <option>Small quantity</option>
-            </select></label></p>
-
-          <p><label>Peak stock value (€) at busiest time<br>
-            <input type="number" id="b_peakStock" min="0" step="1" placeholder="e.g. 120000"></label></p>
-        </div>
-      </div>
-
-      <div id="medicalSection" class="hidden">
-        <h3 class="section-title">Medical / Healthcare</h3>
-        <div class="two-cols">
-          <p><label>Any invasive procedures?<br>
-            <select id="b_invasive">
-              <option value="">Select…</option>
-              <option>No</option>
-              <option>Yes</option>
-            </select></label></p>
-
-          <p><label>Approx. visits per day<br>
-            <input type="number" id="b_visits" min="0" max="10000" placeholder="e.g. 20"></label></p>
-        </div>
-      </div>
-
-      <p><label>Message (optional)<br>
-        <textarea id="b_message" rows="4" placeholder="e.g. key coverages you care about (theft, glass, electrical perils, natural hazards, etc.)"></textarea></label></p>
+      <p><label>Notes (optional)<br>
+        <textarea id="l_message" rows="4" placeholder="e.g. event date, special requirements, additional covers (product/employer/etc.)"></textarea></label></p>
 
       <p><label>
-        <input type="checkbox" id="b_consent" required>
+        <input type="checkbox" id="l_consent" required>
         I agree that my details will be used exclusively to assess an insurance proposal and reply via email.
       </label></p>
 
       <p><button class="btn" type="submit">Generate request email</button></p>
     </form>
 
-    <div id="businessSuccess" class="success-box">
+    <div id="liabilitySuccess" class="success-box">
       ✔ Request created. Please check your email app and press “Send”.
     </div>
   </section>
 
   <section class="card seo-content">
-    <h2 class="h2">Business insurance: what you really pay for and what stays uncovered</h2>
+    <h2 class="h2">Liability insurance: why “cheapest premium” often backfires</h2>
     <p>
-      Business insurance is not just “fire insurance”. It’s a protection structure for property, liability,
-      and (when needed) business interruption. The most common mistake is declaring sums insured roughly
-      and chasing the lowest premium only.
+      Liability insurance pays when a third party suffers bodily injury or property damage as a result of your activity or premises.
+      The real differences between policies are not only the premium, but the limit, exclusions, deductibles and whether the wording
+      properly reflects what you actually do.
     </p>
     <p>
-      Underinsurance may reduce claim payments proportionally in a major loss. Overinsurance increases premium
-      without any extra benefit beyond the actual damage. Deductibles can lower the premium, but you must know
-      the out-of-pocket amount you accept in each claim.
-    </p>
-    <p>
-      Fill in the basics above and we’ll reply with options that make sense, with clear terms and alternatives
-      (with or without deductibles), based on your business activity.
+      The most common mistake is choosing a low limit just to reduce cost while the exposure is higher (public access, premises, products,
+      employees). You don’t need exaggeration—you need correct matching. With the information above, we can propose options with clear terms.
     </p>
   </section>
 
@@ -295,64 +190,40 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const spaceType = document.getElementById("b_spaceType");
-  const foodSection = document.getElementById("foodSection");
-  const warehouseSection = document.getElementById("warehouseSection");
-  const medicalSection = document.getElementById("medicalSection");
+  const publicSel = document.getElementById("l_public");
+  const people = document.getElementById("l_people");
 
-  function showSections(){
-    const v = spaceType.value;
-    foodSection.classList.add("hidden");
-    warehouseSection.classList.add("hidden");
-    medicalSection.classList.add("hidden");
+  publicSel.addEventListener("change", () => {
+    if (publicSel.value === "Yes") people.placeholder = "e.g. 30 (recommended)";
+    else { people.value = ""; people.placeholder = "e.g. 30"; }
+  });
 
-    if (v === "Food & beverage (café/restaurant)") foodSection.classList.remove("hidden");
-    if (v === "Warehouse") warehouseSection.classList.remove("hidden");
-    if (v === "Medical practice / healthcare") medicalSection.classList.remove("hidden");
-  }
-  spaceType.addEventListener("change", showSections);
-  showSections();
-
-  document.getElementById("businessForm").addEventListener("submit", function(e) {
+  document.getElementById("liabilityForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    if (!document.getElementById("b_consent").checked) return;
+    if (!document.getElementById("l_consent").checked) return;
 
-    const subject = encodeURIComponent("Business Insurance Quote Request");
+    const subject = encodeURIComponent("Liability Insurance Quote Request");
 
     const body = encodeURIComponent(
-      "Request type: Business Insurance\n\n" +
-      "Full name: " + b_name.value + "\n" +
-      "Email: " + b_email.value + "\n" +
-      "Business name: " + (b_company.value || "-") + "\n" +
-      "VAT/Tax ID: " + (b_vat.value || "-") + "\n\n" +
-      "Risk address: " + b_address.value + "\n" +
-      "Premises type: " + b_spaceType.value + "\n" +
-      "Activity: " + b_activity.value + "\n" +
-      "Tenure: " + b_tenure.value + "\n" +
-      "Year built/permit: " + (b_year.value || "-") + "\n\n" +
-      "Main area (sqm): " + b_area.value + "\n" +
-      "Aux areas: " + (b_aux.value || "-") + "\n" +
-      "Employees: " + b_staff.value + "\n" +
-      "Business hours: " + b_hours.value + "\n\n" +
-      "Alarm: " + b_alarm.value + "\n" +
-      "Fire detection/suppression: " + b_fireSystem.value + "\n\n" +
-      "Pricing preference/deductibles: " + b_pricing.value + "\n" +
-      "Coverage goal: " + b_goal.value + "\n\n" +
-      "Building sum insured (€): " + (b_sumBuilding.value || "-") + "\n" +
-      "Contents/stock sum insured (€): " + b_sumContents.value + "\n" +
-      "Equipment/machinery sum insured (€): " + (b_sumEquipment.value || "-") + "\n\n" +
-      "Business liability: " + b_liability.value + "\n" +
-      "Liability limit (€): " + (b_liabilityLimit.value || "-") + "\n" +
-      "Business interruption: " + b_bi.value + "\n\n" +
-      "— Type-specific —\n" +
-      "Food & Beverage: open-flame kitchen: " + (document.getElementById("b_kitchen")?.value || "-") + ", seats: " + (document.getElementById("b_seats")?.value || "-") + "\n" +
-      "Warehouse: flammables: " + (document.getElementById("b_flammables")?.value || "-") + ", peak stock (€): " + (document.getElementById("b_peakStock")?.value || "-") + "\n" +
-      "Medical: invasive procedures: " + (document.getElementById("b_invasive")?.value || "-") + ", visits/day: " + (document.getElementById("b_visits")?.value || "-") + "\n\n" +
-      "Message:\n" + (b_message.value || "-")
+      "Request type: Liability Insurance\n\n" +
+      "Full name: " + l_name.value + "\n" +
+      "Email: " + l_email.value + "\n\n" +
+      "Liability type: " + l_type.value + "\n" +
+      "Activity/Case: " + l_activity.value + "\n" +
+      "Risk address: " + (l_address.value || "-") + "\n\n" +
+      "Public/customer access: " + l_public.value + "\n" +
+      "Max people on site: " + (l_people.value || "-") + "\n" +
+      "Annual turnover: " + (l_turnover.value || "-") + "\n" +
+      "Employees: " + (l_staff.value || "-") + "\n\n" +
+      "Limit per claim (€): " + l_limit.value + "\n" +
+      "Pricing preference/deductibles: " + l_pricing.value + "\n" +
+      "Claims last 3–5 years: " + l_claims.value + "\n" +
+      "Timeline: " + l_when.value + "\n\n" +
+      "Notes:\n" + (l_message.value || "-")
     );
 
     window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
-    businessSuccess.style.display = "block";
+    liabilitySuccess.style.display = "block";
   });
 </script>
 
