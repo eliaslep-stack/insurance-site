@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Life & Health Insurance</title>
-  <link rel="stylesheet" href="/assets/styles.css?v=2">
+  <meta name="description" content="Life and health insurance in plain language. Ask for a proposal with a few details. Medical history stays optional.">
+  <link rel="canonical" href="https://ildigitalassistant.com/en/life-health.html">
+  <link rel="alternate" hreflang="el" href="https://ildigitalassistant.com/el/life-health.html">
+  <link rel="alternate" hreflang="en" href="https://ildigitalassistant.com/en/life-health.html">
+  <link rel="alternate" hreflang="x-default" href="https://ildigitalassistant.com/el/life-health.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IL Insurance">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="IL Insurance — Life &amp; Health Insurance">
+  <meta property="og:description" content="Life and health insurance in plain language. Ask for a proposal with a few details. Medical history stays optional.">
+  <meta property="og:url" content="https://ildigitalassistant.com/en/life-health.html">
+  <meta property="og:image" content="https://ildigitalassistant.com/assets/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/styles.css?v=3">
   <script defer src="/assets/theme.js"></script>
+  <script defer src="/assets/lead-form.js"></script>
 
   <style>
     .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
@@ -37,7 +51,7 @@
   <section class="page-hero">
     <h1 class="h1">Life &amp; Health Insurance</h1>
     <p class="lead">Share a few key details so we can recommend a solution that fits your needs and profile.</p>
-    <p class="helper">We communicate exclusively via email.</p>
+    <p class="helper">A name and a phone number or email are enough to start.</p>
   </section>
 
   <section class="card">
@@ -49,121 +63,52 @@
       it is optional and only with your explicit consent.
     </p>
 
-    <form id="lifeHealthForm" class="form">
-
-      <div class="two-cols">
-        <p><label>Full name<br>
-          <input type="text" id="lh_name" required autocomplete="name"></label></p>
-
-        <p><label>Email<br>
-          <input type="email" id="lh_email" required autocomplete="email"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Age<br>
-          <input type="number" id="lh_age" required min="0" max="100" placeholder="e.g. 42"></label></p>
-
-        <p><label>Gender<br>
-          <select id="lh_gender" required>
-            <option value="">Select…</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Prefer not to say</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Smoking status<br>
-          <select id="lh_smoker" required>
-            <option value="">Select…</option>
-            <option>Non-smoker</option>
-            <option>Smoker</option>
-            <option>Occasionally</option>
-          </select></label></p>
-
-        <p><label>City / area (approx.)<br>
-          <input type="text" id="lh_city" required placeholder="e.g. Athens"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Main interest<br>
-          <select id="lh_interest" required>
+    <form id="lifeHealthForm" class="form" action="mailto:info@ildigitalassistant.com" method="post" enctype="text/plain" data-lead data-lang="en" data-subject="Life and health insurance quote request">
+      <input type="hidden" name="lang" value="en">
+      <input type="hidden" name="page" value="/en/life-health.html">
+      <input type="hidden" name="subject" value="Life and health insurance quote request">
+      <p><label>Full name<br>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </label></p>
+      <p><label>Phone<br>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      </label></p>
+      <p><label>Email<br>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </label></p>
+      <p class="form-hint">Phone or email — enter at least one.</p>
+      <p><label>What do you need?<br>
+        <select id="need" name="need" required>
             <option value="">Select…</option>
             <option>Health (hospital plan)</option>
             <option>Health (outpatient / diagnostics)</option>
-            <option>Life insurance (death benefit)</option>
+            <option>Life insurance</option>
             <option>Personal accident</option>
             <option>Combination</option>
-          </select></label></p>
-
-        <p><label>Do you already have private insurance?<br>
-          <select id="lh_existing" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes, active policy</option>
-            <option>I had one in the past</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Pricing preference / deductibles (where applicable)<br>
-          <select id="lh_pricing" required>
-            <option value="">Select…</option>
-            <option>More affordable (with deductibles)</option>
-            <option>No deductibles (if available)</option>
-            <option>I want both options to compare</option>
-          </select></label></p>
-
-        <p><label>Coverage goal<br>
-          <select id="lh_goal" required>
-            <option value="">Select…</option>
-            <option>Basic protection</option>
-            <option>Good protection</option>
-            <option>Full protection</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Desired life insurance sum (€) (if relevant)<br>
-          <input type="number" id="lh_lifeSum" min="0" step="1000" placeholder="e.g. 100000"></label></p>
-
-        <p><label>Desired health plan level (optional)<br>
-          <select id="lh_healthLevel">
-            <option value="">Select (optional)…</option>
-            <option>Budget hospital plan</option>
-            <option>Mid-level hospital plan</option>
-            <option>High / premium</option>
-            <option>Not sure — suggest options</option>
-          </select></label></p>
-      </div>
-
-      <p class="hint">
-        For underwriting, insurers may require a medical questionnaire if there are known conditions or recent hospitalizations.
-        We do not request details here. If you want, you can simply write “there is medical history” (without specifics).
-      </p>
-
-      <p><label>Medical history (optional — keep it brief)<br>
-        <textarea id="lh_medical" rows="3" placeholder="e.g. 'medical history exists' or 'no' (no details)"></textarea></label></p>
-
-      <p><label>Message (optional)<br>
-        <textarea id="lh_message" rows="4" placeholder="e.g. preferred hospitals, family plan, budget range, timeline to proceed, etc."></textarea></label></p>
-
-      <p><label>
-        <input type="checkbox" id="lh_consent" required>
-        I agree that my details will be used exclusively to assess an insurance proposal and reply via email.
+        </select>
       </label></p>
-
+      <details class="more-details">
+        <summary>More details (optional)</summary>
+        
+        <p><label>Age<br><input id="lh_age" name="lh_age" type="number" min="0" max="100"></label></p>
+        <p><label>Gender<br><select id="lh_gender" name="lh_gender"><option value="">—</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select></label></p>
+        <p><label>Smoking<br><select id="lh_smoker" name="lh_smoker"><option value="">—</option><option>Non-smoker</option><option>Smoker</option><option>Occasionally</option></select></label></p>
+        <p><label>City<br><input id="lh_city" name="lh_city" type="text"></label></p>
+        <p><label>Existing private insurance?<br><select id="lh_existing" name="lh_existing"><option value="">—</option><option>No</option><option>Yes, active policy</option><option>I had one in the past</option></select></label></p>
+        <p><label>Desired life sum (€)<br><input id="lh_lifeSum" name="lh_lifeSum" type="number" min="0" step="1000"></label></p>
+        <p><label>Medical history (optional, no details)<br><textarea id="lh_medical" name="lh_medical" rows="2"></textarea></label></p>
+        <p><label><input type="checkbox" id="lh_sensitive" name="lh_sensitive"> I understand that anything I write about my health is sensitive and I provide it voluntarily.</label></p>
+        <p><label>Notes<br><textarea id="lh_message" name="lh_message" rows="2"></textarea></label></p>
+        
+      </details>
       <p><label>
-        <input type="checkbox" id="lh_sensitive">
-        I understand that any health-related information I choose to write in “Medical history” is sensitive data and I provide it voluntarily for the purpose of receiving an insurance quote.
+        <input type="checkbox" name="consent" required>
+        I agree that my details may be used to contact me about this request.
       </label></p>
-
-      <p><button class="btn" type="submit">Generate request email</button></p>
+      <p><button class="btn" type="submit">Send</button></p>
+      <p class="form-hint">Or call <a href="tel:+306937311411">+30 693 731 1411</a>, <a href="https://wa.me/306937311411" target="_blank" rel="noopener noreferrer">WhatsApp</a>, <a href="viber://chat?number=%2B306937311411">Viber</a>.</p>
     </form>
-
-    <div id="lifeHealthSuccess" class="success-box">
-      ✔ Request created. Please check your email app and press “Send”.
-    </div>
+    <div class="success-box"></div>
   </section>
 
   <section class="card seo-content">
@@ -190,53 +135,12 @@
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance — License [357092]</div>
-  <div><a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Terms</a></div>
+  <div>© <span id="year"></span> IL Insurance — Ilias Lepouraios — License 357092</div>
+  <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-
-  const medField = document.getElementById("lh_medical");
-  const sensCheck = document.getElementById("lh_sensitive");
-
-  function hasMedicalText() {
-    return (medField.value || "").trim().length > 0;
-  }
-
-  document.getElementById("lifeHealthForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    if (!document.getElementById("lh_consent").checked) return;
-
-    // If user typed anything medical-related, require the sensitive-data checkbox
-    if (hasMedicalText() && !sensCheck.checked) {
-      alert("You filled in the Medical history field. Please confirm you provide this sensitive information voluntarily.");
-      return;
-    }
-
-    const subject = encodeURIComponent("Life & Health Insurance Quote Request");
-
-    const body = encodeURIComponent(
-      "Request type: Life & Health Insurance\n\n" +
-      "Full name: " + lh_name.value + "\n" +
-      "Email: " + lh_email.value + "\n\n" +
-      "Age: " + lh_age.value + "\n" +
-      "Gender: " + lh_gender.value + "\n" +
-      "Smoking status: " + lh_smoker.value + "\n" +
-      "City/Area: " + lh_city.value + "\n\n" +
-      "Main interest: " + lh_interest.value + "\n" +
-      "Existing private insurance: " + lh_existing.value + "\n" +
-      "Pricing preference/deductibles: " + lh_pricing.value + "\n" +
-      "Coverage goal: " + lh_goal.value + "\n\n" +
-      "Desired life sum (€): " + (lh_lifeSum.value || "-") + "\n" +
-      "Desired health plan level: " + (lh_healthLevel.value || "-") + "\n\n" +
-      "Medical history (optional):\n" + (lh_medical.value || "-") + "\n\n" +
-      "Message:\n" + (lh_message.value || "-")
-    );
-
-    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
-    lifeHealthSuccess.style.display = "block";
-  });
 </script>
 
 </body>

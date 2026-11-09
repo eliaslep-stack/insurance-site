@@ -438,3 +438,113 @@ a:visited {
   color: #ffffff !important;
 }
 
+/* Quote forms, phone actions, hero poster */
+.form-hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.hp {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+details.more-details {
+  border: 1px solid #2a3444;
+  border-radius: 12px;
+  padding: 4px 12px 8px;
+}
+
+details.more-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-actions,
+.quick-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.contact-actions {
+  margin: 12px 0;
+}
+
+.contact-actions .btn,
+.quick-contact a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-contact {
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.quick-contact a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #fff !important;
+  background: rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hero-person {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.home-call {
+  text-align: center;
+  padding: 8px 0 0;
+}
+
+.home-call .contact-actions {
+  justify-content: center;
+}
+
+.success-box {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 8px;
+  display: none;
+  background: #0f3;
+  color: #000;
+}
+
+.success-box.is-fallback {
+  background: #141824;
+  color: #f6f7fb;
+  border: 1px solid #2a3444;
+}
+
+.success-box.is-fallback a {
+  color: #7dd3fc;
+}
+
+.assistant-hero img {
+  width: min(280px, 70vw);
+  height: auto;
+  border-radius: 16px;
+  display: block;
+  margin: 12px 0;
+}
+
+.hero-video {
+  min-height: 85vh;
+  height: auto !important;
+}
+

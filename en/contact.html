@@ -4,20 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Contact</title>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <meta name="description" content="Contact Ilias Lepouraios at IL Insurance. Call, Viber or WhatsApp on +30 693 731 1411, or send a short form.">
+  <link rel="canonical" href="https://ildigitalassistant.com/en/contact.html">
+  <link rel="alternate" hreflang="el" href="https://ildigitalassistant.com/el/contact.html">
+  <link rel="alternate" hreflang="en" href="https://ildigitalassistant.com/en/contact.html">
+  <link rel="alternate" hreflang="x-default" href="https://ildigitalassistant.com/el/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IL Insurance">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="IL Insurance — Contact">
+  <meta property="og:description" content="Contact Ilias Lepouraios at IL Insurance. Call, Viber or WhatsApp on +30 693 731 1411, or send a short form.">
+  <meta property="og:url" content="https://ildigitalassistant.com/en/contact.html">
+  <meta property="og:image" content="https://ildigitalassistant.com/assets/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/styles.css?v=3">
   <script defer src="/assets/theme.js"></script>
-
-  <style>
-    .success-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: #0f3;
-      color: #000;
-      border-radius: 8px;
-      display: none;
-    }
-  </style>
-
+  <script defer src="/assets/lead-form.js"></script>
 </head>
 <body>
 
@@ -37,138 +39,64 @@
 <main class="container">
   <section class="page-hero">
     <h1 class="h1">Contact</h1>
-    <p class="lead">Send us a message for a quote, a question or an appointment.</p>
+    <p class="lead">Ilias Lepouraios, insurance intermediary. License 357092.</p>
   </section>
 
   <section class="card">
-    <h2 class="h2">Contact details</h2>
-    <p>
-      Tel.: +30 6981 963 910 (Available on Viber & WhatsApp)<br>
-      Email: info@ildigitalassistant.com
-    </p>
+    <h2 class="h2">Phone and messages</h2>
+    <div class="contact-actions">
+      <a class="btn" href="tel:+306937311411">Call · +30 693 731 1411</a>
+      <a class="btn alt" href="https://wa.me/306937311411" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a class="btn alt" href="viber://chat?number=%2B306937311411">Viber</a>
+      <a class="btn alt" href="mailto:info@ildigitalassistant.com">Email</a>
+    </div>
   </section>
 
   <section class="card">
-    <h2 class="h2">Message form</h2>
-
-    <form id="mailForm" class="form">
-
-      <p>
-        <label>Name<br>
-          <input type="text" id="name" required>
-        </label>
-      </p>
-
-      <p>
-        <label>Email<br>
-          <input type="email" id="email" required>
-        </label>
-      </p>
-
-      <p>
-        <label>Phone<br>
-          <input type="tel" id="phone">
-        </label>
-      </p>
-
-      <p>
-        <label>Message<br>
-          <textarea id="message" rows="5" required></textarea>
-        </label>
-      </p>
-
+    <h2 class="h2">Short message</h2>
+    <form id="mailForm" class="form" action="mailto:info@ildigitalassistant.com" method="post" enctype="text/plain" data-lead data-lang="en" data-subject="Message from the website" data-consent="skip">
+      <input type="hidden" name="lang" value="en">
+      <input type="hidden" name="page" value="/en/contact.html">
+      <input type="hidden" name="subject" value="Message from the website">
+      <p><label>Name<br>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </label></p>
+      <p><label>Phone<br>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      </label></p>
+      <p><label>Email<br>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </label></p>
+      <p class="form-hint">Phone or email — enter at least one.</p>
+      <p><label>What do you need?<br>
+        <select id="need" name="need" required>
+          <option value="">Select…</option>
+          <option>A quote</option>
+          <option>A question</option>
+          <option>An appointment</option>
+        </select>
+      </label></p>
+      <p><label>Message (optional)<br>
+        <textarea id="message" name="message" rows="3"></textarea>
+      </label></p>
       <p><button class="btn" type="submit">Send</button></p>
     </form>
-
-    <div id="success" class="success-box">
-      ✔ Your message has been created. Please check your email and press “Send”.
-    </div>
-
+    <div id="success" class="success-box"></div>
+    <noscript>
+      <p>Without JavaScript, call <a href="tel:+306937311411">+30 693 731 1411</a> or email info@ildigitalassistant.com.</p>
+    </noscript>
   </section>
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance</div>
+  <div>© <span id="year"></span> IL Insurance — Ilias Lepouraios — Insurance intermediary license 357092 · Tel: <a href="tel:+306937311411">+30 693 731 1411</a></div>
   <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </footer>
 
-<script>
-document.getElementById("mailForm").addEventListener("submit", function(e) {
-  e.preventDefault(); // Prevent page from leaving
-
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const phone = document.getElementById("phone").value;
-  const message = document.getElementById("message").value;
-
-  const mailto = `mailto:info@ildigitalassistant.com?subject=Message from ${name}&body=Name: ${name}%0AEmail: ${email}%0APhone: ${phone}%0A%0AMessage:%0A${message}`;
-
-  window.open(mailto, "_blank");
-
-  document.getElementById("success").style.display = "block";
-});
-</script>
-
-<!-- Athena Chat Assistant -->
-<style>
-  #athena-bubble {
-    position: fixed;
-    bottom: 20px;
-    right: 22px;
-    background: #ffffff;
-    border-radius: 50px;
-    padding: 6px 16px 6px 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 22px rgba(0,0,0,0.22);
-    cursor: pointer;
-    font-family: Arial, sans-serif;
-    z-index: 9999;
-    transition: all 0.25s ease;
-  }
-
-  #athena-bubble:hover {
-    transform: scale(1.05);
-  }
-
-  #athena-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #eee;
-  }
-
-  #athena-bubble span {
-    font-size: 14px;
-    color: #333;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 600px) {
-    #athena-bubble span {
-      display: none;
-    }
-    #athena-bubble {
-      padding: 6px;
-      border-radius: 50%;
-    }
-  }
-</style>
-
-<div id="athena-bubble"
-     onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
-  <img id="athena-avatar"
-       src="https://insurance.ildigitalassistant.com/assets/athena.png"
-       alt="Athena Assistant">
-  <span>Ask Athena — Insurance help</span>
+<div id="athena-bubble" style="position:fixed;right:18px;bottom:18px;z-index:9999;cursor:pointer;" onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
+  <img src="/assets/athena.webp" alt="Athena" width="56" height="56" decoding="async" style="width:56px;height:56px;border-radius:50%;object-fit:cover;box-shadow:0 8px 24px rgba(0,0,0,.18);">
 </div>
-<!-- END Athena Chat Assistant -->
 
 </body>
 </html>
-
-

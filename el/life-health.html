@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Ασφάλιση Ζωής & Υγείας</title>
-  <link rel="stylesheet" href="/assets/styles.css?v=2">
+  <meta name="description" content="Ασφάλιση ζωής και υγείας με καθαρούς όρους. Ζητήστε πρόταση με λίγα στοιχεία. Το ιατρικό ιστορικό μένει προαιρετικό.">
+  <link rel="canonical" href="https://ildigitalassistant.com/el/life-health.html">
+  <link rel="alternate" hreflang="el" href="https://ildigitalassistant.com/el/life-health.html">
+  <link rel="alternate" hreflang="en" href="https://ildigitalassistant.com/en/life-health.html">
+  <link rel="alternate" hreflang="x-default" href="https://ildigitalassistant.com/el/life-health.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IL Insurance">
+  <meta property="og:locale" content="el_GR">
+  <meta property="og:title" content="IL Insurance — Ασφάλιση Ζωής &amp; Υγείας">
+  <meta property="og:description" content="Ασφάλιση ζωής και υγείας με καθαρούς όρους. Ζητήστε πρόταση με λίγα στοιχεία. Το ιατρικό ιστορικό μένει προαιρετικό.">
+  <meta property="og:url" content="https://ildigitalassistant.com/el/life-health.html">
+  <meta property="og:image" content="https://ildigitalassistant.com/assets/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/styles.css?v=3">
   <script defer src="/assets/theme.js"></script>
+  <script defer src="/assets/lead-form.js"></script>
 
   <style>
     .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
@@ -37,7 +51,7 @@
   <section class="page-hero">
     <h1 class="h1">Ασφάλιση Ζωής &amp; Υγείας</h1>
     <p class="lead">Συμπληρώστε τα βασικά στοιχεία για να σας προτείνουμε λύση που ταιριάζει στο προφίλ και στις ανάγκες σας.</p>
-    <p class="helper">Η επικοινωνία γίνεται αποκλειστικά μέσω email.</p>
+    <p class="helper">Αρκούν το όνομα και ένα τηλέφωνο ή email.</p>
   </section>
 
   <section class="card">
@@ -49,122 +63,52 @@
       το κάνετε προαιρετικά και μόνο με τη ρητή σας συγκατάθεση.
     </p>
 
-    <form id="lifeHealthForm" class="form">
-
-      <div class="two-cols">
-        <p><label>Ονοματεπώνυμο<br>
-          <input type="text" id="lh_name" required autocomplete="name"></label></p>
-
-        <p><label>Email<br>
-          <input type="email" id="lh_email" required autocomplete="email"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Ηλικία<br>
-          <input type="number" id="lh_age" required min="0" max="100" placeholder="π.χ. 42"></label></p>
-
-        <p><label>Φύλο<br>
-          <select id="lh_gender" required>
-            <option value="">Επιλέξτε…</option>
-            <option>Άνδρας</option>
-            <option>Γυναίκα</option>
-            <option>Δεν επιθυμώ να απαντήσω</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Καπνιστής/Μη καπνιστής<br>
-          <select id="lh_smoker" required>
-            <option value="">Επιλέξτε…</option>
-            <option>Μη καπνιστής</option>
-            <option>Καπνιστής</option>
-            <option>Περιστασιακά</option>
-          </select></label></p>
-
-        <p><label>Περιοχή κατοικίας (ενδεικτικά)<br>
-          <input type="text" id="lh_city" required placeholder="π.χ. Αθήνα, Χολαργός"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Τι σας ενδιαφέρει κυρίως;<br>
-          <select id="lh_interest" required>
+    <form id="lifeHealthForm" class="form" action="mailto:info@ildigitalassistant.com" method="post" enctype="text/plain" data-lead data-lang="el" data-subject="Αίτημα προσφοράς Ασφάλισης Ζωής και Υγείας">
+      <input type="hidden" name="lang" value="el">
+      <input type="hidden" name="page" value="/el/life-health.html">
+      <input type="hidden" name="subject" value="Αίτημα προσφοράς Ασφάλισης Ζωής και Υγείας">
+      <p><label>Ονοματεπώνυμο<br>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </label></p>
+      <p><label>Τηλέφωνο<br>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      </label></p>
+      <p><label>Email<br>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </label></p>
+      <p class="form-hint">Τηλέφωνο ή email — συμπληρώστε τουλάχιστον ένα.</p>
+      <p><label>Τι σας ενδιαφέρει;<br>
+        <select id="need" name="need" required>
             <option value="">Επιλέξτε…</option>
             <option>Υγεία (νοσοκομειακό)</option>
-            <option>Υγεία (εξωνοσοκομειακό/διαγνωστικά)</option>
-            <option>Ζωής (κεφάλαιο σε περίπτωση θανάτου)</option>
+            <option>Υγεία (εξωνοσοκομειακό / διαγνωστικά)</option>
+            <option>Ζωή</option>
             <option>Προσωπικό ατύχημα</option>
             <option>Συνδυασμός</option>
-          </select></label></p>
-
-        <p><label>Υπάρχει ήδη ιδιωτική ασφάλιση;<br>
-          <select id="lh_existing" required>
-            <option value="">Επιλέξτε…</option>
-            <option>Όχι</option>
-            <option>Ναι, σε ισχύ</option>
-            <option>Είχα παλαιότερα</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Επιλογή κόστους / απαλλαγών (όπου εφαρμόζεται)<br>
-          <select id="lh_pricing" required>
-            <option value="">Επιλέξτε…</option>
-            <option>Πιο οικονομικό (με απαλλαγές)</option>
-            <option>Χωρίς απαλλαγές (αν γίνεται)</option>
-            <option>Θέλω και τις 2 εκδοχές για σύγκριση</option>
-          </select></label></p>
-
-        <p><label>Στόχος κάλυψης<br>
-          <select id="lh_goal" required>
-            <option value="">Επιλέξτε…</option>
-            <option>Βασική προστασία</option>
-            <option>Καλή προστασία</option>
-            <option>Πλήρης προστασία</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Επιθυμητό κεφάλαιο ζωής (€) (αν σας αφορά)<br>
-          <input type="number" id="lh_lifeSum" min="0" step="1000" placeholder="π.χ. 100000"></label></p>
-
-        <p><label>Επιθυμητό όριο/κέφαλαιο υγείας (ενδεικτικά)<br>
-          <select id="lh_healthLevel">
-            <option value="">Επιλέξτε (προαιρετικά)…</option>
-            <option>Οικονομικό νοσοκομειακό</option>
-            <option>Μεσαίο νοσοκομειακό</option>
-            <option>Υψηλό / premium</option>
-            <option>Δεν γνωρίζω – θέλω πρόταση</option>
-          </select></label></p>
-      </div>
-
-      <p class="hint">
-        Για να αποφύγουμε καθυστερήσεις, αν υπάρχουν ήδη γνωστές παθήσεις ή πρόσφατες νοσηλείες,
-        συνήθως οι εταιρείες ζητούν συμπληρωματικό ιατρικό ερωτηματολόγιο. Δεν το ζητάμε εδώ υποχρεωτικά.
-        Αν θέλετε, γράψτε απλώς “υπάρχει ιστορικό” χωρίς λεπτομέρειες και θα το χειριστούμε σωστά στο επόμενο βήμα.
-      </p>
-
-      <p><label>Ιατρικό ιστορικό (προαιρετικά – σύντομα)<br>
-        <textarea id="lh_medical" rows="3" placeholder="Π.χ. 'υπάρχει ιστορικό' ή 'όχι' (χωρίς λεπτομέρειες)"></textarea></label></p>
-
-      <p><label>Μήνυμα (προαιρετικά)<br>
-        <textarea id="lh_message" rows="4" placeholder="Π.χ. θέλω πρόσβαση σε συγκεκριμένα νοσοκομεία, ενδιαφέρον για οικογενειακό πρόγραμμα, προϋπολογισμό κλπ."></textarea></label></p>
-
-      <p><label>
-        <input type="checkbox" id="lh_consent" required>
-        Συμφωνώ τα στοιχεία μου να χρησιμοποιηθούν αποκλειστικά για αξιολόγηση ασφαλιστικής πρότασης και απάντηση μέσω email.
+        </select>
       </label></p>
-
+      <details class="more-details">
+        <summary>Περισσότερα στοιχεία (προαιρετικά)</summary>
+        
+        <p><label>Ηλικία<br><input id="lh_age" name="lh_age" type="number" min="0" max="100"></label></p>
+        <p><label>Φύλο<br><select id="lh_gender" name="lh_gender"><option value="">—</option><option>Άνδρας</option><option>Γυναίκα</option><option>Δεν επιθυμώ να απαντήσω</option></select></label></p>
+        <p><label>Κάπνισμα<br><select id="lh_smoker" name="lh_smoker"><option value="">—</option><option>Μη καπνιστής</option><option>Καπνιστής</option><option>Περιστασιακά</option></select></label></p>
+        <p><label>Περιοχή<br><input id="lh_city" name="lh_city" type="text"></label></p>
+        <p><label>Υπάρχει ήδη ιδιωτική ασφάλιση;<br><select id="lh_existing" name="lh_existing"><option value="">—</option><option>Όχι</option><option>Ναι, σε ισχύ</option><option>Είχα παλαιότερα</option></select></label></p>
+        <p><label>Επιθυμητό κεφάλαιο ζωής (€)<br><input id="lh_lifeSum" name="lh_lifeSum" type="number" min="0" step="1000"></label></p>
+        <p><label>Ιατρικό ιστορικό (προαιρετικά, χωρίς λεπτομέρειες)<br><textarea id="lh_medical" name="lh_medical" rows="2"></textarea></label></p>
+        <p><label><input type="checkbox" id="lh_sensitive" name="lh_sensitive"> Κατανοώ ότι ό,τι γράψω για την υγεία μου είναι ευαίσθητο και το δίνω εθελοντικά.</label></p>
+        <p><label>Σημειώσεις<br><textarea id="lh_message" name="lh_message" rows="2"></textarea></label></p>
+        
+      </details>
       <p><label>
-        <input type="checkbox" id="lh_sensitive">
-        Κατανοώ ότι τυχόν στοιχεία υγείας που γράψω στο πεδίο “Ιατρικό ιστορικό” αποτελούν ευαίσθητα δεδομένα και τα παρέχω προαιρετικά για τη δημιουργία προσφοράς.
+        <input type="checkbox" name="consent" required>
+        Συμφωνώ να χρησιμοποιηθούν τα στοιχεία μου για να επικοινωνήσετε μαζί μου σχετικά με το αίτημα.
       </label></p>
-
-      <p><button class="btn" type="submit">Δημιουργία email αιτήματος</button></p>
+      <p><button class="btn" type="submit">Αποστολή</button></p>
+      <p class="form-hint">Ή καλέστε <a href="tel:+306937311411">+30 693 731 1411</a>, <a href="https://wa.me/306937311411" target="_blank" rel="noopener noreferrer">WhatsApp</a>, <a href="viber://chat?number=%2B306937311411">Viber</a>.</p>
     </form>
-
-    <div id="lifeHealthSuccess" class="success-box">
-      ✔ Το αίτημα δημιουργήθηκε. Ελέγξτε το email σας και πατήστε “Αποστολή”.
-    </div>
+    <div class="success-box"></div>
   </section>
 
   <section class="card seo-content">
@@ -193,55 +137,12 @@
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance — Άδεια διαμεσολάβησης [357092]</div>
-  <div><a href="/privacy.html">Απόρρητο</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Όροι</a></div>
+  <div>© <span id="year"></span> IL Insurance — Ηλίας Λεπουραίος — Άδεια διαμεσολάβησης 357092</div>
+  <div><a href="./privacy.html">Απόρρητο</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Όροι</a></div>
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-
-  const medField = document.getElementById("lh_medical");
-  const sensCheck = document.getElementById("lh_sensitive");
-
-  // Αν ο χρήστης γράψει κάτι στο ιατρικό, “ζητάμε” να τσεκάρει το δεύτερο checkbox (χωρίς να τον μπλοκάρουμε άδικα).
-  function hasMedicalText() {
-    return (medField.value || "").trim().length > 0;
-  }
-
-  document.getElementById("lifeHealthForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    if (!document.getElementById("lh_consent").checked) return;
-
-    // Αν έχει γράψει ιατρικό ιστορικό, απαιτούμε το extra checkbox
-    if (hasMedicalText() && !sensCheck.checked) {
-      alert("Έχετε συμπληρώσει ιατρικό ιστορικό. Παρακαλώ τσεκάρετε ότι το παρέχετε προαιρετικά ως ευαίσθητο δεδομένο.");
-      return;
-    }
-
-    const subject = encodeURIComponent("Αίτημα προσφοράς Ασφάλισης Ζωής & Υγείας");
-
-    const body = encodeURIComponent(
-      "Τύπος αιτήματος: Ασφάλιση Ζωής & Υγείας\n\n" +
-      "Ονοματεπώνυμο: " + lh_name.value + "\n" +
-      "Email: " + lh_email.value + "\n\n" +
-      "Ηλικία: " + lh_age.value + "\n" +
-      "Φύλο: " + lh_gender.value + "\n" +
-      "Καπνιστής: " + lh_smoker.value + "\n" +
-      "Περιοχή: " + lh_city.value + "\n\n" +
-      "Ενδιαφέρον: " + lh_interest.value + "\n" +
-      "Υπάρχει ήδη ασφάλιση: " + lh_existing.value + "\n" +
-      "Επιλογή απαλλαγών: " + lh_pricing.value + "\n" +
-      "Στόχος κάλυψης: " + lh_goal.value + "\n\n" +
-      "Επιθυμητό κεφάλαιο ζωής (€): " + (lh_lifeSum.value || "-") + "\n" +
-      "Επιθυμητό επίπεδο υγείας: " + (lh_healthLevel.value || "-") + "\n\n" +
-      "Ιατρικό ιστορικό (προαιρετικά):\n" + (lh_medical.value || "-") + "\n\n" +
-      "Μήνυμα:\n" + (lh_message.value || "-")
-    );
-
-    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
-    lifeHealthSuccess.style.display = "block";
-  });
 </script>
 
 </body>

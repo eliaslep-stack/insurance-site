@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Home Insurance</title>
-  <link rel="stylesheet" href="/assets/styles.css?v=2">
+  <meta name="description" content="Home insurance for the building and the contents. A name and a phone or email are enough to start.">
+  <link rel="canonical" href="https://ildigitalassistant.com/en/property.html">
+  <link rel="alternate" hreflang="el" href="https://ildigitalassistant.com/el/property.html">
+  <link rel="alternate" hreflang="en" href="https://ildigitalassistant.com/en/property.html">
+  <link rel="alternate" hreflang="x-default" href="https://ildigitalassistant.com/el/property.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IL Insurance">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="IL Insurance — Home Insurance">
+  <meta property="og:description" content="Home insurance for the building and the contents. A name and a phone or email are enough to start.">
+  <meta property="og:url" content="https://ildigitalassistant.com/en/property.html">
+  <meta property="og:image" content="https://ildigitalassistant.com/assets/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/styles.css?v=3">
   <script defer src="/assets/theme.js"></script>
+  <script defer src="/assets/lead-form.js"></script>
 
   <style>
     .success-box{margin-top:20px;padding:15px;background:#0f3;color:#000;border-radius:8px;display:none}
@@ -37,195 +51,60 @@
   <section class="page-hero">
     <h1 class="h1">Home Insurance</h1>
     <p class="lead">Fill in the key property details so we can assess the right coverage for your case.</p>
-    <p class="helper">We communicate exclusively via email.</p>
+    <p class="helper">A name and a phone number or email are enough to start.</p>
   </section>
 
   <section class="card">
     <h2 class="h2">Home insurance quote request</h2>
 
     <p class="small-note">
-      Your information is used only to assess an insurance proposal and reply via email.
-      Coverage limits and deductible preference are essential for accurate pricing.
+      A name and a phone or email are enough. Address, size and values are optional if you have them.
     </p>
 
-    <form id="propertyForm" class="form">
-
-      <div class="two-cols">
-        <p><label>Full name<br>
-          <input type="text" id="p_name" required autocomplete="name"></label></p>
-
-        <p><label>Email<br>
-          <input type="email" id="p_email" required autocomplete="email"></label></p>
-      </div>
-
-      <p><label>Risk address (street – number – postal code – city)<br>
-        <input type="text" id="p_address" required placeholder="e.g. Mesogeion Ave 120, 11527, Athens"></label></p>
-
-      <div class="two-cols">
-        <p><label>Your status<br>
-          <select id="p_role" required>
-            <option value="">Select…</option>
-            <option>Owner</option>
-            <option>Tenant</option>
-          </select></label></p>
-
-        <p><label>Property use<br>
-          <select id="p_use" required>
-            <option value="">Select…</option>
-            <option>Owner-occupied</option>
-            <option>Long-term rental</option>
-            <option>Short-term rental</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Primary or secondary residence?<br>
-          <select id="p_primary" required>
-            <option value="">Select…</option>
-            <option>Primary</option>
-            <option>Secondary</option>
-          </select></label></p>
-
-        <p><label>What would you like to insure?<br>
-          <select id="p_coverTarget" required>
+    <form id="propertyForm" class="form" action="mailto:info@ildigitalassistant.com" method="post" enctype="text/plain" data-lead data-lang="en" data-subject="Home insurance quote request">
+      <input type="hidden" name="lang" value="en">
+      <input type="hidden" name="page" value="/en/property.html">
+      <input type="hidden" name="subject" value="Home insurance quote request">
+      <p><label>Full name<br>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </label></p>
+      <p><label>Phone<br>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      </label></p>
+      <p><label>Email<br>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </label></p>
+      <p class="form-hint">Phone or email — enter at least one.</p>
+      <p><label>What do you want to insure?<br>
+        <select id="need" name="need" required>
             <option value="">Select…</option>
             <option>Building</option>
             <option>Contents</option>
-            <option>Building &amp; Contents</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Is there a mortgage / assignment?<br>
-          <select id="p_mortgage" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes</option>
-          </select></label></p>
-
-        <p><label>Assignment amount (€) (if applicable)<br>
-          <input type="number" id="p_assignment" min="0" step="1" placeholder="e.g. 120000"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Property type<br>
-          <select id="p_type" required>
-            <option value="">Select…</option>
-            <option>Apartment</option>
-            <option>Detached house</option>
-            <option>Maisonette</option>
-          </select></label></p>
-
-        <p><label>Floor (if apartment)<br>
-          <input type="text" id="p_floor" placeholder="e.g. 3rd / Ground / Penthouse"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Construction type / structure<br>
-          <select id="p_structure" required>
-            <option value="">Select…</option>
-            <option>Reinforced concrete</option>
-            <option>Masonry / stone / traditional</option>
-            <option>Steel structure</option>
-            <option>Other / Not sure</option>
-          </select></label></p>
-
-        <p><label>Building permit year<br>
-          <input type="number" id="p_permitYear" required min="1900" max="2030" placeholder="e.g. 2005"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Renovation year (if any)<br>
-          <input type="number" id="p_renoYear" min="1900" max="2030" placeholder="e.g. 2018"></label></p>
-
-        <p><label>What was renovated? (plaster, floors, electrical, plumbing)<br>
-          <input type="text" id="p_renoWhat" placeholder="e.g. electrical + plumbing + windows"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Number of floors above ground floor<br>
-          <input type="number" id="p_floorsAbove" required min="0" max="20" placeholder="e.g. 2"></label></p>
-
-        <p><label>Total covered area (sq.m.)<br>
-          <input type="number" id="p_totalArea" required min="1" step="1" placeholder="e.g. 120"></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Main living area (sq.m.)<br>
-          <input type="number" id="p_mainArea" required min="1" step="1" placeholder="e.g. 95"></label></p>
-
-        <p><label>Auxiliary areas (type/description)<br>
-          <input type="text" id="p_auxTypes" placeholder="e.g. storage + garage"></label></p>
-      </div>
-
-      <p><label>Auxiliary areas: sq.m. per area (details)<br>
-        <textarea id="p_auxAreas" rows="3" placeholder="e.g. Storage 8 sqm, Garage 15 sqm"></textarea></label></p>
-
-      <div class="two-cols">
-        <p><label>Security door?<br>
-          <select id="p_secDoor" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes</option>
-          </select></label></p>
-
-        <p><label>Alarm system?<br>
-          <select id="p_alarm" required>
-            <option value="">Select…</option>
-            <option>No</option>
-            <option>Yes</option>
-          </select></label></p>
-      </div>
-
-      <div class="two-cols">
-        <p><label>Pricing preference / deductibles<br>
-          <select id="p_pricing" required>
-            <option value="">Select…</option>
-            <option>More affordable (with deductibles)</option>
-            <option>No deductibles (if available)</option>
-            <option>I want both options to compare</option>
-          </select></label></p>
-
-        <p><label>Coverage goal<br>
-          <select id="p_goal" required>
-            <option value="">Select…</option>
-            <option>Basic protection</option>
-            <option>Good protection</option>
-            <option>Full protection</option>
-          </select></label></p>
-      </div>
-
-      <p class="hint">
-        Coverage limits matter. Underinsurance may reduce claim payments proportionally in a major loss.
-        Overinsurance means you may pay more premium without receiving more than the actual damage.
-        If you are unsure, provide an estimate and we will refine it with you.
-      </p>
-
-      <div class="two-cols">
-        <p><label>Building sum insured (€) (if insuring the building)<br>
-          <input type="number" id="p_sumBuilding" min="0" step="1" placeholder="e.g. 180000"></label></p>
-
-        <p><label>Contents sum insured (€) (if insuring contents)<br>
-          <input type="number" id="p_sumContents" min="0" step="1" placeholder="e.g. 30000"></label></p>
-      </div>
-
-      <p><label>Note about sums insured (optional)<br>
-        <input type="text" id="p_sumNote" placeholder="e.g. based on rebuild cost / estimate for contents"></label></p>
-
-      <p><label>Message (optional)<br>
-        <textarea id="p_message" rows="4" placeholder="e.g. add earthquake, natural hazards, water leakage, theft, private liability, etc."></textarea></label></p>
-
-      <p><label>
-        <input type="checkbox" id="p_consent" required>
-        I agree that my details will be used exclusively to assess an insurance proposal and reply via email.
+            <option>Building and contents</option>
+            <option>Not sure</option>
+        </select>
       </label></p>
-
-      <p><button class="btn" type="submit">Generate request email</button></p>
+      <details class="more-details">
+        <summary>More details (optional)</summary>
+        
+        <p><label>Address<br><input id="p_address" name="p_address" type="text"></label></p>
+        <p><label>Type<br><select id="p_type" name="p_type"><option value="">—</option><option>Apartment</option><option>Detached house</option><option>Maisonette</option></select></label></p>
+        <p><label>Owner or tenant<br><select id="p_role" name="p_role"><option value="">—</option><option>Owner</option><option>Tenant</option></select></label></p>
+        <p><label>Area (m²)<br><input id="p_totalArea" name="p_totalArea" type="number" min="1" step="1"></label></p>
+        <p><label>Year built<br><input id="p_permitYear" name="p_permitYear" type="number" min="1900" max="2030"></label></p>
+        <p><label>Building value (€)<br><input id="p_sumBuilding" name="p_sumBuilding" type="number" min="0" step="1"></label></p>
+        <p><label>Contents value (€)<br><input id="p_sumContents" name="p_sumContents" type="number" min="0" step="1"></label></p>
+        <p><label>Notes<br><textarea id="p_message" name="p_message" rows="3"></textarea></label></p>
+        
+      </details>
+      <p><label>
+        <input type="checkbox" name="consent" required>
+        I agree that my details may be used to contact me about this request.
+      </label></p>
+      <p><button class="btn" type="submit">Send</button></p>
+      <p class="form-hint">Or call <a href="tel:+306937311411">+30 693 731 1411</a>, <a href="https://wa.me/306937311411" target="_blank" rel="noopener noreferrer">WhatsApp</a>, <a href="viber://chat?number=%2B306937311411">Viber</a>.</p>
     </form>
-
-    <div id="propertySuccess" class="success-box">
-      ✔ Request created. Please check your email app and press “Send”.
-    </div>
+    <div class="success-box"></div>
   </section>
 
   <section class="card seo-content">
@@ -247,77 +126,12 @@
 </main>
 
 <footer class="container" style="margin-top:40px;">
-  <div>© <span id="year"></span> IL Insurance — License [357092]</div>
-  <div><a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/terms.html">Terms</a></div>
+  <div>© <span id="year"></span> IL Insurance — Ilias Lepouraios — License 357092</div>
+  <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Mortgage -> assignment required
-  const mortSel = document.getElementById("p_mortgage");
-  const assignment = document.getElementById("p_assignment");
-  mortSel.addEventListener("change", () => {
-    if (mortSel.value === "Yes") assignment.required = true;
-    else { assignment.required = false; assignment.value = ""; }
-  });
-
-  // Sums insured required depending on cover target
-  const coverTarget = document.getElementById("p_coverTarget");
-  const sumB = document.getElementById("p_sumBuilding");
-  const sumC = document.getElementById("p_sumContents");
-
-  function syncSumsRequired(){
-    const v = coverTarget.value;
-    sumB.required = (v === "Building" || v === "Building & Contents");
-    sumC.required = (v === "Contents" || v === "Building & Contents");
-    if (!sumB.required) sumB.value = "";
-    if (!sumC.required) sumC.value = "";
-  }
-  coverTarget.addEventListener("change", syncSumsRequired);
-  syncSumsRequired();
-
-  document.getElementById("propertyForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    if (!document.getElementById("p_consent").checked) return;
-
-    const subject = encodeURIComponent("Home Insurance Quote Request");
-
-    const body = encodeURIComponent(
-      "Request type: Home Insurance\n\n" +
-      "Full name: " + p_name.value + "\n" +
-      "Email: " + p_email.value + "\n\n" +
-      "Risk address: " + p_address.value + "\n" +
-      "Status: " + p_role.value + "\n" +
-      "Property use: " + p_use.value + "\n" +
-      "Primary/Secondary: " + p_primary.value + "\n" +
-      "What to insure: " + p_coverTarget.value + "\n\n" +
-      "Mortgage/Assignment: " + p_mortgage.value + "\n" +
-      "Assignment amount (€): " + (p_assignment.value || "-") + "\n\n" +
-      "Property type: " + p_type.value + "\n" +
-      "Floor: " + (p_floor.value || "-") + "\n" +
-      "Construction/Structure: " + p_structure.value + "\n" +
-      "Permit year: " + p_permitYear.value + "\n" +
-      "Renovation year: " + (p_renoYear.value || "-") + "\n" +
-      "Renovated items: " + (p_renoWhat.value || "-") + "\n" +
-      "Floors above GF: " + p_floorsAbove.value + "\n\n" +
-      "Total covered area (sqm): " + p_totalArea.value + "\n" +
-      "Main area (sqm): " + p_mainArea.value + "\n" +
-      "Aux areas (type): " + (p_auxTypes.value || "-") + "\n" +
-      "Aux areas (sqm details): " + (p_auxAreas.value || "-") + "\n\n" +
-      "Security door: " + p_secDoor.value + "\n" +
-      "Alarm: " + p_alarm.value + "\n\n" +
-      "Pricing preference: " + p_pricing.value + "\n" +
-      "Coverage goal: " + p_goal.value + "\n" +
-      "Building sum insured (€): " + (p_sumBuilding.value || "-") + "\n" +
-      "Contents sum insured (€): " + (p_sumContents.value || "-") + "\n" +
-      "Sums note: " + (p_sumNote.value || "-") + "\n\n" +
-      "Message:\n" + (p_message.value || "-")
-    );
-
-    window.open("mailto:info@ildigitalassistant.com?subject=" + subject + "&body=" + body);
-    propertySuccess.style.display = "block";
-  });
 </script>
 
 </body>
