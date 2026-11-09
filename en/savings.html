@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IL Insurance — Savings & Pension</title>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <meta name="description" content="Savings and pension plans, with written projections before you sign. Send a short request for a walkthrough.">
+  <link rel="canonical" href="https://ildigitalassistant.com/en/savings.html">
+  <link rel="alternate" hreflang="el" href="https://ildigitalassistant.com/el/savings.html">
+  <link rel="alternate" hreflang="en" href="https://ildigitalassistant.com/en/savings.html">
+  <link rel="alternate" hreflang="x-default" href="https://ildigitalassistant.com/el/savings.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="IL Insurance">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="IL Insurance — Savings &amp; Pension">
+  <meta property="og:description" content="Savings and pension plans, with written projections before you sign. Send a short request for a walkthrough.">
+  <meta property="og:url" content="https://ildigitalassistant.com/en/savings.html">
+  <meta property="og:image" content="https://ildigitalassistant.com/assets/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/styles.css?v=3">
   <script defer src="/assets/theme.js"></script>
+  <script defer src="/assets/lead-form.js"></script>
 </head>
 <body>
   <header class="container">
@@ -63,10 +77,51 @@
         <a class="btn" href="./contact.html">Discuss a savings plan</a>
       </p>
     </section>
-  </main>
+  <section class="card"><h2 class="h2">Request a walkthrough</h2><p class="form-hint">A name and a phone or email are enough.</p><form id="savingsForm" class="form" method="post" action="/api/lead" data-lead data-lang="en" data-subject="Savings and pension quote request">
+      <input type="hidden" name="lang" value="en">
+      <input type="hidden" name="page" value="/en/savings.html">
+      <input type="hidden" name="subject" value="Savings and pension quote request">
+      <p><label>Full name<br>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </label></p>
+      <p><label>Phone<br>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      </label></p>
+      <p><label>Email<br>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </label></p>
+      <p class="form-hint">Phone or email — enter at least one.</p>
+      <p><label>What are you looking at?<br>
+        <select id="need" name="need" required>
+            <option value="">Select…</option>
+            <option>Pension</option>
+            <option>Children and education</option>
+            <option>Unit linked</option>
+            <option>Targeted savings</option>
+            <option>Not sure</option>
+        </select>
+      </label></p>
+      <details class="more-details">
+        <summary>More details (optional)</summary>
+        
+        <p><label>Age<br><input id="s_age" name="s_age" type="number" min="0" max="100"></label></p>
+        <p><label>Monthly amount you can set aside (€)<br><input id="s_amount" name="s_amount" type="number" min="0" step="10"></label></p>
+        <p><label>Horizon<br><select id="s_horizon" name="s_horizon"><option value="">—</option><option>Up to 10 years</option><option>10–20 years</option><option>More than 20 years</option></select></label></p>
+        <p><label>Notes<br><textarea id="s_message" name="s_message" rows="3"></textarea></label></p>
+        
+      </details>
+      <p><label>
+        <input type="checkbox" name="consent" required>
+        I agree that my details may be used to contact me about this request.
+      </label></p>
+      <p><button class="btn" type="submit">Send</button></p>
+      <p class="form-hint">Or call <a href="tel:+306937311411">+30 693 731 1411</a>, <a href="https://wa.me/306937311411" target="_blank" rel="noopener noreferrer">WhatsApp</a>, <a href="viber://chat?number=%2B306937311411">Viber</a>.</p>
+    </form>
+    <div class="success-box"></div></section>
+</main>
 
   <footer class="container" style="margin-top:40px;">
-    <div>© <span id="year"></span> IL Insurance — Insurance Intermediary License: [357092]. Phone: +30 6937311411 · Email: info@ildigitalassistant.com</div>
+    <div>© <span id="year"></span> IL Insurance — Ilias Lepouraios — Insurance Intermediary License: 357092. Phone: <a href="tel:+306937311411">+30 693 731 1411</a> · Email: info@ildigitalassistant.com</div>
     <div><a href="./privacy.html">Privacy</a> · <a href="./cookies.html">Cookies</a> · <a href="./terms.html">Terms</a></div>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
@@ -131,7 +186,7 @@
   <div id="athena-bubble"
        onclick="window.open('https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant','_blank')">
     <img id="athena-avatar"
-         src="https://insurance.ildigitalassistant.com/assets/athena.png"
+         src="/assets/athena.webp"
          alt="Athena Assistant">
     <span>Ask Athena — Insurance help</span>
   </div>

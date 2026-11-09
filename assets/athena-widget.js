@@ -8,6 +8,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!bubble || !box || !bodyDiv || !input || !sendBtn) return;
 
+  const ATHENA_EXTERNAL = "https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant";
+
+  function addExternalLink() {
+    if (document.getElementById("athena-external-link")) return;
+    const div = document.createElement("div");
+    div.id = "athena-external-link";
+    div.className = "athena-msg";
+    const a = document.createElement("a");
+    a.href = ATHENA_EXTERNAL;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = LANG === "en" ? "Open Athena in a new tab" : "Άνοιγμα της Αθηνάς σε νέα καρτέλα";
+    div.appendChild(a);
+    bodyDiv.appendChild(div);
+    bodyDiv.scrollTop = bodyDiv.scrollHeight;
+  }
+
   // ---------- LANG (single source of truth) ----------
   // Priority: window.ATHENA_LANG > <html lang> > URL path > default "el"
   const LANG = (() => {
@@ -317,8 +334,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       removeThinkingIfAny();
 
-      if (!res.ok) {
-        addMessage(T("athena"), T("err") + (data?.error ? String(data.error) : "Server error"));
+      if (!res.ok || !data?.reply) {
+        addMessage(
+          T("athena"),
+          data?.error
+            ? T("err") + String(data.error)
+            : (LANG === "en"
+              ? "Athena is not available in this window right now."
+              : "Η Αθηνά δεν απαντά από αυτό το παράθυρο αυτή τη στιγμή.")
+        );
+        addExternalLink();
         return;
       }
 
@@ -338,6 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       removeThinkingIfAny();
       addMessage(T("athena"), T("connErr"));
+      addExternalLink();
     } finally {
       sendBtn.disabled = false;
       isSending = false;
