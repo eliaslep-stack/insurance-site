@@ -512,8 +512,22 @@ details.more-details summary {
   padding: 8px 0 0;
 }
 
-.home-call .contact-actions {
+.home-call .contact-actions,
+.card > .contact-actions {
   justify-content: center;
+}
+
+.home-call .contact-actions .btn[href^="tel:"],
+.card > .contact-actions .btn[href^="tel:"] {
+  flex: 1 1 100%;
+}
+
+.home-call .contact-actions .btn.alt,
+.card > .contact-actions .btn.alt {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .success-box {
