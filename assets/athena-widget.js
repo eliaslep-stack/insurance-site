@@ -8,19 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!bubble || !box || !bodyDiv || !input || !sendBtn) return;
 
-  const ATHENA_EXTERNAL = "https://chatgpt.com/g/g-691e2f10d9288191a7a22f4d8467ba14-il-digital-insurance-assistant";
-
-  function addExternalLink() {
-    if (document.getElementById("athena-external-link")) return;
+  function addFallbackHint() {
+    if (document.getElementById("athena-fallback-hint")) return;
     const div = document.createElement("div");
-    div.id = "athena-external-link";
+    div.id = "athena-fallback-hint";
     div.className = "athena-msg";
-    const a = document.createElement("a");
-    a.href = ATHENA_EXTERNAL;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.textContent = LANG === "en" ? "Open Athena in a new tab" : "Άνοιγμα της Αθηνάς σε νέα καρτέλα";
-    div.appendChild(a);
+    div.textContent = LANG === "en"
+      ? "If Athena does not reply, call +30 693 731 1411 or email info@ildigitalassistant.com."
+      : "Αν η Αθηνά δεν απαντά, καλέστε στο +30 693 731 1411 ή στείλτε email στο info@ildigitalassistant.com.";
     bodyDiv.appendChild(div);
     bodyDiv.scrollTop = bodyDiv.scrollHeight;
   }
@@ -343,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
               ? "Athena is not available in this window right now."
               : "Η Αθηνά δεν απαντά από αυτό το παράθυρο αυτή τη στιγμή.")
         );
-        addExternalLink();
+        addFallbackHint();
         return;
       }
 
@@ -363,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       removeThinkingIfAny();
       addMessage(T("athena"), T("connErr"));
-      addExternalLink();
+      addFallbackHint();
     } finally {
       sendBtn.disabled = false;
       isSending = false;
